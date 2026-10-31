@@ -211,6 +211,18 @@ const en: LocaleType = {
       Success: "Update Successful.",
       Failed: "Update Failed.",
     },
+    LocalizationInfo: {
+      Timeout: "Connection timed out after 30 seconds. Check your network and API endpoint.",
+      Success: "Connection successful",
+      NoResponse: "The provider did not return a valid response. Check the model and endpoint settings.",
+      Upstream: "Upstream base",
+      Details: "Detailed version information",
+      Security: "Security maintenance ID",
+      Commit: "Build commit",
+      Official: "Official reference version",
+      Unavailable: "Unavailable",
+      Note: "Includes selective backports, not the complete official v2.16.1 release. Official version information is for reference only.",
+    },
     ProviderSetup: {
       Provider: "Provider",
       ProviderHelp: "Select a provider and enter its API Key to use the default model",
