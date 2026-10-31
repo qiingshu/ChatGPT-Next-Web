@@ -609,7 +609,7 @@ export function Settings() {
     };
     // Start before calling the adapter so preprocessing cannot leave the UI loading.
     run.timer = setTimeout(() => {
-      finish("连接测试超时（30 秒），请检查网络及接口地址。");
+      finish(Locale.Settings.LocalizationInfo.Timeout);
       run.controller?.abort();
     }, 30000);
     try {
@@ -622,7 +622,7 @@ export function Settings() {
         },
         onFinish: (message, response) => finish(
           response.ok && message.trim()
-            ? `连接成功：${modelConfig.model}`
+            ? `${Locale.Settings.LocalizationInfo.Success}：${modelConfig.model}`
             : formatApiError(message || "empty response", response.status),
         ),
         onError: (error) => finish(formatApiError(error)),
@@ -630,7 +630,7 @@ export function Settings() {
     } catch (error) {
       finish(formatApiError(error));
     } finally {
-      if (testRun.current === run) finish("服务商未返回有效响应，请检查模型和接口设置。");
+      if (testRun.current === run) finish(Locale.Settings.LocalizationInfo.NoResponse);
     }
   };
 
@@ -1625,18 +1625,18 @@ export function Settings() {
               <div className={styles["version-info"]} data-testid="build-version">
                 <div className={styles["custom-version"]}>2026.10.31</div>
                 <div className={styles["upstream-version"]}>
-                  上游基础：{clientConfig?.upstreamBaseVersion ?? currentVersion}
+                  {Locale.Settings.LocalizationInfo.Upstream}：{clientConfig?.upstreamBaseVersion ?? currentVersion}
                 </div>
                 <details className={styles["version-details"]}>
-                  <summary>详细版本信息</summary>
+                  <summary>{Locale.Settings.LocalizationInfo.Details}</summary>
                   <div className={styles["version-metadata"]}>
-                    <div>安全维护标识：{clientConfig?.customVersion ?? "unknown"}</div>
+                    <div>{Locale.Settings.LocalizationInfo.Security}：{clientConfig?.customVersion ?? "unknown"}</div>
                     <div>
-                      构建提交：
+                      {Locale.Settings.LocalizationInfo.Commit}：
                       <code className={styles["build-commit"]}>{clientConfig?.commitHash ?? "unknown"}</code>
                     </div>
-                    <div>官方参考版本：{checkingUpdate ? Locale.Settings.Update.IsChecking : remoteId || "暂未获取"}</div>
-                    <div>含选择性移植，非完整官方 v2.16.1。官方版本信息仅供参考。</div>
+                    <div>{Locale.Settings.LocalizationInfo.Official}：{checkingUpdate ? Locale.Settings.Update.IsChecking : remoteId || Locale.Settings.LocalizationInfo.Unavailable}</div>
+                    <div>{Locale.Settings.LocalizationInfo.Note}</div>
                   </div>
                 </details>
               </div>
