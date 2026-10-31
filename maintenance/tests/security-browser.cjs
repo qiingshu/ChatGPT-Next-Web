@@ -32,9 +32,23 @@ module.exports = async function verifySecurityBrowser(page, context, base) {
   await editor.fill(JSON.stringify(schema, null, 2));
   await page.getByRole("button", { name: "保存插件", exact: true }).click();
   await page.locator(".modal-mask").waitFor({ state: "detached" });
+  await page.waitForFunction(async () => {
+    const db = await new Promise((resolve, reject) => {
+      const request = indexedDB.open("keyval-store");
+      request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error);
+    });
+    const raw = await new Promise((resolve, reject) => {
+      const request = db.transaction("keyval", "readonly").objectStore("keyval").get("chat-next-web-plugin");
+      request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error);
+    });
+    db.close();
+    return raw && Object.values(JSON.parse(raw).state.plugins).some(plugin =>
+      plugin.title === "Security Fixture Plugin" && plugin.content.includes('"version": "1.0.1"'));
+  });
   await page.reload();
   await page.getByRole("button", { name: "编辑插件 Security Fixture Plugin", exact: true }).click();
   await editor.waitFor();
+  await page.waitForFunction(() => document.querySelector('textarea[aria-label="插件 Schema"]')?.value.includes("Security Fixture Plugin"));
   const saved = JSON.parse(await editor.inputValue());
   assert.equal(saved.info.version, "1.0.1");
   assert.equal(saved.info.description, payload);
