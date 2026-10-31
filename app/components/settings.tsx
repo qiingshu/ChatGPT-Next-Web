@@ -31,6 +31,7 @@ import {
   showConfirm,
   showToast,
 } from "./ui-lib";
+import { getClientApi } from "../client/api";
 import { ModelConfigList } from "./model-config";
 
 import { IconButton } from "./button";
@@ -581,6 +582,46 @@ function SyncItems() {
 }
 
 export function Settings() {
+  const [testingModel, setTestingModel] = useState(false);
+  const testCurrentModel = async () => {
+    if (testingModel) return;
+    setTestingModel(true);
+    const config = useChatStore.getState().currentSession().mask.modelConfig;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let settled = false;
+    const finish = (message: string) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      setTestingModel(false);
+      showToast(message);
+    };
+    try {
+      await getClientApi(config.providerName).llm.chat({
+        messages: [{ role: "user", content: "Reply with OK." }],
+        config: { ...config, stream: false },
+        onController: (controller) => {
+          timer = setTimeout(() => {
+            finish("连接测试超时");
+            controller.abort();
+          }, 30000);
+        },
+        onFinish: (message, response) =>
+          finish(
+            response.ok && message.trim()
+              ? `连接成功：${config.model}`
+              : `连接失败：HTTP ${response.status}`,
+          ),
+        onError: () =>
+          finish("连接失败，请检查 API Key、接口地址、模型 ID 和服务商额度"),
+      });
+    } catch {
+      finish("连接失败，请检查前端配置");
+    } finally {
+      if (!settled) finish("服务商未返回有效响应");
+    }
+  };
+
   const navigate = useNavigate();
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const config = useAppConfig();
@@ -1240,6 +1281,41 @@ export function Settings() {
     </>
   );
 
+  const mistralConfigComponent = accessStore.provider ===
+    ServiceProvider.Mistral && (
+    <>
+      <ListItem
+        title={"Mistral API URL"}
+        subTitle={"" + "https://api.mistral.ai"}
+      >
+        <input
+          aria-label={"Mistral API URL"}
+          type="text"
+          value={accessStore.mistralUrl}
+          placeholder={"https://api.mistral.ai"}
+          onChange={(e) =>
+            accessStore.update(
+              (access) => (access.mistralUrl = e.currentTarget.value),
+            )
+          }
+        ></input>
+      </ListItem>
+      <ListItem title={"Mistral API Key"} subTitle={""}>
+        <PasswordInput
+          aria-label={"Mistral API Key"}
+          value={accessStore.mistralApiKey}
+          type="text"
+          placeholder={"Mistral API Key"}
+          onChange={(e) => {
+            accessStore.update(
+              (access) => (access.mistralApiKey = e.currentTarget.value),
+            );
+          }}
+        />
+      </ListItem>
+    </>
+  );
+
   const XAIConfigComponent = accessStore.provider === ServiceProvider.XAI && (
     <>
       <ListItem
@@ -1817,11 +1893,23 @@ export function Settings() {
                   {tencentConfigComponent}
                   {moonshotConfigComponent}
                   {deepseekConfigComponent}
+                  {mistralConfigComponent}
                   {stabilityConfigComponent}
                   {lflytekConfigComponent}
                   {XAIConfigComponent}
                   {chatglmConfigComponent}
                   {siliconflowConfigComponent}
+                  <ListItem
+                    title="测试当前聊天模型"
+                    subTitle="发送一条简短测试请求，可能产生 API 费用；不写入聊天记录"
+                  >
+                    <IconButton
+                      icon={<ConnectionIcon />}
+                      text={testingModel ? "测试中…" : "测试连接"}
+                      disabled={testingModel}
+                      onClick={testCurrentModel}
+                    />
+                  </ListItem>
                 </>
               )}
             </>

@@ -28,6 +28,12 @@ export const TENCENT_BASE_URL = "https://hunyuan.tencentcloudapi.com";
 export const MOONSHOT_BASE_URL = "https://api.moonshot.cn";
 export const IFLYTEK_BASE_URL = "https://spark-api-open.xf-yun.com";
 
+export const MISTRAL_BASE_URL = "https://api.mistral.ai";
+export const Mistral = {
+  ChatPath: "v1/chat/completions",
+  ExampleEndpoint: MISTRAL_BASE_URL,
+};
+
 export const DEEPSEEK_BASE_URL = "https://api.deepseek.com";
 
 export const XAI_BASE_URL = "https://api.x.ai";
@@ -70,6 +76,7 @@ export enum ApiPath {
   Artifacts = "/api/artifacts",
   XAI = "/api/xai",
   ChatGLM = "/api/chatglm",
+  Mistral = "/api/mistral",
   DeepSeek = "/api/deepseek",
   SiliconFlow = "/api/siliconflow",
 }
@@ -128,6 +135,7 @@ export enum ServiceProvider {
   Iflytek = "Iflytek",
   XAI = "XAI",
   ChatGLM = "ChatGLM",
+  Mistral = "Mistral",
   DeepSeek = "DeepSeek",
   SiliconFlow = "SiliconFlow",
 }
@@ -154,6 +162,7 @@ export enum ModelProvider {
   Iflytek = "Iflytek",
   XAI = "XAI",
   ChatGLM = "ChatGLM",
+  Mistral = "Mistral",
   DeepSeek = "DeepSeek",
   SiliconFlow = "SiliconFlow",
 }
@@ -467,10 +476,10 @@ export const VISION_MODEL_REGEXES = [
   /vision/,
   /gpt-4o/,
   /gpt-4\.1/,
-  /claude-3/,
+  /claude-(?:3|(?:sonnet|opus|haiku)-4|4)/,
   /gemini-1\.5/,
   /gemini-exp/,
-  /gemini-2\.0/,
+  /gemini-2\.[05]/,
   /learnlm/,
   /qwen-vl/,
   /qwen2-vl/,
@@ -803,6 +812,17 @@ export const DEFAULT_MODELS = [
       providerName: "ChatGLM",
       providerType: "chatglm",
       sorted: 12,
+    },
+  })),
+  ...["mistral-small-latest", "mistral-large-latest"].map((name) => ({
+    name,
+    available: true,
+    sorted: seq++,
+    provider: {
+      id: "mistral",
+      providerName: "Mistral",
+      providerType: "mistral",
+      sorted: 15,
     },
   })),
   ...deepseekModels.map((name) => ({

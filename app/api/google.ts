@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "./auth";
 import { getServerSideConfig } from "@/app/config/server";
 import { ApiPath, GEMINI_BASE_URL, ModelProvider } from "@/app/constant";
-import { prettyObject } from "@/app/utils/format";
 
 const serverConfig = getServerSideConfig();
 
@@ -45,7 +44,10 @@ export async function handle(
     return response;
   } catch (e) {
     console.error("[Google] ", e);
-    return NextResponse.json(prettyObject(e));
+    return NextResponse.json(
+      { error: { message: "Gemini upstream connection failed" } },
+      { status: 502 },
+    );
   }
 }
 
@@ -119,6 +121,9 @@ async function request(req: NextRequest, apiKey: string) {
     // to prevent browser prompt for credentials
     const newHeaders = new Headers(res.headers);
     newHeaders.delete("www-authenticate");
+    newHeaders.delete("content-encoding");
+    newHeaders.delete("content-length");
+    newHeaders.set("Cache-Control", "no-store");
     // to disable nginx buffering
     newHeaders.set("X-Accel-Buffering", "no");
 

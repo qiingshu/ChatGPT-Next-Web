@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { auth } from "./auth";
+import { ACCESS_CODE_PREFIX, ModelProvider } from "@/app/constant";
 import { getServerSideConfig } from "@/app/config/server";
 
 export async function handle(
@@ -10,7 +12,20 @@ export async function handle(
   if (req.method === "OPTIONS") {
     return NextResponse.json({ body: "OK" }, { status: 200 });
   }
+  const callerAuth = req.headers.get("Authorization") ?? "";
+  const authResult = auth(req, ModelProvider.GPT);
+  if (authResult.error) return NextResponse.json(authResult, { status: 401 });
   const serverConfig = getServerSideConfig();
+  let target: URL;
+  try {
+    target = new URL(req.headers.get("x-base-url") ?? "");
+    if (target.protocol !== "https:" || target.username || target.password)
+      throw new Error();
+  } catch {
+    return NextResponse.json({ error: "Invalid proxy URL" }, { status: 400 });
+  }
+  // The generic proxy only forwards caller credentials; server credentials are
+  // restricted to the exact OpenAI origin, never a caller-controlled hostname.
 
   // remove path params from searchParams
   req.nextUrl.searchParams.delete("path");
@@ -33,17 +48,22 @@ export async function handle(
       return true;
     }),
   );
+  headers.delete("Authorization");
+  if (!callerAuth.replace(/^Bearer\s+/i, "").startsWith(ACCESS_CODE_PREFIX))
+    headers.set("Authorization", callerAuth);
   // if dalle3 use openai api key
-    const baseUrl = req.headers.get("x-base-url");
-    if (baseUrl?.includes("api.openai.com")) {
-      if (!serverConfig.apiKey) {
-        return NextResponse.json(
-          { error: "OpenAI API key not configured" },
-          { status: 500 },
-        );
-      }
-      headers.set("Authorization", `Bearer ${serverConfig.apiKey}`);
+  if (
+    target.origin === "https://api.openai.com" &&
+    !headers.get("Authorization")
+  ) {
+    if (!serverConfig.apiKey) {
+      return NextResponse.json(
+        { error: "OpenAI API key not configured" },
+        { status: 500 },
+      );
     }
+    headers.set("Authorization", `Bearer ${serverConfig.apiKey}`);
+  }
 
   const controller = new AbortController();
   const fetchOptions: RequestInit = {

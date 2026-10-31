@@ -19,8 +19,9 @@ const normalizeUrl = (url: string) => {
 
 async function handle(
   req: NextRequest,
-  { params }: { params: { path: string[] } },
+  { params: pendingParams }: { params: Promise<{ path: string[] }> },
 ) {
+  const params = await pendingParams;
   if (req.method === "OPTIONS") {
     return NextResponse.json({ body: "OK" }, { status: 200 });
   }

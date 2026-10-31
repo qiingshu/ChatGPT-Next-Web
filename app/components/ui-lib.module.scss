@@ -337,3 +337,13 @@
   }
 }
 
+@media screen and (max-width: 600px) {
+  .selector-content {
+    min-width: 0;
+    width: min(95vw, 600px);
+    .list {
+      max-height: 85dvh;
+      overscroll-behavior: contain;
+    }
+  }
+}

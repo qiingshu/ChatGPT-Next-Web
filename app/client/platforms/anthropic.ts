@@ -31,6 +31,7 @@ export type AnthropicMessage = {
 };
 
 export interface AnthropicChatRequest {
+  system?: string;
   model: string; // The model that will complete your prompt.
   messages: AnthropicMessage[]; // The prompt that you want Claude to complete.
   max_tokens: number; // The maximum number of tokens to generate before stopping.
@@ -81,7 +82,12 @@ export class ClaudeApi implements LLMApi {
   extractMessage(res: any) {
     console.log("[Response] claude response: ", res);
 
-    return res?.content?.[0]?.text;
+    return (
+      res?.content
+        ?.filter((block: { type: string }) => block.type === "text")
+        .map((block: { text: string }) => block.text)
+        .join("\n") ?? ""
+    );
   }
   async chat(options: ChatOptions): Promise<void> {
     const visionModel = isVisionModel(options.config.model);
@@ -100,7 +106,11 @@ export class ClaudeApi implements LLMApi {
 
     // try get base64image from local cache image_url
     const messages: ChatOptions["messages"] = [];
-    for (const v of options.messages) {
+    const system = options.messages
+      .filter((v) => v.role === "system")
+      .map(getMessageTextContent)
+      .join("\n\n");
+    for (const v of options.messages.filter((v) => v.role !== "system")) {
       const content = await preProcessImageContent(v.content);
       messages.push({ role: v.role, content });
     }
@@ -181,14 +191,16 @@ export class ClaudeApi implements LLMApi {
 
     const requestBody: AnthropicChatRequest = {
       messages: prompt,
+      ...(system ? { system } : {}),
       stream: shouldStream,
 
       model: modelConfig.model,
       max_tokens: modelConfig.max_tokens,
-      temperature: modelConfig.temperature,
-      top_p: modelConfig.top_p,
+      ...(/^claude-[123]/.test(modelConfig.model)
+        ? { temperature: modelConfig.temperature }
+        : {}),
+      // Claude 4 rejects simultaneous temperature and top_p.
       // top_k: modelConfig.top_k,
-      top_k: 5,
     };
 
     const path = this.path(Anthropic.ChatPath);
@@ -237,7 +249,10 @@ export class ClaudeApi implements LLMApi {
                 };
                 index: number;
               };
-          chunkJson = JSON.parse(text);
+          const parsed = JSON.parse(text);
+          if (parsed.type === "error")
+            throw new Error(parsed.error?.message ?? "Claude stream error");
+          chunkJson = parsed;
 
           if (chunkJson?.content_block?.type == "tool_use") {
             index += 1;
@@ -322,6 +337,10 @@ export class ClaudeApi implements LLMApi {
 
         const res = await fetch(path, payload);
         const resJson = await res.json();
+        if (!res.ok || resJson?.error)
+          throw new Error(
+            `HTTP ${res.status}: ${resJson?.error?.message ?? res.statusText}`,
+          );
 
         const message = this.extractMessage(resJson);
         options.onFinish(message, res);

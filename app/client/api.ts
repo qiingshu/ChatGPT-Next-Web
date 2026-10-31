@@ -20,6 +20,7 @@ import { QwenApi } from "./platforms/alibaba";
 import { HunyuanApi } from "./platforms/tencent";
 import { MoonshotApi } from "./platforms/moonshot";
 import { SparkApi } from "./platforms/iflytek";
+import { MistralApi } from "./platforms/mistral";
 import { DeepSeekApi } from "./platforms/deepseek";
 import { XAIApi } from "./platforms/xai";
 import { ChatGLMApi } from "./platforms/glm";
@@ -161,6 +162,9 @@ export class ClientApi {
       case ModelProvider.Iflytek:
         this.llm = new SparkApi();
         break;
+      case ModelProvider.Mistral:
+        this.llm = new MistralApi();
+        break;
       case ModelProvider.DeepSeek:
         this.llm = new DeepSeekApi();
         break;
@@ -280,6 +284,8 @@ export function getHeaders(ignoreHeaders: boolean = false) {
       ? accessStore.moonshotApiKey
       : isXAI
       ? accessStore.xaiApiKey
+      : modelConfig.providerName === ServiceProvider.Mistral
+      ? accessStore.mistralApiKey
       : isDeepSeek
       ? accessStore.deepseekApiKey
       : isChatGLM
@@ -374,6 +380,8 @@ export function getClientApi(provider: ServiceProvider): ClientApi {
       return new ClientApi(ModelProvider.Moonshot);
     case ServiceProvider.Iflytek:
       return new ClientApi(ModelProvider.Iflytek);
+    case ServiceProvider.Mistral:
+      return new ClientApi(ModelProvider.Mistral);
     case ServiceProvider.DeepSeek:
       return new ClientApi(ModelProvider.DeepSeek);
     case ServiceProvider.XAI:

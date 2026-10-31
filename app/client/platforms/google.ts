@@ -98,31 +98,36 @@ export class GeminiProApi implements LLMApi {
       const content = await preProcessImageContent(v.content);
       _messages.push({ role: v.role, content });
     }
-    const messages = _messages.map((v) => {
-      let parts: any[] = [{ text: getMessageTextContent(v) }];
-      if (isVisionModel(options.config.model)) {
-        const images = getMessageImages(v);
-        if (images.length > 0) {
-          multimodal = true;
-          parts = parts.concat(
-            images.map((image) => {
-              const imageType = image.split(";")[0].split(":")[1];
-              const imageData = image.split(",")[1];
-              return {
-                inline_data: {
-                  mime_type: imageType,
-                  data: imageData,
-                },
-              };
-            }),
-          );
+    const systemParts = _messages
+      .filter((v) => v.role === "system")
+      .map((v) => ({ text: getMessageTextContent(v) }));
+    const messages = _messages
+      .filter((v) => v.role !== "system")
+      .map((v) => {
+        let parts: any[] = [{ text: getMessageTextContent(v) }];
+        if (isVisionModel(options.config.model)) {
+          const images = getMessageImages(v);
+          if (images.length > 0) {
+            multimodal = true;
+            parts = parts.concat(
+              images.map((image) => {
+                const imageType = image.split(";")[0].split(":")[1];
+                const imageData = image.split(",")[1];
+                return {
+                  inline_data: {
+                    mime_type: imageType,
+                    data: imageData,
+                  },
+                };
+              }),
+            );
+          }
         }
-      }
-      return {
-        role: v.role.replace("assistant", "model").replace("system", "user"),
-        parts: parts,
-      };
-    });
+        return {
+          role: v.role.replace("assistant", "model").replace("system", "user"),
+          parts: parts,
+        };
+      });
 
     // google requires that role in neighboring messages must not be the same
     for (let i = 0; i < messages.length - 1; ) {
@@ -152,6 +157,9 @@ export class GeminiProApi implements LLMApi {
     };
     const requestPayload = {
       contents: messages,
+      ...(systemParts.length
+        ? { systemInstruction: { parts: systemParts } }
+        : {}),
       generationConfig: {
         // stopSequences: [
         //   "Title"
@@ -184,10 +192,16 @@ export class GeminiProApi implements LLMApi {
     let shouldStream = !!options.config.stream;
     const controller = new AbortController();
     options.onController?.(controller);
+    let requestTimeoutId: ReturnType<typeof setTimeout> | undefined;
     try {
       // https://github.com/google-gemini/cookbook/blob/main/quickstarts/rest/Streaming_REST.ipynb
       const chatPath = this.path(
-        Google.ChatPath(modelConfig.model),
+        shouldStream
+          ? Google.ChatPath(modelConfig.model)
+          : Google.ChatPath(modelConfig.model).replace(
+              ":streamGenerateContent",
+              ":generateContent",
+            ),
         shouldStream,
       );
 
@@ -200,12 +214,13 @@ export class GeminiProApi implements LLMApi {
 
       const isThinking = options.config.model.includes("-thinking");
       // make a fetch request
-      const requestTimeoutId = setTimeout(
+      requestTimeoutId = setTimeout(
         () => controller.abort(),
         getTimeoutMSByModel(options.config.model),
       );
 
       if (shouldStream) {
+        clearTimeout(requestTimeoutId);
         const [tools, funcs] = usePluginStore
           .getState()
           .getAsTools(
@@ -227,9 +242,15 @@ export class GeminiProApi implements LLMApi {
             // console.log("parseSSE", text, runTools);
             const chunkJson = JSON.parse(text);
 
+            if (chunkJson.error)
+              throw new Error(chunkJson.error.message ?? "Gemini stream error");
+            if (chunkJson.promptFeedback?.blockReason)
+              throw new Error(
+                `Gemini: ${chunkJson.promptFeedback.blockReason}`,
+              );
             const functionCall = chunkJson?.candidates
               ?.at(0)
-              ?.content.parts.at(0)?.functionCall;
+              ?.content?.parts?.at(0)?.functionCall;
             if (functionCall) {
               const { name, args } = functionCall;
               runTools.push({
@@ -243,7 +264,7 @@ export class GeminiProApi implements LLMApi {
             }
             return chunkJson?.candidates
               ?.at(0)
-              ?.content.parts?.map((part: { text: string }) => part.text)
+              ?.content?.parts?.map((part: { text: string }) => part.text)
               .join("\n\n");
           },
           // processToolMessage, include tool_calls message and tool call results
@@ -291,13 +312,16 @@ export class GeminiProApi implements LLMApi {
         const res = await fetch(chatPath, chatPayload);
         clearTimeout(requestTimeoutId);
         const resJson = await res.json();
+        if (!res.ok || resJson?.error) {
+          throw new Error(
+            `HTTP ${res.status}: ${resJson?.error?.message ?? res.statusText}`,
+          );
+        }
         if (resJson?.promptFeedback?.blockReason) {
           // being blocked
-          options.onError?.(
-            new Error(
-              "Message is being blocked for reason: " +
-                resJson.promptFeedback.blockReason,
-            ),
+          throw new Error(
+            "Message is being blocked for reason: " +
+              resJson.promptFeedback.blockReason,
           );
         }
         const message = apiClient.extractMessage(resJson);
@@ -306,6 +330,8 @@ export class GeminiProApi implements LLMApi {
     } catch (e) {
       console.log("[Request] failed to make a chat request", e);
       options.onError?.(e as Error);
+    } finally {
+      clearTimeout(requestTimeoutId);
     }
   }
   usage(): Promise<LLMUsage> {

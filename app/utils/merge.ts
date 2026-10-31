@@ -1,13 +1,22 @@
 export function merge(target: any, source: any) {
-  Object.keys(source).forEach(function (key) {
-    if (
-      source.hasOwnProperty(key) && // Check if the property is not inherited
-      source[key] &&
-      typeof source[key] === "object" || key === "__proto__" || key === "constructor"
-    ) {
-      merge((target[key] = target[key] || {}), source[key]);
-      return;
+  if (!source || typeof source !== "object") return;
+  Object.keys(source).forEach((key) => {
+    // Backup fields must never traverse or overwrite JavaScript prototypes.
+    if (["__proto__", "constructor", "prototype"].includes(key)) return;
+    const value = source[key];
+    if (value && typeof value === "object") {
+      const current = Object.prototype.hasOwnProperty.call(target, key)
+        ? target[key]
+        : undefined;
+      target[key] =
+        current && typeof current === "object"
+          ? current
+          : Array.isArray(value)
+          ? []
+          : {};
+      merge(target[key], value);
+    } else {
+      target[key] = value;
     }
-    target[key] = source[key];
   });
-} 
+}

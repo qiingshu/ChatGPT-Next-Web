@@ -26,12 +26,19 @@ const nextConfig = {
 
     return config;
   },
+  experimental: {
+    forceSwcTransforms: true,
+    ...(process.env.NEXTCHAT_BUILD_CPUS
+      ? {
+          cpus: Number(process.env.NEXTCHAT_BUILD_CPUS),
+          webpackBuildWorker: true,
+          webpackMemoryOptimizations: true,
+        }
+      : {}),
+  },
   output: mode,
   images: {
     unoptimized: mode === "export",
-  },
-  experimental: {
-    forceSwcTransforms: true,
   },
 };
 

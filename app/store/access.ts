@@ -14,6 +14,7 @@ import {
   STABILITY_BASE_URL,
   IFLYTEK_BASE_URL,
   DEEPSEEK_BASE_URL,
+  MISTRAL_BASE_URL,
   XAI_BASE_URL,
   CHATGLM_BASE_URL,
   SILICONFLOW_BASE_URL,
@@ -116,6 +117,9 @@ const DEFAULT_ACCESS_STATE = {
   iflytekApiKey: "",
   iflytekApiSecret: "",
 
+  mistralUrl: isApp ? MISTRAL_BASE_URL : ApiPath.Mistral,
+  mistralApiKey: "",
+
   // deepseek
   deepseekUrl: DEFAULT_DEEPSEEK_URL,
   deepseekApiKey: "",
@@ -203,6 +207,9 @@ export const useAccessStore = createPersistStore(
     isValidIflytek() {
       return ensure(get(), ["iflytekApiKey"]);
     },
+    isValidMistral() {
+      return ensure(get(), ["mistralApiKey"]);
+    },
     isValidDeepSeek() {
       return ensure(get(), ["deepseekApiKey"]);
     },
@@ -234,6 +241,7 @@ export const useAccessStore = createPersistStore(
         this.isValidTencent() ||
         this.isValidMoonshot() ||
         this.isValidIflytek() ||
+        this.isValidMistral() ||
         this.isValidDeepSeek() ||
         this.isValidXAI() ||
         this.isValidChatGLM() ||

@@ -121,6 +121,7 @@ export class DeepSeekApi implements LLMApi {
     const controller = new AbortController();
     options.onController?.(controller);
 
+    let requestTimeoutId: ReturnType<typeof setTimeout> | undefined;
     try {
       const chatPath = this.path(DeepSeek.ChatPath);
       const chatPayload = {
@@ -131,17 +132,19 @@ export class DeepSeekApi implements LLMApi {
       };
 
       // make a fetch request
-      const requestTimeoutId = setTimeout(
+      requestTimeoutId = setTimeout(
         () => controller.abort(),
         getTimeoutMSByModel(options.config.model),
       );
 
       if (shouldStream) {
+        clearTimeout(requestTimeoutId);
         const [tools, funcs] = usePluginStore
           .getState()
           .getAsTools(
             useChatStore.getState().currentSession().mask?.plugin || [],
           );
+        let reasoningContent = "";
         return streamWithThink(
           chatPath,
           requestPayload,
@@ -153,6 +156,8 @@ export class DeepSeekApi implements LLMApi {
           (text: string, runTools: ChatMessageTool[]) => {
             // console.log("parseSSE", text, runTools);
             const json = JSON.parse(text);
+            if (json.error)
+              throw new Error(json.error.message ?? "DeepSeek stream error");
             const choices = json.choices as Array<{
               delta: {
                 content: string | null;
@@ -180,6 +185,7 @@ export class DeepSeekApi implements LLMApi {
               }
             }
             const reasoning = choices[0]?.delta?.reasoning_content;
+            if (reasoning) reasoningContent += reasoning;
             const content = choices[0]?.delta?.content;
 
             // Skip if both content and reasoning_content are empty or null
@@ -216,6 +222,9 @@ export class DeepSeekApi implements LLMApi {
             toolCallMessage: any,
             toolCallResult: any[],
           ) => {
+            if (reasoningContent)
+              toolCallMessage.reasoning_content = reasoningContent;
+            reasoningContent = "";
             // @ts-ignore
             requestPayload?.messages?.splice(
               // @ts-ignore
@@ -232,12 +241,19 @@ export class DeepSeekApi implements LLMApi {
         clearTimeout(requestTimeoutId);
 
         const resJson = await res.json();
+        if (!res.ok || resJson?.error) {
+          throw new Error(
+            `HTTP ${res.status}: ${resJson?.error?.message ?? res.statusText}`,
+          );
+        }
         const message = this.extractMessage(resJson);
         options.onFinish(message, res);
       }
     } catch (e) {
       console.log("[Request] failed to make a chat request", e);
       options.onError?.(e as Error);
+    } finally {
+      clearTimeout(requestTimeoutId);
     }
   }
   async usage() {
