@@ -1892,7 +1892,7 @@ export function Settings() {
             {accessCodeComponent}
             {!accessStore.hideUserApiKey && (
               <>
-                <ListItem title="服务商" subTitle="选择服务商并填写对应 API Key，即可使用默认模型">
+                <ListItem title="服务商" subTitle="选择服务商并填写对应 API Key，即可使用默认模型" vertical>
                   <Select
                     aria-label="服务商"
                     value={accessStore.provider}

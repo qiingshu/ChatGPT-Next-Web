@@ -114,3 +114,22 @@
     button { min-height: 40px; }
   }
 }
+
+/* PasswordInput's shared half-width layout is unsuitable for these vertical rows. */
+.provider-config {
+  :global(.password-input-container) {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+  :global(.password-input) {
+    flex: 1;
+    width: 0;
+    min-width: 0;
+    text-align: left;
+    min-height: 40px;
+  }
+  :global(.password-eye) {
+    flex-shrink: 0;
+  }
+}
