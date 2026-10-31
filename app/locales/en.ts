@@ -695,6 +695,14 @@ const en: LocaleType = {
     },
   },
   Plugin: {
+    Accessibility: {
+      Create: "Create plugin",
+      Edit: "Edit plugin",
+      Save: "Save plugin",
+      SchemaUrl: "Plugin Schema URL",
+      LoadSchema: "Load plugin Schema",
+      Schema: "Plugin Schema",
+    },
     Name: "Plugin",
     Page: {
       Title: "Plugins",
