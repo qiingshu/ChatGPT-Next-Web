@@ -212,6 +212,7 @@ const en: LocaleType = {
       Failed: "Update Failed.",
     },
     LocalizationInfo: {
+      Edition: "NextChat Custom Edition",
       Timeout: "Connection timed out after 30 seconds. Check your network and API endpoint.",
       Success: "Connection successful",
       NoResponse: "The provider did not return a valid response. Check the model and endpoint settings.",
