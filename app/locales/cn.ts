@@ -210,6 +210,7 @@ const cn = {
       Failed: "更新失败",
     },
     LocalizationInfo: {
+      Edition: "NextChat 定制版",
       Timeout: "连接测试超时（30 秒），请检查网络及接口地址。",
       Success: "连接成功",
       NoResponse: "服务商未返回有效响应，请检查模型和接口设置。",
