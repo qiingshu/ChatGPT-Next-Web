@@ -24,7 +24,8 @@ module.exports = async function verifySecurityBrowser(page, context, base) {
   const editor = page.getByLabel("插件 Schema", { exact: true });
   await page.waitForFunction(() => document.querySelector('textarea[aria-label="插件 Schema"]')?.value.includes("Security Fixture Plugin"));
   assert.ok(fallback);
-  assert.ok((await editor.inputValue()).includes(payload.replaceAll('"', '\\"')));
+  assert.equal(JSON.parse(await editor.inputValue()).info.description, payload);
+  await page.waitForTimeout(100);
   assert.equal(await page.evaluate(() => window.__schemaXss), undefined);
   assert.equal(await page.locator(".modal-mask img, .modal-mask script").count(), 0);
   schema.info.version = "1.0.1";

@@ -50,13 +50,19 @@ module.exports = async function verifyProxyNetwork(base, out) {
     } catch { failures++; }
   }
   assert.ok(verifiedHost, "public HTTPS proxy echo verification failed; no provider secrets were used");
-  for (const destination of ["http://169.254.169.254/", "https://127.0.0.1/", "https://[::1]/", "https://example.com/"]) {
-    const response = await proxy(verifiedHost, "/redirect-to?url=" + encodeURIComponent(destination));
+  // Public echo services may themselves refuse private redirect destinations.
+  // Calibrate real redirect responses without following them; private Location
+  // variants are separately covered by the deterministic HTTPS transport tests.
+  for (const path of ["/redirect/1", "/absolute-redirect/1"]) {
+    const upstream = await fetch(verifiedHost + path, { redirect: "manual", signal: AbortSignal.timeout(15000) });
+    assert.ok([301, 302, 303, 307, 308].includes(upstream.status), "public fixture must actually return a redirect");
+    await upstream.arrayBuffer();
+    const response = await proxy(verifiedHost, path);
     assert.equal(response.status, 400, "upstream redirects must be refused");
     await response.arrayBuffer();
   }
   const summary = { hostedRunnerOnly: true, realPublicHttps: true, publicHost: verifiedHost,
-    blockedTargets: blocked.length, redirectTargets: 4, customPluginHeadersPreserved: true,
+    blockedTargets: blocked.length, realRedirectResponses: 2, privateRedirectLocationsCoveredByUnitTests: true, customPluginHeadersPreserved: true,
     requestBodyPreserved: true, siteAccessCodeAndCookiesNotForwarded: true,
     providerCredentialsUsed: false, fallbackHostsFailed: failures };
   fs.writeFileSync(out + "/security-network.json", JSON.stringify(summary, null, 2));

@@ -286,8 +286,10 @@ async function run(engine) {
       await delay(1000);
     }
     assert.ok(ready, "GitHub hosted test server did not start");
-    await require("./security-network.cjs")(base, out);
+    let networkError;
+    try { await require("./security-network.cjs")(base, out); } catch (error) { networkError = error; }
     for (const engine of ["chromium", "webkit"]) await run(engine);
+    if (networkError) throw networkError;
   } finally { server.kill("SIGTERM"); }
 })().catch((error) => {
   // Assertions use only synthetic fixtures. Do not serialize request bodies, headers or backups.
