@@ -52,8 +52,7 @@ import Locale, {
   changeLang,
   getLang,
 } from "../locales";
-import { copyToClipboard, clientUpdate, semverCompare } from "../utils";
-import Link from "next/link";
+import { copyToClipboard } from "../utils";
 import {
   Anthropic,
   Azure,
@@ -67,11 +66,9 @@ import {
   GoogleSafetySettingsThreshold,
   OPENAI_BASE_URL,
   Path,
-  RELEASE_URL,
   STORAGE_KEY,
   ServiceProvider,
   SlotID,
-  UPDATE_URL,
   Stability,
   Iflytek,
   ChatGLM,
@@ -647,8 +644,6 @@ export function Settings() {
   const [checkingUpdate, setCheckingUpdate] = useState(false);
   const currentVersion = updateStore.formatVersion(updateStore.version);
   const remoteId = updateStore.formatVersion(updateStore.remoteVersion);
-  const hasNewVersion = semverCompare(currentVersion, remoteId) === -1;
-  const updateUrl = getClientConfig()?.isApp ? RELEASE_URL : UPDATE_URL;
 
   function checkUpdate(force = false) {
     setCheckingUpdate(true);
@@ -1624,39 +1619,30 @@ export function Settings() {
           </ListItem>
 
           <ListItem
-            title="NextChat 定制维护版"
+            title="NextChat 定制版"
+            className={styles["version-card"]}
             subTitle={
-              <div style={{ overflowWrap: "anywhere", maxWidth: "100%" }} data-testid="build-version">
-                <div>上游基础：{clientConfig?.upstreamBaseVersion ?? currentVersion}（含选择性移植，非完整官方 v2.16.1）</div>
-                <div>定制版本：{clientConfig?.customVersion ?? "unknown"}</div>
-                <div>构建提交：{clientConfig?.commitHash ?? "unknown"}</div>
-                <div>{checkingUpdate ? Locale.Settings.Update.IsChecking : hasNewVersion ? `官方参考版本：${remoteId}` : "官方版本信息仅供参考"}</div>
+              <div className={styles["version-info"]} data-testid="build-version">
+                <div className={styles["custom-version"]}>2026.10.31</div>
+                <div className={styles["upstream-version"]}>
+                  上游基础：{clientConfig?.upstreamBaseVersion ?? currentVersion}
+                </div>
+                <details className={styles["version-details"]}>
+                  <summary>详细版本信息</summary>
+                  <div className={styles["version-metadata"]}>
+                    <div>安全维护标识：{clientConfig?.customVersion ?? "unknown"}</div>
+                    <div>
+                      构建提交：
+                      <code className={styles["build-commit"]}>{clientConfig?.commitHash ?? "unknown"}</code>
+                    </div>
+                    <div>官方参考版本：{checkingUpdate ? Locale.Settings.Update.IsChecking : remoteId || "暂未获取"}</div>
+                    <div>含选择性移植，非完整官方 v2.16.1。官方版本信息仅供参考。</div>
+                  </div>
+                </details>
               </div>
             }
             vertical
-          >
-            {checkingUpdate ? (
-              <LoadingIcon />
-            ) : hasNewVersion ? (
-              clientConfig?.isApp ? (
-                <IconButton
-                  icon={<ResetIcon></ResetIcon>}
-                  text={Locale.Settings.Update.GoToUpdate}
-                  onClick={() => clientUpdate()}
-                />
-              ) : (
-                <Link href={updateUrl} target="_blank" className="link">
-                  {Locale.Settings.Update.GoToUpdate}
-                </Link>
-              )
-            ) : (
-              <IconButton
-                icon={<ResetIcon></ResetIcon>}
-                text={Locale.Settings.Update.CheckUpdate}
-                onClick={() => checkUpdate(true)}
-              />
-            )}
-          </ListItem>
+          />
 
           <ListItem title={Locale.Settings.SendKey}>
             <Select

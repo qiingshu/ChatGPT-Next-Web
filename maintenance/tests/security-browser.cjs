@@ -1,10 +1,30 @@
 const assert = require("node:assert/strict");
 module.exports = async function verifySecurityBrowser(page, context, base) {
-  await page.getByTestId("build-version").waitFor();
-  const version = await page.getByTestId("build-version").innerText();
-  assert.ok(version.includes("v2.16.0") && version.includes("qiingshu-maintenance."));
-  assert.ok(version.includes("非完整官方 v2.16.1"));
+  const versionCard = page.getByTestId("build-version");
+  await versionCard.waitFor();
+  const details = versionCard.locator("details");
+  assert.equal(await details.getAttribute("open"), null, "version details start collapsed");
+  const compact = await versionCard.innerText();
+  assert.ok(compact.includes("2026.10.31") && compact.includes("v2.16.0"));
+  assert.ok(!compact.includes("qiingshu-maintenance.") && !/[a-f0-9]{40}/.test(compact));
+  assert.equal(await page.getByText("NextChat 定制版", { exact: true }).count(), 1);
+  assert.equal(await page.getByRole("link", { name: /前往更新|Go to Update/i }).count(), 0);
+  assert.equal(await page.getByRole("button", { name: /前往更新|Go to Update/i }).count(), 0);
+  const compactBox = await versionCard.boundingBox();
+  assert.ok(compactBox.height < 140, "collapsed version card remains compact on mobile");
+  await details.locator("summary").click();
+  const version = await versionCard.innerText();
+  assert.ok(version.includes("安全维护标识：qiingshu-maintenance."));
+  assert.ok(version.includes("官方参考版本：") && version.includes("非完整官方 v2.16.1"));
   assert.match(version, /[a-f0-9]{40}/);
+  assert.equal(await versionCard.locator("code").innerText(), process.env.GITHUB_SHA);
+  const codeBox = await versionCard.locator("code").boundingBox();
+  assert.ok(codeBox.x + codeBox.width <= 391, "long commit stays within the mobile card");
+  assert.ok(codeBox.height < 30, "long commit stays on one scrollable line");
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 2), false);
+  await page.screenshot({ path: "maintenance/acceptance-results/" + (await page.context().browser().browserType().name()) + "-version-expanded.png", mask: [page.locator("input")], animations: "disabled" });
+  await details.locator("summary").click();
+  assert.equal(await details.getAttribute("open"), null);
   await context.route("**/plugins.json", route => route.fulfill({ contentType: "application/json", body: "[]" }));
   const payload = '<img src=x onerror="window.__schemaXss=1"><svg onload="window.__schemaXss=2"></svg><script>window.__schemaXss=3</script>';
   const schema = { openapi: "3.0.0", info: { title: "Security Fixture Plugin", version: "1.0.0", description: payload },
