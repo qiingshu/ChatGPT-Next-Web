@@ -17,7 +17,7 @@ export async function handle(req: NextRequest, { params }: { params: { path: str
   const controller = new AbortController();
   const cancel = () => controller.abort();
   req.signal.addEventListener("abort", cancel, { once: true });
-  const timeout = setTimeout(cancel, 30000);
+  const timeout = setTimeout(cancel, 10 * 60 * 1000);
   if (req.signal.aborted) cancel();
   const cleanup = () => {
     clearTimeout(timeout);
