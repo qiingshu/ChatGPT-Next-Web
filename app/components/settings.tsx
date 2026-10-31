@@ -3,6 +3,8 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import styles from "./settings.module.scss";
 
 import ResetIcon from "../icons/reload.svg";
+import FireIcon from "../icons/fire.svg";
+import { trackSettingsPageGuideToCPaymentClick } from "../utils/auth-settings-events";
 import AddIcon from "../icons/add.svg";
 import CloseIcon from "../icons/close.svg";
 import CopyIcon from "../icons/copy.svg";
@@ -75,6 +77,7 @@ import {
   ChatGLM,
   DeepSeek,
   SiliconFlow,
+  SAAS_CHAT_URL,
 } from "../constant";
 import { Prompt, SearchService, usePromptStore } from "../store/prompt";
 import { ErrorBoundary } from "./error";
@@ -763,6 +766,31 @@ export function Settings() {
           accessStore.update(
             (access) => (access.accessCode = e.currentTarget.value),
           );
+        }}
+      />
+    </ListItem>
+  );
+
+  const saasStartComponent = (
+    <ListItem
+      className={styles["subtitle-button"]}
+      title={
+        Locale.Settings.Access.SaasStart.Title +
+        `${Locale.Settings.Access.SaasStart.Label}`
+      }
+      subTitle={Locale.Settings.Access.SaasStart.SubTitle}
+    >
+      <IconButton
+        aria={
+          Locale.Settings.Access.SaasStart.Title +
+          Locale.Settings.Access.SaasStart.ChatNow
+        }
+        icon={<FireIcon />}
+        type={"primary"}
+        text={Locale.Settings.Access.SaasStart.ChatNow}
+        onClick={() => {
+          trackSettingsPageGuideToCPaymentClick();
+          window.location.href = SAAS_CHAT_URL;
         }}
       />
     </ListItem>
@@ -1996,6 +2024,7 @@ export function Settings() {
                   onChange={(e) => config.update((state) => (state.customModels = e.currentTarget.value))}
                 />
               </ListItem>
+              {saasStartComponent}
               <ModelConfigList
                 modelConfig={useChatStore.getState().currentSession().mask.modelConfig}
                 updateConfig={(updater) => {

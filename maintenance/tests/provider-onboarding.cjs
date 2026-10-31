@@ -86,7 +86,7 @@ async function run(engine) {
         const [status, code] = codes[mode];
         return route.fulfill({ status, contentType: "application/json", body: JSON.stringify({ error: { code, message: code } }) });
       }
-      const streaming = payload.stream === true;
+      const streaming = payload.stream === true || url.pathname.includes(":streamGenerateContent");
       const text = "Mock " + active.label + " reply";
       if (streaming) {
         streamCalls++;
@@ -227,7 +227,12 @@ async function run(engine) {
     assert.equal(restored["prompt-store"].prompts["fixture-prompt"].content, "文学分析原文保留");
     assert.deepEqual(restored["chat-next-web-store"].sessions[0].messages, backup["chat-next-web-store"].sessions[0].messages);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 2), false);
-    await page.getByLabel("DeepSeek API Key", { exact: true }).first().scrollIntoViewIfNeeded();
+    const keyInput = page.getByLabel("DeepSeek API Key", { exact: true }).first();
+    await keyInput.scrollIntoViewIfNeeded();
+    const keyBox = await keyInput.boundingBox();
+    assert.ok(keyBox.width >= 200 && keyBox.x + keyBox.width <= 391, "mobile key field must fit the viewport");
+    const buttonBox = await page.getByRole("button", { name: "测试连接", exact: true }).boundingBox();
+    assert.ok(buttonBox.height >= 40, "mobile connection button must have a usable touch target");
     await page.screenshot({ path: out + "/" + engine + "-settings.png", mask: [page.locator("input")], animations: "disabled" });
     assert.deepEqual(pageErrors, []);
     if (failure) throw failure;
@@ -241,6 +246,11 @@ async function run(engine) {
     };
     fs.writeFileSync(out + "/" + engine + ".json", JSON.stringify(summary, null, 2));
     console.log("PASS " + engine + ": provider onboarding, synthetic chat/context, errors, legacy config and export/import");
+  } catch (error) {
+    const reported = failure || error;
+    fs.writeFileSync(out + "/" + engine + "-failure.json", JSON.stringify({ engine, syntheticResponsesOnly: true, realApiVerified: false, provider: active?.label, error: reported.message, pageErrors }, null, 2));
+    await page.screenshot({ path: out + "/" + engine + "-failure.png", mask: [page.locator("input")], animations: "disabled" }).catch(() => {});
+    throw reported;
   } finally {
     await browser.close();
   }

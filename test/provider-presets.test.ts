@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { DEFAULT_MODELS, ServiceProvider } from "../app/constant";
+import { DEFAULT_MODELS, ServiceProvider, VISION_MODEL_REGEXES } from "../app/constant";
 import { PROVIDER_PRESETS, getProviderPreset } from "../app/utils/provider-presets";
 import { formatApiError } from "../app/utils/api-error";
 
@@ -14,6 +14,9 @@ describe("official provider presets", () => {
     expect(getProviderPreset(ServiceProvider.DeepSeek)?.model).toBe("deepseek-flash");
     expect(getProviderPreset(ServiceProvider.Google)?.model).toBe("gemini-3.5-flash-lite");
     expect(getProviderPreset(ServiceProvider.Azure)).toBeUndefined();
+  });
+  test.each(["gpt-5.4-mini", "gemini-3.5-flash-lite", "claude-haiku-5-5"])("preserves image inputs for %s", (model) => {
+    expect(VISION_MODEL_REGEXES.some((regex) => regex.test(model))).toBe(true);
   });
   test("providers have separate persistent key and URL fields", () => {
     expect(new Set(Object.values(PROVIDER_PRESETS).map((p) => p.keyField)).size).toBe(5);
