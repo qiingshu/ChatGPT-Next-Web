@@ -136,6 +136,7 @@ const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
 
 const MCPAction = () => {
   const navigate = useNavigate();
+  const accessCode = useAccessStore((state) => state.accessCode);
   const [count, setCount] = useState<number>(0);
   const [mcpEnabled, setMcpEnabled] = useState(false);
 
@@ -144,12 +145,12 @@ const MCPAction = () => {
       const enabled = await isMcpEnabled();
       setMcpEnabled(enabled);
       if (enabled) {
-        const count = await getAvailableClientsCount();
+        const count = await getAvailableClientsCount(accessCode);
         setCount(count);
       }
     };
-    checkMcpStatus();
-  }, []);
+    checkMcpStatus().catch(() => setCount(0));
+  }, [accessCode]);
 
   if (!mcpEnabled) return null;
 
@@ -986,7 +987,7 @@ export function ShortcutKeyModal(props: { onClose: () => void }) {
   );
 }
 
-function _Chat() {
+function ChatContent() {
   type RenderMessage = ChatMessage & { preview?: boolean };
 
   const chatStore = useChatStore();
@@ -2167,5 +2168,5 @@ function _Chat() {
 export function Chat() {
   const chatStore = useChatStore();
   const session = chatStore.currentSession();
-  return <_Chat key={session.id}></_Chat>;
+  return <ChatContent key={session.id}></ChatContent>;
 }

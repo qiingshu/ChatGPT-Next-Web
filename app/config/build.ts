@@ -1,4 +1,3 @@
-import tauriConfig from "../../src-tauri/tauri.conf.json";
 import { DEFAULT_INPUT_TEMPLATE } from "../constant";
 
 export const getBuildConfig = () => {
@@ -10,7 +9,10 @@ export const getBuildConfig = () => {
 
   const buildMode = process.env.BUILD_MODE ?? "standalone";
   const isApp = !!process.env.BUILD_APP;
-  const version = "v" + tauriConfig.package.version;
+  const upstreamBaseVersion = "v2.16.0";
+  const customVersion = "qiingshu-maintenance.20261031-security";
+  // Keep the comparable upstream base separate from our custom build identity.
+  const version = upstreamBaseVersion;
 
   const commitInfo = (() => {
     try {
@@ -36,6 +38,8 @@ export const getBuildConfig = () => {
 
   return {
     version,
+    upstreamBaseVersion,
+    customVersion,
     ...commitInfo,
     buildMode,
     isApp,

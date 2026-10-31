@@ -1,15 +1,16 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 
 import styles from "./settings.module.scss";
 
 import ResetIcon from "../icons/reload.svg";
+import FireIcon from "../icons/fire.svg";
+import { trackSettingsPageGuideToCPaymentClick } from "../utils/auth-settings-events";
 import AddIcon from "../icons/add.svg";
 import CloseIcon from "../icons/close.svg";
 import CopyIcon from "../icons/copy.svg";
 import ClearIcon from "../icons/clear.svg";
 import LoadingIcon from "../icons/three-dots.svg";
 import EditIcon from "../icons/edit.svg";
-import FireIcon from "../icons/fire.svg";
 import EyeIcon from "../icons/eye.svg";
 import DownloadIcon from "../icons/download.svg";
 import UploadIcon from "../icons/upload.svg";
@@ -19,7 +20,6 @@ import ConfirmIcon from "../icons/confirm.svg";
 import ConnectionIcon from "../icons/connection.svg";
 import CloudSuccessIcon from "../icons/cloud-success.svg";
 import CloudFailIcon from "../icons/cloud-fail.svg";
-import { trackSettingsPageGuideToCPaymentClick } from "../utils/auth-settings-events";
 import {
   Input,
   List,
@@ -31,6 +31,9 @@ import {
   showConfirm,
   showToast,
 } from "./ui-lib";
+import { getClientApi } from "../client/api";
+import { getProviderPreset } from "../utils/provider-presets";
+import { formatApiError } from "../utils/api-error";
 import { ModelConfigList } from "./model-config";
 
 import { IconButton } from "./button";
@@ -49,8 +52,7 @@ import Locale, {
   changeLang,
   getLang,
 } from "../locales";
-import { copyToClipboard, clientUpdate, semverCompare } from "../utils";
-import Link from "next/link";
+import { copyToClipboard } from "../utils";
 import {
   Anthropic,
   Azure,
@@ -64,17 +66,15 @@ import {
   GoogleSafetySettingsThreshold,
   OPENAI_BASE_URL,
   Path,
-  RELEASE_URL,
   STORAGE_KEY,
   ServiceProvider,
   SlotID,
-  UPDATE_URL,
   Stability,
   Iflytek,
-  SAAS_CHAT_URL,
   ChatGLM,
   DeepSeek,
   SiliconFlow,
+  SAAS_CHAT_URL,
 } from "../constant";
 import { Prompt, SearchService, usePromptStore } from "../store/prompt";
 import { ErrorBoundary } from "./error";
@@ -581,17 +581,69 @@ function SyncItems() {
 }
 
 export function Settings() {
+  const [testingModel, setTestingModel] = useState(false);
+  const [connectionResult, setConnectionResult] = useState("");
+  const testRun = useRef<{
+    timer?: ReturnType<typeof setTimeout>;
+    controller?: AbortController;
+  } | null>(null);
+  useEffect(() => () => {
+    const run = testRun.current;
+    testRun.current = null;
+    clearTimeout(run?.timer);
+    run?.controller?.abort();
+  }, []);
+  const testCurrentModel = async () => {
+    if (testRun.current) return;
+    const run: { timer?: ReturnType<typeof setTimeout>; controller?: AbortController } = {};
+    testRun.current = run;
+    setTestingModel(true);
+    setConnectionResult("");
+    const modelConfig = useChatStore.getState().currentSession().mask.modelConfig;
+    const finish = (message: string) => {
+      if (testRun.current !== run) return;
+      testRun.current = null;
+      clearTimeout(run.timer);
+      setTestingModel(false);
+      setConnectionResult(message);
+    };
+    // Start before calling the adapter so preprocessing cannot leave the UI loading.
+    run.timer = setTimeout(() => {
+      finish("连接测试超时（30 秒），请检查网络及接口地址。");
+      run.controller?.abort();
+    }, 30000);
+    try {
+      await getClientApi(modelConfig.providerName).llm.chat({
+        messages: [{ role: "user", content: "Reply with OK." }],
+        config: { ...modelConfig, stream: false },
+        onController: (controller) => {
+          run.controller = controller;
+          if (testRun.current !== run) controller.abort();
+        },
+        onFinish: (message, response) => finish(
+          response.ok && message.trim()
+            ? `连接成功：${modelConfig.model}`
+            : formatApiError(message || "empty response", response.status),
+        ),
+        onError: (error) => finish(formatApiError(error)),
+      });
+    } catch (error) {
+      finish(formatApiError(error));
+    } finally {
+      if (testRun.current === run) finish("服务商未返回有效响应，请检查模型和接口设置。");
+    }
+  };
+
   const navigate = useNavigate();
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const config = useAppConfig();
+  useChatStore((state) => state.sessions[state.currentSessionIndex]?.mask.modelConfig);
   const updateConfig = config.update;
 
   const updateStore = useUpdateStore();
   const [checkingUpdate, setCheckingUpdate] = useState(false);
   const currentVersion = updateStore.formatVersion(updateStore.version);
   const remoteId = updateStore.formatVersion(updateStore.remoteVersion);
-  const hasNewVersion = semverCompare(currentVersion, remoteId) === -1;
-  const updateUrl = getClientConfig()?.isApp ? RELEASE_URL : UPDATE_URL;
 
   function checkUpdate(force = false) {
     setCheckingUpdate(true);
@@ -604,6 +656,27 @@ export function Settings() {
   }
 
   const accessStore = useAccessStore();
+  const preset = getProviderPreset(accessStore.provider);
+  const selectProvider = (provider: ServiceProvider) => {
+    const next = getProviderPreset(provider);
+    setConnectionResult("");
+    accessStore.update((access) => {
+      access.provider = provider;
+      access.useCustomConfig = true;
+    });
+    if (!next) return;
+    // An explicit selection updates only the current chat and future-chat defaults.
+    // Keep all keys, endpoints, custom model lists, prompts and other chats intact.
+    config.update((state) => {
+      state.modelConfig.model = next.model;
+      state.modelConfig.providerName = provider;
+    });
+    const chat = useChatStore.getState();
+    chat.updateTargetSession(chat.currentSession(), (session) => {
+      session.mask.modelConfig.model = next.model;
+      session.mask.modelConfig.providerName = provider;
+    });
+  };
   const shouldHideBalanceQuery = useMemo(() => {
     const isOpenAiUrl = accessStore.openaiUrl.includes(OPENAI_BASE_URL);
 
@@ -1240,6 +1313,41 @@ export function Settings() {
     </>
   );
 
+  const mistralConfigComponent = accessStore.provider ===
+    ServiceProvider.Mistral && (
+    <>
+      <ListItem
+        title={"Mistral API URL"}
+        subTitle={"" + "https://api.mistral.ai"}
+      >
+        <input
+          aria-label={"Mistral API URL"}
+          type="text"
+          value={accessStore.mistralUrl}
+          placeholder={"https://api.mistral.ai"}
+          onChange={(e) =>
+            accessStore.update(
+              (access) => (access.mistralUrl = e.currentTarget.value),
+            )
+          }
+        ></input>
+      </ListItem>
+      <ListItem title={"Mistral API Key"} subTitle={""}>
+        <PasswordInput
+          aria-label={"Mistral API Key"}
+          value={accessStore.mistralApiKey}
+          type="text"
+          placeholder={"Mistral API Key"}
+          onChange={(e) => {
+            accessStore.update(
+              (access) => (access.mistralApiKey = e.currentTarget.value),
+            );
+          }}
+        />
+      </ListItem>
+    </>
+  );
+
   const XAIConfigComponent = accessStore.provider === ServiceProvider.XAI && (
     <>
       <ListItem
@@ -1511,37 +1619,30 @@ export function Settings() {
           </ListItem>
 
           <ListItem
-            title={Locale.Settings.Update.Version(currentVersion ?? "unknown")}
+            title="NextChat 定制版"
+            className={styles["version-card"]}
             subTitle={
-              checkingUpdate
-                ? Locale.Settings.Update.IsChecking
-                : hasNewVersion
-                ? Locale.Settings.Update.FoundUpdate(remoteId ?? "ERROR")
-                : Locale.Settings.Update.IsLatest
+              <div className={styles["version-info"]} data-testid="build-version">
+                <div className={styles["custom-version"]}>2026.10.31</div>
+                <div className={styles["upstream-version"]}>
+                  上游基础：{clientConfig?.upstreamBaseVersion ?? currentVersion}
+                </div>
+                <details className={styles["version-details"]}>
+                  <summary>详细版本信息</summary>
+                  <div className={styles["version-metadata"]}>
+                    <div>安全维护标识：{clientConfig?.customVersion ?? "unknown"}</div>
+                    <div>
+                      构建提交：
+                      <code className={styles["build-commit"]}>{clientConfig?.commitHash ?? "unknown"}</code>
+                    </div>
+                    <div>官方参考版本：{checkingUpdate ? Locale.Settings.Update.IsChecking : remoteId || "暂未获取"}</div>
+                    <div>含选择性移植，非完整官方 v2.16.1。官方版本信息仅供参考。</div>
+                  </div>
+                </details>
+              </div>
             }
-          >
-            {checkingUpdate ? (
-              <LoadingIcon />
-            ) : hasNewVersion ? (
-              clientConfig?.isApp ? (
-                <IconButton
-                  icon={<ResetIcon></ResetIcon>}
-                  text={Locale.Settings.Update.GoToUpdate}
-                  onClick={() => clientUpdate()}
-                />
-              ) : (
-                <Link href={updateUrl} target="_blank" className="link">
-                  {Locale.Settings.Update.GoToUpdate}
-                </Link>
-              )
-            ) : (
-              <IconButton
-                icon={<ResetIcon></ResetIcon>}
-                text={Locale.Settings.Update.CheckUpdate}
-                onClick={() => checkUpdate(true)}
-              />
-            )}
-          </ListItem>
+            vertical
+          />
 
           <ListItem title={Locale.Settings.SendKey}>
             <Select
@@ -1774,115 +1875,158 @@ export function Settings() {
           </ListItem>
         </List>
 
-        <List id={SlotID.CustomModel}>
-          {saasStartComponent}
-          {accessCodeComponent}
-
-          {!accessStore.hideUserApiKey && (
-            <>
-              {useCustomConfigComponent}
-
-              {accessStore.useCustomConfig && (
-                <>
-                  <ListItem
-                    title={Locale.Settings.Access.Provider.Title}
-                    subTitle={Locale.Settings.Access.Provider.SubTitle}
+        <div className={styles["provider-config"]} id={SlotID.CustomModel}>
+          <List>
+            {accessCodeComponent}
+            {!accessStore.hideUserApiKey && (
+              <>
+                <ListItem title="服务商" subTitle="选择服务商并填写对应 API Key，即可使用默认模型" vertical>
+                  <Select
+                    aria-label="服务商"
+                    value={accessStore.provider}
+                    disabled={testingModel}
+                    onChange={(e) => selectProvider(e.currentTarget.value as ServiceProvider)}
                   >
-                    <Select
-                      aria-label={Locale.Settings.Access.Provider.Title}
-                      value={accessStore.provider}
-                      onChange={(e) => {
-                        accessStore.update(
-                          (access) =>
-                            (access.provider = e.target
-                              .value as ServiceProvider),
-                        );
-                      }}
-                    >
-                      {Object.entries(ServiceProvider).map(([k, v]) => (
-                        <option value={v} key={k}>
-                          {k}
-                        </option>
-                      ))}
-                    </Select>
-                  </ListItem>
-
-                  {openAIConfigComponent}
-                  {azureConfigComponent}
-                  {googleConfigComponent}
-                  {anthropicConfigComponent}
-                  {baiduConfigComponent}
-                  {byteDanceConfigComponent}
-                  {alibabaConfigComponent}
-                  {tencentConfigComponent}
-                  {moonshotConfigComponent}
-                  {deepseekConfigComponent}
-                  {stabilityConfigComponent}
-                  {lflytekConfigComponent}
-                  {XAIConfigComponent}
-                  {chatglmConfigComponent}
-                  {siliconflowConfigComponent}
+                    {Object.values(ServiceProvider).map((provider) => (
+                      <option value={provider} key={provider}>
+                        {getProviderPreset(provider)?.label ?? provider}
+                      </option>
+                    ))}
+                  </Select>
+                </ListItem>
+                {preset && (
+                  <>
+                    <ListItem title={`${preset.label} API Key`} vertical>
+                      <PasswordInput
+                        aria={Locale.Settings.ShowPassword}
+                        aria-label={`${preset.label} API Key`}
+                        value={accessStore[preset.keyField]}
+                        type="text"
+                        placeholder="填写该服务商的 API Key"
+                        onChange={(e) => {
+                          const value = e.currentTarget.value;
+                          setConnectionResult("");
+                          accessStore.update((access) => {
+                            access[preset.keyField] = value;
+                            access.useCustomConfig = true;
+                          });
+                        }}
+                      />
+                    </ListItem>
+                    <ListItem
+                      title={`当前聊天模型：${useChatStore.getState().currentSession().mask.modelConfig.model}`}
+                      subTitle={`默认模型：${preset.model}；接口和自定义模型可在高级设置中调整`}
+                    />
+                  </>
+                )}
+                <ListItem title="测试当前聊天模型" subTitle="发送一条简短请求，可能产生 API 费用；不写入聊天记录" vertical>
+                  <IconButton
+                    aria="测试连接"
+                    icon={<ConnectionIcon />}
+                    text={testingModel ? "测试中…" : "测试连接"}
+                    disabled={testingModel}
+                    onClick={testCurrentModel}
+                  />
+                </ListItem>
+                <div role="status" aria-live="polite" className={styles["connection-result"]}>
+                  {connectionResult}
+                </div>
+              </>
+            )}
+          </List>
+          <details className={styles["advanced-settings"]}>
+            <summary>高级设置</summary>
+            <List>
+              {!accessStore.hideUserApiKey && (
+                <>
+                  {useCustomConfigComponent}
+                  {preset ? (
+                    <ListItem title={`${preset.label} API URL`} subTitle={`官方地址：${preset.officialUrl}；默认通过本站路由访问`} vertical>
+                      <input
+                        aria-label={`${preset.label} API URL`}
+                        type="text"
+                        value={accessStore[preset.urlField]}
+                        placeholder={preset.officialUrl}
+                        onChange={(e) => {
+                          const value = e.currentTarget.value;
+                          accessStore.update((access) => {
+                            access[preset.urlField] = value;
+                            access.useCustomConfig = true;
+                          });
+                        }}
+                      />
+                    </ListItem>
+                  ) : (
+                    <>
+                      {openAIConfigComponent}
+                      {azureConfigComponent}
+                      {googleConfigComponent}
+                      {anthropicConfigComponent}
+                      {baiduConfigComponent}
+                      {byteDanceConfigComponent}
+                      {alibabaConfigComponent}
+                      {tencentConfigComponent}
+                      {moonshotConfigComponent}
+                      {deepseekConfigComponent}
+                      {mistralConfigComponent}
+                      {stabilityConfigComponent}
+                      {lflytekConfigComponent}
+                      {XAIConfigComponent}
+                      {chatglmConfigComponent}
+                      {siliconflowConfigComponent}
+                    </>
+                  )}
                 </>
               )}
-            </>
-          )}
-
-          {!shouldHideBalanceQuery && !clientConfig?.isApp ? (
-            <ListItem
-              title={Locale.Settings.Usage.Title}
-              subTitle={
-                showUsage
-                  ? loadingUsage
-                    ? Locale.Settings.Usage.IsChecking
-                    : Locale.Settings.Usage.SubTitle(
-                        usage?.used ?? "[?]",
-                        usage?.subscription ?? "[?]",
-                      )
-                  : Locale.Settings.Usage.NoAccess
-              }
-            >
-              {!showUsage || loadingUsage ? (
-                <div />
-              ) : (
-                <IconButton
-                  icon={<ResetIcon></ResetIcon>}
-                  text={Locale.Settings.Usage.Check}
-                  onClick={() => checkUsage(true)}
-                />
+              {!shouldHideBalanceQuery && !clientConfig?.isApp && (
+                <ListItem title={Locale.Settings.Usage.Title} subTitle={showUsage ? Locale.Settings.Usage.SubTitle(usage?.used ?? "[?]", usage?.subscription ?? "[?]") : Locale.Settings.Usage.NoAccess}>
+                  <IconButton icon={<ResetIcon />} text={loadingUsage ? Locale.Settings.Usage.IsChecking : Locale.Settings.Usage.Check} disabled={!showUsage || loadingUsage} onClick={() => checkUsage(true)} />
+                </ListItem>
               )}
-            </ListItem>
-          ) : null}
-
-          <ListItem
-            title={Locale.Settings.Access.CustomModel.Title}
-            subTitle={Locale.Settings.Access.CustomModel.SubTitle}
-            vertical={true}
-          >
-            <input
-              aria-label={Locale.Settings.Access.CustomModel.Title}
-              style={{ width: "100%", maxWidth: "unset", textAlign: "left" }}
-              type="text"
-              value={config.customModels}
-              placeholder="model1,model2,model3"
-              onChange={(e) =>
-                config.update(
-                  (config) => (config.customModels = e.currentTarget.value),
-                )
-              }
-            ></input>
-          </ListItem>
-        </List>
-
-        <List>
-          <ModelConfigList
-            modelConfig={config.modelConfig}
-            updateConfig={(updater) => {
-              const modelConfig = { ...config.modelConfig };
-              updater(modelConfig);
-              config.update((config) => (config.modelConfig = modelConfig));
-            }}
-          />
-        </List>
+              {accessStore.provider === ServiceProvider.Google && (
+                <>
+                  <ListItem title={Locale.Settings.Access.Google.ApiVersion.Title}>
+                    <input aria-label={Locale.Settings.Access.Google.ApiVersion.Title} value={accessStore.googleApiVersion}
+                      onChange={(e) => accessStore.update((access) => (access.googleApiVersion = e.currentTarget.value))} />
+                  </ListItem>
+                  <ListItem title={Locale.Settings.Access.Google.GoogleSafetySettings.Title}>
+                    <Select aria-label={Locale.Settings.Access.Google.GoogleSafetySettings.Title} value={accessStore.googleSafetySettings}
+                      onChange={(e) => accessStore.update((access) => (access.googleSafetySettings = e.currentTarget.value as GoogleSafetySettingsThreshold))}>
+                      {Object.entries(GoogleSafetySettingsThreshold).map(([k, v]) => <option key={k} value={v}>{k}</option>)}
+                    </Select>
+                  </ListItem>
+                </>
+              )}
+              {accessStore.provider === ServiceProvider.Anthropic && (
+                <ListItem title={Locale.Settings.Access.Anthropic.ApiVerion.Title}>
+                  <input aria-label={Locale.Settings.Access.Anthropic.ApiVerion.Title} value={accessStore.anthropicApiVersion}
+                    onChange={(e) => accessStore.update((access) => (access.anthropicApiVersion = e.currentTarget.value))} />
+                </ListItem>
+              )}
+              <ListItem title={Locale.Settings.Access.CustomModel.Title} subTitle={Locale.Settings.Access.CustomModel.SubTitle} vertical>
+                <input
+                  aria-label={Locale.Settings.Access.CustomModel.Title}
+                  type="text"
+                  value={config.customModels}
+                  placeholder="模型ID@服务商"
+                  onChange={(e) => config.update((state) => (state.customModels = e.currentTarget.value))}
+                />
+              </ListItem>
+              {saasStartComponent}
+              <ModelConfigList
+                modelConfig={useChatStore.getState().currentSession().mask.modelConfig}
+                updateConfig={(updater) => {
+                  const chat = useChatStore.getState();
+                  chat.updateTargetSession(chat.currentSession(), (session) => updater(session.mask.modelConfig));
+                  const modelConfig = { ...config.modelConfig };
+                  updater(modelConfig);
+                  config.update((state) => (state.modelConfig = modelConfig));
+                  accessStore.update((access) => (access.provider = modelConfig.providerName));
+                }}
+              />
+            </List>
+          </details>
+        </div>
 
         {shouldShowPromptModal && (
           <UserPromptModal onClose={() => setShowPromptModal(false)} />

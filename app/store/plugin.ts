@@ -6,6 +6,7 @@ import { getClientConfig } from "../config/client";
 import yaml from "js-yaml";
 import { adapter, getOperationId } from "../utils";
 import { useAccessStore } from "./access";
+import { getProxyAuthorization } from "../utils/proxy-auth";
 
 const isApp = getClientConfig()?.isApp !== false;
 
@@ -143,7 +144,13 @@ export const FunctionToolService = {
           return api.client.paths[o.path][o.method](
             parameters,
             args,
-            api.axiosConfigDefaults,
+            {
+              ...api.axiosConfigDefaults,
+              headers: {
+                ...headers,
+                ...(!isApp ? { "X-NextChat-Authorization": getProxyAuthorization() } : {}),
+              },
+            },
           );
         };
         return s;

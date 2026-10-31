@@ -6,7 +6,6 @@ import {
   ServiceProvider,
   ModelProvider,
 } from "@/app/constant";
-import { prettyObject } from "@/app/utils/format";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "./auth";
 import { isModelNotavailableInServer } from "@/app/utils/model";
@@ -51,7 +50,10 @@ export async function handle(
     return response;
   } catch (e) {
     console.error("[Anthropic] ", e);
-    return NextResponse.json(prettyObject(e));
+    return NextResponse.json(
+      { error: { message: "Claude upstream connection failed" } },
+      { status: 502 },
+    );
   }
 }
 
@@ -156,6 +158,9 @@ async function request(req: NextRequest) {
     // to prevent browser prompt for credentials
     const newHeaders = new Headers(res.headers);
     newHeaders.delete("www-authenticate");
+    newHeaders.delete("content-encoding");
+    newHeaders.delete("content-length");
+    newHeaders.set("Cache-Control", "no-store");
     // to disable nginx buffering
     newHeaders.set("X-Accel-Buffering", "no");
 

@@ -8,6 +8,7 @@ import { useMaskStore } from "../store/mask";
 import { usePromptStore } from "../store/prompt";
 import { StoreKey } from "../constant";
 import { merge } from "./merge";
+import { indexedDBStorage } from "./indexedDB-storage";
 
 type NonFunctionKeys<T> = {
   [K in keyof T]: T[K] extends (...args: any[]) => any ? never : K;
@@ -128,10 +129,11 @@ export function getLocalAppState() {
   return appState;
 }
 
-export function setLocalAppState(appState: AppState) {
+export async function setLocalAppState(appState: AppState) {
   Object.entries(LocalStateSetters).forEach(([key, setter]) => {
     setter(appState[key as keyof AppState]);
   });
+  await indexedDBStorage.flush();
 }
 
 export function mergeAppState(localState: AppState, remoteState: AppState) {

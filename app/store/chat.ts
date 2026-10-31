@@ -30,6 +30,8 @@ import {
 } from "../constant";
 import Locale, { getLang } from "../locales";
 import { prettyObject } from "../utils/format";
+import { formatApiError } from "../utils/api-error";
+import { getProviderPreset } from "../utils/provider-presets";
 import { createPersistStore } from "../utils/store";
 import { estimateTokenLength } from "../utils/token";
 import { ModelConfig, ModelType, useAppConfig } from "./config";
@@ -123,6 +125,10 @@ function getSummarizeModel(
   currentModel: string,
   providerName: string,
 ): string[] {
+  // Keep the new presets on an available model of the same provider.
+  if (getProviderPreset(providerName)?.model === currentModel) {
+    return [currentModel, providerName];
+  }
   // if it is using gpt-* models, force to use 4o-mini to summarize
   if (currentModel.startsWith("gpt") || currentModel.startsWith("chatgpt")) {
     const configStore = useAppConfig.getState();
@@ -202,8 +208,8 @@ function fillTemplateWith(input: string, modelConfig: ModelConfig) {
   return output;
 }
 
-async function getMcpSystemPrompt(): Promise<string> {
-  const tools = await getAllTools();
+async function getMcpSystemPrompt(accessCode: string): Promise<string> {
+  const tools = await getAllTools(accessCode);
 
   let toolsStr = "";
 
@@ -501,7 +507,7 @@ export const useChatStore = createPersistStore(
               "\n\n" +
               prettyObject({
                 error: true,
-                message: error.message,
+                message: formatApiError(error),
               });
             botMessage.streaming = false;
             userMessage.isError = !isAborted;
@@ -514,7 +520,7 @@ export const useChatStore = createPersistStore(
               botMessage.id ?? messageIndex,
             );
 
-            console.error("[Chat] failed ", error);
+            console.error("[Chat] request failed");
           },
           onController(controller) {
             // collect controller for stop/retry
@@ -556,7 +562,9 @@ export const useChatStore = createPersistStore(
             session.mask.modelConfig.model.startsWith("chatgpt-"));
 
         const mcpEnabled = await isMcpEnabled();
-        const mcpSystemPrompt = mcpEnabled ? await getMcpSystemPrompt() : "";
+        const mcpSystemPrompt = mcpEnabled
+          ? await getMcpSystemPrompt(useAccessStore.getState().accessCode)
+          : "";
 
         var systemPrompts: ChatMessage[] = [];
 
@@ -824,17 +832,20 @@ export const useChatStore = createPersistStore(
       },
 
       /** check if the message contains MCP JSON and execute the MCP action */
-      checkMcpJson(message: ChatMessage) {
-        const mcpEnabled = isMcpEnabled();
-        if (!mcpEnabled) return;
+      async checkMcpJson(message: ChatMessage) {
         const content = getMessageTextContent(message);
         if (isMcpJson(content)) {
           try {
+            if (!(await isMcpEnabled())) return;
             const mcpRequest = extractMcpJson(content);
             if (mcpRequest) {
               console.debug("[MCP Request]", mcpRequest);
 
-              executeMcpAction(mcpRequest.clientId, mcpRequest.mcp)
+              executeMcpAction(
+                mcpRequest.clientId,
+                mcpRequest.mcp,
+                useAccessStore.getState().accessCode,
+              )
                 .then((result) => {
                   console.log("[MCP Response]", result);
                   const mcpResponse =

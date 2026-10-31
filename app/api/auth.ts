@@ -4,7 +4,7 @@ import md5 from "spark-md5";
 import { ACCESS_CODE_PREFIX, ModelProvider } from "../constant";
 
 function getIP(req: NextRequest) {
-  let ip = req.ip ?? req.headers.get("x-real-ip");
+  let ip = req.headers.get("x-real-ip");
   const forwardedFor = req.headers.get("x-forwarded-for");
 
   if (!ip && forwardedFor) {
@@ -25,7 +25,15 @@ function parseApiKey(bearToken: string) {
 }
 
 export function auth(req: NextRequest, modelProvider: ModelProvider) {
-  const authToken = req.headers.get("Authorization") ?? "";
+  const nativeKey =
+    modelProvider === ModelProvider.GeminiPro
+      ? req.headers.get("x-goog-api-key")
+      : modelProvider === ModelProvider.Claude
+      ? req.headers.get("x-api-key")
+      : req.nextUrl.pathname.includes("azure/deployments")
+      ? req.headers.get("api-key")
+      : null;
+  const authToken = nativeKey || req.headers.get("Authorization") || "";
 
   // check if it is openai api key or user token
   const { accessCode, apiKey } = parseApiKey(authToken);
@@ -33,9 +41,6 @@ export function auth(req: NextRequest, modelProvider: ModelProvider) {
   const hashedCode = md5.hash(accessCode ?? "").trim();
 
   const serverConfig = getServerSideConfig();
-  console.log("[Auth] allowed hashed codes: ", [...serverConfig.codes]);
-  console.log("[Auth] got access code:", accessCode);
-  console.log("[Auth] hashed access code:", hashedCode);
   console.log("[User IP] ", getIP(req));
   console.log("[Time] ", new Date().toLocaleString());
 
@@ -92,6 +97,10 @@ export function auth(req: NextRequest, modelProvider: ModelProvider) {
         systemApiKey =
           serverConfig.iflytekApiKey + ":" + serverConfig.iflytekApiSecret;
         break;
+      case ModelProvider.Mistral:
+        // Mistral uses only the caller key; never fall back to an OpenAI key.
+        systemApiKey = undefined;
+        break;
       case ModelProvider.DeepSeek:
         systemApiKey = serverConfig.deepseekApiKey;
         break;
@@ -117,6 +126,8 @@ export function auth(req: NextRequest, modelProvider: ModelProvider) {
       console.log("[Auth] use system api key");
       req.headers.set("Authorization", `Bearer ${systemApiKey}`);
     } else {
+      // An access code authenticates this app; it is never an upstream API key.
+      req.headers.delete("Authorization");
       console.log("[Auth] admin did not provide an api key");
     }
   } else {

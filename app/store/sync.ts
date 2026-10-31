@@ -74,7 +74,7 @@ export const useSyncStore = createPersistStore(
         const remoteState = JSON.parse(rawContent) as AppState;
         const localState = getLocalAppState();
         mergeAppState(localState, remoteState);
-        setLocalAppState(localState);
+        await setLocalAppState(localState);
         location.reload();
       } catch (e) {
         console.error("[Import]", e);
@@ -107,7 +107,7 @@ export const useSyncStore = createPersistStore(
             await client.get(config.username),
           ) as AppState;
           mergeAppState(localState, parsedRemoteState);
-          setLocalAppState(localState);
+          await setLocalAppState(localState);
         }
       } catch (e) {
         console.log("[Sync] failed to get remote state", e);

@@ -1,3 +1,4 @@
+import { formatApiError } from "./api-error";
 import {
   CACHE_URL_PREFIX,
   UPLOAD_URL,
@@ -193,13 +194,14 @@ export function stream(
   let running = false;
   let runTools: any[] = [];
   let responseRes: Response;
+  let idleTimeoutId: ReturnType<typeof setTimeout> | undefined;
 
   // animate response to make it looks smooth
   function animateResponseText() {
     if (finished || controller.signal.aborted) {
       responseText += remainText;
       console.log("[Response Animation] finished");
-      if (responseText?.length === 0) {
+      if (!finished && responseText?.length === 0) {
         options.onError?.(new Error("empty response from server"));
       }
       return;
@@ -220,6 +222,7 @@ export function stream(
   animateResponseText();
 
   const finish = () => {
+    clearTimeout(idleTimeoutId);
     if (!finished) {
       if (!running && runTools.length > 0) {
         const toolCallMessage = {
@@ -281,7 +284,7 @@ export function stream(
             // call again
             console.debug("[ChatAPI] restart");
             running = false;
-            chatApi(chatPath, headers, requestPayload, tools); // call fetchEventSource
+            return chatApi(chatPath, headers, requestPayload, tools); // call fetchEventSource
           }, 60);
         });
         return;
@@ -290,12 +293,32 @@ export function stream(
         return;
       }
       console.debug("[ChatAPI] end");
+      if (!controller.signal.aborted && !(responseText + remainText).trim()) {
+        finished = true;
+        options.onError?.(new Error("empty response from server"));
+        return;
+      }
       finished = true;
       options.onFinish(responseText + remainText, responseRes); // 将res传递给onFinish
+      controller.abort();
     }
   };
 
   controller.signal.onabort = finish;
+
+  const fail = (error: unknown) => {
+    if (finished) return;
+    finished = true;
+    options.onError?.(
+      new Error(formatApiError(error)),
+    );
+    clearTimeout(idleTimeoutId);
+    controller.abort();
+  };
+  const resetIdleTimeout = () => {
+    clearTimeout(idleTimeoutId);
+    idleTimeoutId = setTimeout(() => fail(new Error("Streaming response timed out")), REQUEST_TIMEOUT_MS);
+  };
 
   function chatApi(
     chatPath: string,
@@ -313,10 +336,10 @@ export function stream(
       headers,
     };
     const requestTimeoutId = setTimeout(
-      () => controller.abort(),
+      () => fail(new Error("Connection timed out")),
       REQUEST_TIMEOUT_MS,
     );
-    fetchEventSource(chatPath, {
+    return fetchEventSource(chatPath, {
       fetch: tauriFetch as any,
       ...chatPayload,
       async onopen(res) {
@@ -324,8 +347,9 @@ export function stream(
         const contentType = res.headers.get("content-type");
         console.log("[Request] response content type: ", contentType);
         responseRes = res;
+        resetIdleTimeout();
 
-        if (contentType?.startsWith("text/plain")) {
+        if (res.ok && contentType?.startsWith("text/plain")) {
           responseText = await res.clone().text();
           return finish();
         }
@@ -354,10 +378,11 @@ export function stream(
 
           responseText = responseTexts.join("\n\n");
 
-          return finish();
+          throw new Error(`HTTP ${res.status}: ${responseText}`);
         }
       },
       onmessage(msg) {
+        resetIdleTimeout();
         if (msg.data === "[DONE]" || finished) {
           return finish();
         }
@@ -372,21 +397,23 @@ export function stream(
             remainText += chunk;
           }
         } catch (e) {
-          console.error("[Request] parse error", text, msg, e);
+          throw e;
         }
       },
       onclose() {
         finish();
       },
       onerror(e) {
-        options?.onError?.(e);
+        clearTimeout(requestTimeoutId);
         throw e;
       },
       openWhenHidden: true,
-    });
+    })
+      .catch(fail)
+      .finally(() => { clearTimeout(requestTimeoutId); clearTimeout(idleTimeoutId); });
   }
   console.debug("[ChatAPI] start");
-  chatApi(chatPath, headers, requestPayload, tools); // call fetchEventSource
+  return chatApi(chatPath, headers, requestPayload, tools); // call fetchEventSource
 }
 
 export function streamWithThink(
@@ -416,6 +443,7 @@ export function streamWithThink(
   let running = false;
   let runTools: any[] = [];
   let responseRes: Response;
+  let idleTimeoutId: ReturnType<typeof setTimeout> | undefined;
   let isInThinkingMode = false;
   let lastIsThinking = false;
   let lastIsThinkingTagged = false; //between <think> and </think> tags
@@ -425,7 +453,7 @@ export function streamWithThink(
     if (finished || controller.signal.aborted) {
       responseText += remainText;
       console.log("[Response Animation] finished");
-      if (responseText?.length === 0) {
+      if (!finished && responseText?.length === 0) {
         options.onError?.(new Error("empty response from server"));
       }
       return;
@@ -446,6 +474,7 @@ export function streamWithThink(
   animateResponseText();
 
   const finish = () => {
+    clearTimeout(idleTimeoutId);
     if (!finished) {
       if (!running && runTools.length > 0) {
         const toolCallMessage = {
@@ -507,7 +536,7 @@ export function streamWithThink(
             // call again
             console.debug("[ChatAPI] restart");
             running = false;
-            chatApi(chatPath, headers, requestPayload, tools); // call fetchEventSource
+            return chatApi(chatPath, headers, requestPayload, tools); // call fetchEventSource
           }, 60);
         });
         return;
@@ -516,12 +545,31 @@ export function streamWithThink(
         return;
       }
       console.debug("[ChatAPI] end");
+      if (!controller.signal.aborted && !(responseText + remainText).trim()) {
+        finished = true;
+        options.onError?.(new Error("empty response from server"));
+        return;
+      }
       finished = true;
       options.onFinish(responseText + remainText, responseRes);
     }
   };
 
   controller.signal.onabort = finish;
+
+  const fail = (error: unknown) => {
+    if (finished) return;
+    finished = true;
+    options.onError?.(
+      new Error(formatApiError(error)),
+    );
+    clearTimeout(idleTimeoutId);
+    controller.abort();
+  };
+  const resetIdleTimeout = () => {
+    clearTimeout(idleTimeoutId);
+    idleTimeoutId = setTimeout(() => fail(new Error("Streaming response timed out")), REQUEST_TIMEOUT_MS);
+  };
 
   function chatApi(
     chatPath: string,
@@ -539,10 +587,10 @@ export function streamWithThink(
       headers,
     };
     const requestTimeoutId = setTimeout(
-      () => controller.abort(),
+      () => fail(new Error("Connection timed out")),
       REQUEST_TIMEOUT_MS,
     );
-    fetchEventSource(chatPath, {
+    return fetchEventSource(chatPath, {
       fetch: tauriFetch as any,
       ...chatPayload,
       async onopen(res) {
@@ -550,8 +598,9 @@ export function streamWithThink(
         const contentType = res.headers.get("content-type");
         console.log("[Request] response content type: ", contentType);
         responseRes = res;
+        resetIdleTimeout();
 
-        if (contentType?.startsWith("text/plain")) {
+        if (res.ok && contentType?.startsWith("text/plain")) {
           responseText = await res.clone().text();
           return finish();
         }
@@ -580,10 +629,11 @@ export function streamWithThink(
 
           responseText = responseTexts.join("\n\n");
 
-          return finish();
+          throw new Error(`HTTP ${res.status}: ${responseText}`);
         }
       },
       onmessage(msg) {
+        resetIdleTimeout();
         if (msg.data === "[DONE]" || finished) {
           return finish();
         }
@@ -648,20 +698,21 @@ export function streamWithThink(
             }
           }
         } catch (e) {
-          console.error("[Request] parse error", text, msg, e);
-          // Don't throw error for parse failures, just log them
+          throw e;
         }
       },
       onclose() {
         finish();
       },
       onerror(e) {
-        options?.onError?.(e);
+        clearTimeout(requestTimeoutId);
         throw e;
       },
       openWhenHidden: true,
-    });
+    })
+      .catch(fail)
+      .finally(() => { clearTimeout(requestTimeoutId); clearTimeout(idleTimeoutId); });
   }
   console.debug("[ChatAPI] start");
-  chatApi(chatPath, headers, requestPayload, tools); // call fetchEventSource
+  return chatApi(chatPath, headers, requestPayload, tools); // call fetchEventSource
 }

@@ -1,4 +1,5 @@
 "use client";
+import { formatApiError } from "@/app/utils/api-error";
 // azure and openai, using same models. so using same LLMApi.
 import { ApiPath, DEEPSEEK_BASE_URL, DeepSeek } from "@/app/constant";
 import {
@@ -50,7 +51,6 @@ export class DeepSeekApi implements LLMApi {
       baseUrl = "https://" + baseUrl;
     }
 
-    console.log("[Proxy Endpoint] ", baseUrl, path);
 
     return [baseUrl, path].join("/");
   }
@@ -107,6 +107,8 @@ export class DeepSeekApi implements LLMApi {
       messages: filteredMessages,
       stream: options.config.stream,
       model: modelConfig.model,
+      ...(modelConfig.model === "deepseek-flash"
+        ? { thinking: { type: "disabled" } } : {}),
       temperature: modelConfig.temperature,
       presence_penalty: modelConfig.presence_penalty,
       frequency_penalty: modelConfig.frequency_penalty,
@@ -115,12 +117,12 @@ export class DeepSeekApi implements LLMApi {
       // Please do not ask me why not send max_tokens, no reason, this param is just shit, I dont want to explain anymore.
     };
 
-    console.log("[Request] openai payload: ", requestPayload);
 
     const shouldStream = !!options.config.stream;
     const controller = new AbortController();
     options.onController?.(controller);
 
+    let requestTimeoutId: ReturnType<typeof setTimeout> | undefined;
     try {
       const chatPath = this.path(DeepSeek.ChatPath);
       const chatPayload = {
@@ -131,17 +133,19 @@ export class DeepSeekApi implements LLMApi {
       };
 
       // make a fetch request
-      const requestTimeoutId = setTimeout(
+      requestTimeoutId = setTimeout(
         () => controller.abort(),
         getTimeoutMSByModel(options.config.model),
       );
 
       if (shouldStream) {
+        clearTimeout(requestTimeoutId);
         const [tools, funcs] = usePluginStore
           .getState()
           .getAsTools(
             useChatStore.getState().currentSession().mask?.plugin || [],
           );
+        let reasoningContent = "";
         return streamWithThink(
           chatPath,
           requestPayload,
@@ -153,6 +157,8 @@ export class DeepSeekApi implements LLMApi {
           (text: string, runTools: ChatMessageTool[]) => {
             // console.log("parseSSE", text, runTools);
             const json = JSON.parse(text);
+            if (json.error)
+              throw new Error(json.error.message ?? "DeepSeek stream error");
             const choices = json.choices as Array<{
               delta: {
                 content: string | null;
@@ -180,6 +186,7 @@ export class DeepSeekApi implements LLMApi {
               }
             }
             const reasoning = choices[0]?.delta?.reasoning_content;
+            if (reasoning) reasoningContent += reasoning;
             const content = choices[0]?.delta?.content;
 
             // Skip if both content and reasoning_content are empty or null
@@ -216,6 +223,9 @@ export class DeepSeekApi implements LLMApi {
             toolCallMessage: any,
             toolCallResult: any[],
           ) => {
+            if (reasoningContent)
+              toolCallMessage.reasoning_content = reasoningContent;
+            reasoningContent = "";
             // @ts-ignore
             requestPayload?.messages?.splice(
               // @ts-ignore
@@ -232,12 +242,18 @@ export class DeepSeekApi implements LLMApi {
         clearTimeout(requestTimeoutId);
 
         const resJson = await res.json();
+        if (!res.ok || resJson?.error) {
+          throw new Error(
+            `HTTP ${res.status}: ${resJson?.error?.message ?? res.statusText}`,
+          );
+        }
         const message = this.extractMessage(resJson);
         options.onFinish(message, res);
       }
     } catch (e) {
-      console.log("[Request] failed to make a chat request", e);
-      options.onError?.(e as Error);
+      options.onError?.(new Error(formatApiError(e)));
+    } finally {
+      clearTimeout(requestTimeoutId);
     }
   }
   async usage() {

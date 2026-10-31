@@ -2,8 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 async function handle(
   req: NextRequest,
-  { params }: { params: { action: string; key: string[] } },
+  {
+    params: pendingParams,
+  }: { params: Promise<{ action: string; key: string[] }> },
 ) {
+  const params = await pendingParams;
   const requestUrl = new URL(req.url);
   const endpoint = requestUrl.searchParams.get("endpoint");
 
@@ -55,7 +58,6 @@ async function handle(
     duplex: "half",
   };
 
-  console.log("[Upstash Proxy]", targetUrl, fetchOptions);
   const fetchResult = await fetch(targetUrl, fetchOptions);
 
   console.log("[Any Proxy]", targetUrl, {

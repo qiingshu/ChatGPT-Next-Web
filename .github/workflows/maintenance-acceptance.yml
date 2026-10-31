@@ -1,0 +1,56 @@
+name: Maintenance provider acceptance
+on:
+  push:
+    branches: [maintenance/nextchat-upgrade]
+    paths:
+      - "app/**"
+      - "test/**"
+      - "maintenance/tests/**"
+      - "next.config.mjs"
+      - ".github/workflows/maintenance-acceptance.yml"
+permissions:
+  contents: read
+concurrency:
+  group: maintenance-provider-acceptance
+  cancel-in-progress: true
+jobs:
+  acceptance:
+    if: github.ref == 'refs/heads/maintenance/nextchat-upgrade'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      CI: "true"
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: "22.23.4"
+      - name: Install locked dependencies on GitHub hosted runner
+        run: |
+          npm install --global yarn@1.22.19
+          yarn install --frozen-lockfile
+      - name: Typecheck and unit tests
+        run: |
+          yarn typecheck
+          yarn test:ci --runInBand
+      - name: Build on GitHub hosted runner
+        run: yarn build
+      - name: Install isolated browser tooling on GitHub hosted runner
+        run: |
+          npm install --prefix "$RUNNER_TEMP/nextchat-browser" --no-package-lock --ignore-scripts playwright@1.56.1
+          "$RUNNER_TEMP/nextchat-browser/node_modules/.bin/playwright" install --with-deps chromium webkit
+      - name: Security and browser acceptance (model traffic synthetic)
+        env:
+          PLAYWRIGHT_MODULE: ${{ runner.temp }}/nextchat-browser/node_modules/playwright
+        run: node maintenance/tests/provider-onboarding.cjs
+      - name: Upload acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: provider-acceptance-${{ github.sha }}
+          path: maintenance/acceptance-results/
+          if-no-files-found: ignore
+          retention-days: 7

@@ -1,4 +1,3 @@
-import { useDebouncedCallback } from "use-debounce";
 import OpenAPIClientAxios from "openapi-client-axios";
 import yaml from "js-yaml";
 import { PLUGINS_REPO_URL } from "../constant";
@@ -27,7 +26,8 @@ import {
 } from "./ui-lib";
 import Locale from "../locales";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getProxyAuthorization } from "../utils/proxy-auth";
 import clsx from "clsx";
 
 export function PluginPage() {
@@ -57,46 +57,45 @@ export function PluginPage() {
   const editingPluginTool = FunctionToolService.get(editingPlugin?.id);
   const closePluginModal = () => setEditingPluginId(undefined);
 
-  const onChangePlugin = useDebouncedCallback((editingPlugin, e) => {
-    const content = e.target.innerText;
+  const [schemaDraft, setSchemaDraft] = useState("");
+  useEffect(() => {
+    setSchemaDraft(editingPlugin?.content ?? "");
+  }, [editingPlugin?.id, editingPlugin?.content]);
+
+  const saveSchema = async (plugin: Plugin, content: string): Promise<boolean> => {
+    if (content === plugin.content) return true;
     try {
-      const api = new OpenAPIClientAxios({
-        definition: yaml.load(content) as any,
+      const api = new OpenAPIClientAxios({ definition: yaml.load(content) as any });
+      await api.init();
+      pluginStore.updatePlugin(plugin.id, (saved) => {
+        saved.content = content;
+        const tool = FunctionToolService.add(saved, true);
+        saved.title = tool.api.definition.info.title;
+        saved.version = tool.api.definition.info.version;
       });
-      api
-        .init()
-        .then(() => {
-          if (content != editingPlugin.content) {
-            pluginStore.updatePlugin(editingPlugin.id, (plugin) => {
-              plugin.content = content;
-              const tool = FunctionToolService.add(plugin, true);
-              plugin.title = tool.api.definition.info.title;
-              plugin.version = tool.api.definition.info.version;
-            });
-          }
-        })
-        .catch((e) => {
-          console.error(e);
-          showToast(Locale.Plugin.EditModal.Error);
-        });
-    } catch (e) {
-      console.error(e);
+      return true;
+    } catch {
       showToast(Locale.Plugin.EditModal.Error);
+      return false;
     }
-  }, 100).bind(null, editingPlugin);
+  };
 
   const [loadUrl, setLoadUrl] = useState<string>("");
   const loadFromUrl = (loadUrl: string) =>
     fetch(loadUrl)
       .catch((e) => {
         const p = new URL(loadUrl);
-        return fetch(`/api/proxy/${p.pathname}?${p.search}`, {
+        return fetch(`/api/proxy${p.pathname}${p.search}`, {
           headers: {
             "X-Base-URL": p.origin,
+            "X-NextChat-Authorization": getProxyAuthorization(),
           },
         });
       })
-      .then((res) => res.text())
+      .then((res) => {
+        if (!res.ok) throw new Error("Plugin schema request failed");
+        return res.text();
+      })
       .then((content) => {
         try {
           return JSON.stringify(JSON.parse(content), null, "  ");
@@ -104,14 +103,7 @@ export function PluginPage() {
           return content;
         }
       })
-      .then((content) => {
-        pluginStore.updatePlugin(editingPlugin.id, (plugin) => {
-          plugin.content = content;
-          const tool = FunctionToolService.add(plugin, true);
-          plugin.title = tool.api.definition.info.title;
-          plugin.version = tool.api.definition.info.version;
-        });
-      })
+      .then((content) => saveSchema(editingPlugin, content))
       .catch((e) => {
         showToast(Locale.Plugin.EditModal.Error);
       });
@@ -164,6 +156,7 @@ export function PluginPage() {
               icon={<AddIcon />}
               text={Locale.Plugin.Page.Create}
               bordered
+              aria="新建插件"
               onClick={() => {
                 const createdPlugin = pluginStore.create();
                 setEditingPluginId(createdPlugin.id);
@@ -211,6 +204,7 @@ export function PluginPage() {
                   <IconButton
                     icon={<EditIcon />}
                     text={Locale.Plugin.Item.Edit}
+                    aria={"编辑插件 " + m.title}
                     onClick={() => setEditingPluginId(m.id)}
                   />
                   {!m.builtin && (
@@ -244,7 +238,10 @@ export function PluginPage() {
                 text={Locale.UI.Confirm}
                 key="export"
                 bordered
-                onClick={() => setEditingPluginId("")}
+                aria="保存插件"
+                onClick={async () => {
+                  if (await saveSchema(editingPlugin, schemaDraft)) closePluginModal();
+                }}
               />,
             ]}
           >
@@ -322,12 +319,14 @@ export function PluginPage() {
                 <div className={pluginStyles["plugin-schema"]}>
                   <input
                     type="text"
-                    style={{ minWidth: 200 }}
+                    aria-label="插件 Schema URL"
+                    style={{ minWidth: 0 }}
                     onInput={(e) => setLoadUrl(e.currentTarget.value)}
                   ></input>
                   <IconButton
                     icon={<ReloadIcon />}
                     text={Locale.Plugin.EditModal.Load}
+                    aria="加载插件 Schema"
                     bordered
                     onClick={() => loadFromUrl(loadUrl)}
                   />
@@ -342,15 +341,15 @@ export function PluginPage() {
                     )}
                     dir="auto"
                   >
-                    <pre>
-                      <code
-                        contentEditable={true}
-                        dangerouslySetInnerHTML={{
-                          __html: editingPlugin.content,
-                        }}
-                        onBlur={onChangePlugin}
-                      ></code>
-                    </pre>
+                    <textarea
+                      aria-label="插件 Schema"
+                      className={pluginStyles["schema-editor"]}
+                      value={schemaDraft}
+                      rows={14}
+                      spellCheck={false}
+                      onChange={(event) => setSchemaDraft(event.currentTarget.value)}
+                      onBlur={() => { void saveSchema(editingPlugin, schemaDraft); }}
+                    />
                   </div>
                 }
               ></ListItem>

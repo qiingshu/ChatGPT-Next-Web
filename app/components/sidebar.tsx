@@ -240,7 +240,7 @@ export function SideBar(props: { className?: string }) {
       setMcpEnabled(enabled);
       console.log("[SideBar] MCP enabled:", enabled);
     };
-    checkMcpStatus();
+    checkMcpStatus().catch(() => setMcpEnabled(false));
   }, []);
 
   return (
