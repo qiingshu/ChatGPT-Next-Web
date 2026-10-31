@@ -177,7 +177,7 @@ const cn = {
       },
     },
     Lang: {
-      Name: "Language", // 注意：如果要添加新的翻译，请不要翻译此值，将它保留为 `Language`
+      Name: "语言",
       All: "所有语言",
     },
     Avatar: "头像",
