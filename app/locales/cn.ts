@@ -209,6 +209,18 @@ const cn = {
       Success: "更新成功！",
       Failed: "更新失败",
     },
+    LocalizationInfo: {
+      Timeout: "连接测试超时（30 秒），请检查网络及接口地址。",
+      Success: "连接成功",
+      NoResponse: "服务商未返回有效响应，请检查模型和接口设置。",
+      Upstream: "上游基础",
+      Details: "详细版本信息",
+      Security: "安全维护标识",
+      Commit: "构建提交",
+      Official: "官方参考版本",
+      Unavailable: "暂未获取",
+      Note: "含选择性移植，非完整官方 v2.16.1。官方版本信息仅供参考。",
+    },
     ProviderSetup: {
       Provider: "服务商",
       ProviderHelp: "选择服务商并填写对应 API Key，即可使用默认模型",
