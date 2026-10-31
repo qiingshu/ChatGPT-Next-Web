@@ -30,6 +30,8 @@ import {
 } from "../constant";
 import Locale, { getLang } from "../locales";
 import { prettyObject } from "../utils/format";
+import { formatApiError } from "../utils/api-error";
+import { getProviderPreset } from "../utils/provider-presets";
 import { createPersistStore } from "../utils/store";
 import { estimateTokenLength } from "../utils/token";
 import { ModelConfig, ModelType, useAppConfig } from "./config";
@@ -123,6 +125,10 @@ function getSummarizeModel(
   currentModel: string,
   providerName: string,
 ): string[] {
+  // Keep the new presets on an available model of the same provider.
+  if (getProviderPreset(providerName)?.model === currentModel) {
+    return [currentModel, providerName];
+  }
   // if it is using gpt-* models, force to use 4o-mini to summarize
   if (currentModel.startsWith("gpt") || currentModel.startsWith("chatgpt")) {
     const configStore = useAppConfig.getState();
@@ -501,7 +507,7 @@ export const useChatStore = createPersistStore(
               "\n\n" +
               prettyObject({
                 error: true,
-                message: error.message,
+                message: formatApiError(error),
               });
             botMessage.streaming = false;
             userMessage.isError = !isAborted;
@@ -514,7 +520,7 @@ export const useChatStore = createPersistStore(
               botMessage.id ?? messageIndex,
             );
 
-            console.error("[Chat] failed ", error);
+            console.error("[Chat] request failed");
           },
           onController(controller) {
             // collect controller for stop/retry

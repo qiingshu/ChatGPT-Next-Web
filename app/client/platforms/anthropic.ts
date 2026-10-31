@@ -1,3 +1,4 @@
+import { formatApiError } from "@/app/utils/api-error";
 import { Anthropic, ApiPath } from "@/app/constant";
 import { ChatOptions, getHeaders, LLMApi, SpeechOptions } from "../api";
 import {
@@ -345,8 +346,8 @@ export class ClaudeApi implements LLMApi {
         const message = this.extractMessage(resJson);
         options.onFinish(message, res);
       } catch (e) {
-        console.error("failed to chat", e);
-        options.onError?.(e as Error);
+        
+        options.onError?.(new Error(formatApiError(e)));
       }
     }
   }

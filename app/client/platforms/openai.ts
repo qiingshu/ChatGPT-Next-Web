@@ -36,6 +36,7 @@ import {
   SpeechOptions,
 } from "../api";
 import Locale from "../../locales";
+import { formatApiError } from "@/app/utils/api-error";
 import { getClientConfig } from "@/app/config/client";
 import {
   getMessageTextContent,
@@ -67,6 +68,7 @@ export interface RequestPayload {
   top_p: number;
   max_tokens?: number;
   max_completion_tokens?: number;
+  reasoning_effort?: "none";
 }
 
 export interface DalleRequestPayload {
@@ -115,7 +117,6 @@ export class ChatGPTApi implements LLMApi {
       baseUrl = "https://" + baseUrl;
     }
 
-    console.log("[Proxy Endpoint] ", baseUrl, path);
 
     // try rebuild url, when using cloudflare ai gateway in client
     return cloudflareAIGatewayUrl([baseUrl, path].join("/"));
@@ -249,7 +250,16 @@ export class ChatGPTApi implements LLMApi {
       }
     }
 
-    console.log("[Request] openai payload: ", requestPayload);
+    if (!isDalle3 && options.config.model === "gpt-5.4-mini") {
+      const payload = requestPayload as Partial<RequestPayload>;
+      delete payload.temperature;
+      delete payload.top_p;
+      delete payload.presence_penalty;
+      delete payload.frequency_penalty;
+      delete payload.max_tokens;
+      payload.max_completion_tokens = modelConfig.max_tokens;
+      payload.reasoning_effort = "none";
+    }
 
     const shouldStream = !isDalle3 && !!options.config.stream;
     const controller = new AbortController();
@@ -404,12 +414,14 @@ export class ChatGPTApi implements LLMApi {
         clearTimeout(requestTimeoutId);
 
         const resJson = await res.json();
+        if (!res.ok || resJson?.error) {
+          throw new Error(formatApiError(resJson?.error?.message ?? resJson?.error?.code, res.status));
+        }
         const message = await this.extractMessage(resJson);
         options.onFinish(message, res);
       }
     } catch (e) {
-      console.log("[Request] failed to make a chat request", e);
-      options.onError?.(e as Error);
+      options.onError?.(new Error(formatApiError(e)));
     }
   }
   async usage() {

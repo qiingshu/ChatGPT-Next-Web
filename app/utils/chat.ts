@@ -1,3 +1,4 @@
+import { formatApiError } from "./api-error";
 import {
   CACHE_URL_PREFIX,
   UPLOAD_URL,
@@ -309,7 +310,7 @@ export function stream(
     if (finished) return;
     finished = true;
     options.onError?.(
-      error instanceof Error ? error : new Error(String(error)),
+      new Error(formatApiError(error)),
     );
     clearTimeout(idleTimeoutId);
     controller.abort();
@@ -560,7 +561,7 @@ export function streamWithThink(
     if (finished) return;
     finished = true;
     options.onError?.(
-      error instanceof Error ? error : new Error(String(error)),
+      new Error(formatApiError(error)),
     );
     clearTimeout(idleTimeoutId);
     controller.abort();

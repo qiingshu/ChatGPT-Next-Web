@@ -494,6 +494,7 @@ export const VISION_MODEL_REGEXES = [
 export const EXCLUDE_VISION_MODEL_REGEXES = [/claude-3-5-haiku-20241022/];
 
 const openaiModels = [
+  "gpt-5.4-mini",
   // As of July 2024, gpt-4o-mini should be used in place of gpt-3.5-turbo,
   // as it is cheaper, more capable, multimodal, and just as fast. gpt-3.5-turbo is still available for use in the API.
   "gpt-3.5-turbo",
@@ -532,6 +533,7 @@ const openaiModels = [
 ];
 
 const googleModels = [
+  "gemini-3.5-flash-lite",
   "gemini-1.0-pro", // Deprecated on 2/15/2025
   "gemini-1.5-pro-latest",
   "gemini-1.5-pro",
@@ -558,6 +560,7 @@ const googleModels = [
 ];
 
 const anthropicModels = [
+  "claude-haiku-5-5",
   "claude-instant-1.2",
   "claude-2.0",
   "claude-2.1",
@@ -630,7 +633,7 @@ const iflytekModels = [
   "4.0Ultra",
 ];
 
-const deepseekModels = ["deepseek-chat", "deepseek-coder", "deepseek-reasoner"];
+const deepseekModels = ["deepseek-flash", "deepseek-chat", "deepseek-coder", "deepseek-reasoner"];
 
 const xAIModes = [
   "grok-beta",

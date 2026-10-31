@@ -1,4 +1,5 @@
 "use client";
+import { formatApiError } from "@/app/utils/api-error";
 // azure and openai, using same models. so using same LLMApi.
 import {
   ApiPath,
@@ -51,7 +52,6 @@ export class MistralApi implements LLMApi {
       baseUrl = "https://" + baseUrl;
     }
 
-    console.log("[Proxy Endpoint] ", baseUrl, path);
 
     return [
       baseUrl,
@@ -192,8 +192,8 @@ export class MistralApi implements LLMApi {
         options.onFinish(message, res);
       }
     } catch (e) {
-      console.log("[Request] failed to make a chat request", e);
-      options.onError?.(e as Error);
+      
+      options.onError?.(new Error(formatApiError(e)));
     } finally {
       clearTimeout(requestTimeoutId);
     }

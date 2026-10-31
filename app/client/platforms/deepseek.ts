@@ -1,4 +1,5 @@
 "use client";
+import { formatApiError } from "@/app/utils/api-error";
 // azure and openai, using same models. so using same LLMApi.
 import { ApiPath, DEEPSEEK_BASE_URL, DeepSeek } from "@/app/constant";
 import {
@@ -50,7 +51,6 @@ export class DeepSeekApi implements LLMApi {
       baseUrl = "https://" + baseUrl;
     }
 
-    console.log("[Proxy Endpoint] ", baseUrl, path);
 
     return [baseUrl, path].join("/");
   }
@@ -107,6 +107,8 @@ export class DeepSeekApi implements LLMApi {
       messages: filteredMessages,
       stream: options.config.stream,
       model: modelConfig.model,
+      ...(modelConfig.model === "deepseek-flash"
+        ? { thinking: { type: "disabled" } } : {}),
       temperature: modelConfig.temperature,
       presence_penalty: modelConfig.presence_penalty,
       frequency_penalty: modelConfig.frequency_penalty,
@@ -115,7 +117,6 @@ export class DeepSeekApi implements LLMApi {
       // Please do not ask me why not send max_tokens, no reason, this param is just shit, I dont want to explain anymore.
     };
 
-    console.log("[Request] openai payload: ", requestPayload);
 
     const shouldStream = !!options.config.stream;
     const controller = new AbortController();
@@ -250,8 +251,7 @@ export class DeepSeekApi implements LLMApi {
         options.onFinish(message, res);
       }
     } catch (e) {
-      console.log("[Request] failed to make a chat request", e);
-      options.onError?.(e as Error);
+      options.onError?.(new Error(formatApiError(e)));
     } finally {
       clearTimeout(requestTimeoutId);
     }

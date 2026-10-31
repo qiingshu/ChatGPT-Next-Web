@@ -1,3 +1,4 @@
+import { formatApiError } from "@/app/utils/api-error";
 import { ApiPath, Google } from "@/app/constant";
 import {
   ChatOptions,
@@ -49,7 +50,6 @@ export class GeminiProApi implements LLMApi {
       baseUrl = "https://" + baseUrl;
     }
 
-    console.log("[Proxy Endpoint] ", baseUrl, path);
 
     let chatPath = [baseUrl, path].join("/");
     if (shouldStream) {
@@ -59,7 +59,6 @@ export class GeminiProApi implements LLMApi {
     return chatPath;
   }
   extractMessage(res: any) {
-    console.log("[Response] gemini-pro response: ", res);
 
     const getTextFromParts = (parts: any[]) => {
       if (!Array.isArray(parts)) return "";
@@ -328,8 +327,8 @@ export class GeminiProApi implements LLMApi {
         options.onFinish(message, res);
       }
     } catch (e) {
-      console.log("[Request] failed to make a chat request", e);
-      options.onError?.(e as Error);
+      
+      options.onError?.(new Error(formatApiError(e)));
     } finally {
       clearTimeout(requestTimeoutId);
     }
