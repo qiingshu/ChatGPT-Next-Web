@@ -1880,9 +1880,9 @@ export function Settings() {
             {accessCodeComponent}
             {!accessStore.hideUserApiKey && (
               <>
-                <ListItem title="服务商" subTitle="选择服务商并填写对应 API Key，即可使用默认模型" vertical>
+                <ListItem title={Locale.Settings.ProviderSetup.Provider} subTitle={Locale.Settings.ProviderSetup.ProviderHelp} vertical>
                   <Select
-                    aria-label="服务商"
+                    aria-label={Locale.Settings.ProviderSetup.Provider}
                     value={accessStore.provider}
                     disabled={testingModel}
                     onChange={(e) => selectProvider(e.currentTarget.value as ServiceProvider)}
@@ -1902,7 +1902,7 @@ export function Settings() {
                         aria-label={`${preset.label} API Key`}
                         value={accessStore[preset.keyField]}
                         type="text"
-                        placeholder="填写该服务商的 API Key"
+                        placeholder={Locale.Settings.ProviderSetup.ProviderKeyPlaceholder}
                         onChange={(e) => {
                           const value = e.currentTarget.value;
                           setConnectionResult("");
@@ -1914,16 +1914,16 @@ export function Settings() {
                       />
                     </ListItem>
                     <ListItem
-                      title={`当前聊天模型：${useChatStore.getState().currentSession().mask.modelConfig.model}`}
-                      subTitle={`默认模型：${preset.model}；接口和自定义模型可在高级设置中调整`}
+                      title={`${Locale.Settings.ProviderSetup.CurrentModel}：${useChatStore.getState().currentSession().mask.modelConfig.model}`}
+                      subTitle={`${Locale.Settings.ProviderSetup.DefaultModel}：${preset.model}；${Locale.Settings.ProviderSetup.ModelHelp}`}
                     />
                   </>
                 )}
-                <ListItem title="测试当前聊天模型" subTitle="发送一条简短请求，可能产生 API 费用；不写入聊天记录" vertical>
+                <ListItem title={Locale.Settings.ProviderSetup.TestModel} subTitle={Locale.Settings.ProviderSetup.TestHelp} vertical>
                   <IconButton
-                    aria="测试连接"
+                    aria={Locale.Settings.ProviderSetup.TestConnection}
                     icon={<ConnectionIcon />}
-                    text={testingModel ? "测试中…" : "测试连接"}
+                    text={testingModel ? Locale.Settings.ProviderSetup.Testing : Locale.Settings.ProviderSetup.TestConnection}
                     disabled={testingModel}
                     onClick={testCurrentModel}
                   />
@@ -1935,13 +1935,13 @@ export function Settings() {
             )}
           </List>
           <details className={styles["advanced-settings"]}>
-            <summary>高级设置</summary>
+            <summary>{Locale.Settings.ProviderSetup.Advanced}</summary>
             <List>
               {!accessStore.hideUserApiKey && (
                 <>
                   {useCustomConfigComponent}
                   {preset ? (
-                    <ListItem title={`${preset.label} API URL`} subTitle={`官方地址：${preset.officialUrl}；默认通过本站路由访问`} vertical>
+                    <ListItem title={`${preset.label} API URL`} subTitle={`${Locale.Settings.ProviderSetup.OfficialURL}：${preset.officialUrl}；${Locale.Settings.ProviderSetup.DefaultRoute}`} vertical>
                       <input
                         aria-label={`${preset.label} API URL`}
                         type="text"
