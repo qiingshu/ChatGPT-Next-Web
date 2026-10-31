@@ -686,6 +686,14 @@ const cn = {
     },
   },
   Plugin: {
+    Accessibility: {
+      Create: "新建插件",
+      Edit: "编辑插件",
+      Save: "保存插件",
+      SchemaUrl: "插件 Schema URL",
+      LoadSchema: "加载插件 Schema",
+      Schema: "插件 Schema",
+    },
     Name: "插件",
     Page: {
       Title: "插件",
