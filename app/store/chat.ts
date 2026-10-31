@@ -826,12 +826,11 @@ export const useChatStore = createPersistStore(
       },
 
       /** check if the message contains MCP JSON and execute the MCP action */
-      checkMcpJson(message: ChatMessage) {
-        const mcpEnabled = isMcpEnabled();
-        if (!mcpEnabled) return;
+      async checkMcpJson(message: ChatMessage) {
         const content = getMessageTextContent(message);
         if (isMcpJson(content)) {
           try {
+            if (!(await isMcpEnabled())) return;
             const mcpRequest = extractMcpJson(content);
             if (mcpRequest) {
               console.debug("[MCP Request]", mcpRequest);

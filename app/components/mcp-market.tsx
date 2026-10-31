@@ -70,7 +70,7 @@ export function McpMarketPage() {
         navigate(Path.Home);
       }
     };
-    checkMcpStatus();
+    checkMcpStatus().catch(() => setMcpEnabled(false));
   }, [navigate]);
 
   // 添加状态轮询

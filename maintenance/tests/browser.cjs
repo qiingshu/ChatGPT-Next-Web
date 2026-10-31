@@ -4,27 +4,33 @@ const assert=require('node:assert/strict');
 const base=process.env.TEST_URL||'http://127.0.0.1:3100';
 const engine=process.env.ENGINE||'chromium';
 const label=process.env.TEST_LABEL||'local';
+const accessUrl=process.env.PREVIEW_ACCESS_FILE?JSON.parse(fs.readFileSync(process.env.PREVIEW_ACCESS_FILE,'utf8')).url:null;
 const pause=ms=>new Promise(r=>setTimeout(r,ms));
+let activeBrowser,activePage;
+const progress={requests:0,provider:null,errors:[]};
 (async()=>{
- const browser=await ({chromium,webkit}[engine]).launch({headless:true,args:engine==='chromium'?['--no-sandbox']:[]});
- const context=await browser.newContext({viewport:{width:390,height:844},locale:'en-US',isMobile:true,hasTouch:true,acceptDownloads:true});
- const page=await context.newPage();
- const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ const browser=activeBrowser=await ({chromium,webkit}[engine]).launch({headless:true,args:engine==='chromium'?['--no-sandbox']:[]});
+ const context=await browser.newContext({viewport:{width:390,height:844},locale:'en-US',isMobile:true,hasTouch:true,serviceWorkers:'block',acceptDownloads:true});
+ await context.addInitScript(()=>{try{delete Object.getPrototypeOf(navigator).serviceWorker}catch{}});
+ const page=activePage=await context.newPage();
+ const errors=[];page.on('pageerror',e=>{errors.push(e.message);progress.errors.push(e.stack||e.message)});
+ page.on('requestfailed',r=>{(progress.failedRequests??=[]).push({path:new URL(r.url()).pathname,error:r.failure()?.errorText})});
  let called=0,currentProvider='Mistral';
  const providers={Mistral:['mistral','mistral-maintenance-fixture','Authorization'],DeepSeek:['deepseek','deepseek-chat','Authorization'],Google:['google','gemini-2.5-flash','x-goog-api-key'],Anthropic:['anthropic','claude-sonnet-4-5','x-api-key'],OpenAI:['openai','gpt-4o-mini','Authorization']};
- await page.route('**/api/{mistral,deepseek,google,anthropic,openai}/**',async route=>{
+ await context.route('**/api/{mistral,deepseek,google,anthropic,openai}/**',async route=>{
   if(route.request().method()==='GET'){await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({data:[]})});return;}
   const [path,model,header]=providers[currentProvider];
   assert.ok(route.request().url().includes('/api/'+path+'/'),`Expected ${path}, got ${new URL(route.request().url()).pathname}`);
   const payload=route.request().postDataJSON(); assert.equal(payload.model??model,model);
   assert.ok(route.request().headers()[header.toLowerCase()]?.includes('synthetic-test-key'));
-  called++;
+  called++;progress.requests=called;
   let chunks;
   if(currentProvider==='Google') chunks=[{candidates:[{content:{parts:[{text:'Mock Google response'}]}}]},{candidates:[{finishReason:'STOP'}]}];
   else if(currentProvider==='Anthropic') chunks=[{type:'content_block_delta',index:0,delta:{type:'text_delta',text:'Mock Anthropic response'}},{type:'message_stop'}];
   else chunks=[{choices:[{delta:{content:`Mock ${currentProvider} response`}}]}];
   await route.fulfill({status:200,contentType:'text/event-stream',body:chunks.map(c=>'data: '+JSON.stringify(c)+'\n\n').join('')+'data: [DONE]\n\n'});
  });
+ if(accessUrl)await page.goto(accessUrl,{waitUntil:'domcontentloaded'});
  await page.goto(base+'/#/chat',{waitUntil:'domcontentloaded'});
  await page.locator('textarea').first().waitFor({timeout:60000}); await pause(1000);
  async function state(fn,arg){return page.evaluate(async({fn,arg})=>{
@@ -42,7 +48,7 @@ const pause=ms=>new Promise(r=>setTimeout(r,ms));
   await put('chat-next-web-store',chat);await put('mask-store',mask);await put('prompt-store',prompt);
  });
  for(const [provider,[path,model]] of Object.entries(providers)){
-  currentProvider=provider;
+  currentProvider=provider;progress.provider=provider;
   await page.goto(base+'/robots.txt',{waitUntil:'domcontentloaded'});
   await state(async(get,put,{provider,path,model})=>{
    const access=await get('access-control');access.state.useCustomConfig=true;access.state.provider=provider;
@@ -74,12 +80,14 @@ const pause=ms=>new Promise(r=>setTimeout(r,ms));
  assert.ok(backup['chat-next-web-store'].sessions.some(s=>s.topic==='Maintenance fixture'));
  assert.equal(backup['mask-store'].masks['fixture-mask'].context[0].content,'Preserve fixture prompt 原文保留');
  assert.equal(backup['prompt-store'].prompts['fixture-prompt'].content,'Preserve fixture prompt 原文保留');
- const fresh=await browser.newContext({viewport:{width:390,height:844},locale:'en-US',isMobile:true,hasTouch:true});
+ const fresh=await browser.newContext({viewport:{width:390,height:844},locale:'en-US',isMobile:true,hasTouch:true,serviceWorkers:'block'});
  await fresh.route('**/api/{mistral,deepseek,google,anthropic,openai}/**',route=>route.fulfill({status:200,contentType:'application/json',body:'{"data":[]}'}));
- const p2=await fresh.newPage();
+ await fresh.addInitScript(()=>{try{delete Object.getPrototypeOf(navigator).serviceWorker}catch{}});
+ await fresh.addCookies(await context.cookies(base));
+ const p2=activePage=await fresh.newPage();
  await p2.goto(base+'/#/settings',{waitUntil:'domcontentloaded'});await p2.getByRole('button',{name:/Local Data.*Import/i}).waitFor({timeout:60000});
- const chooser=p2.waitForEvent('filechooser');await p2.getByRole('button',{name:/Local Data.*Import/i}).click();await (await chooser).setFiles({name:'maintenance-fixture.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(backup))});
- await p2.waitForEvent('load');await pause(1500);
+ const chooser=p2.waitForEvent('filechooser');await p2.getByRole('button',{name:/Local Data.*Import/i}).click();const selected=await chooser;const reloaded=p2.waitForNavigation({waitUntil:'domcontentloaded',timeout:60000});await selected.setFiles({name:'maintenance-fixture.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(backup))});
+ await reloaded;await p2.getByRole('button',{name:/Local Data.*Import/i}).waitFor({timeout:60000});await pause(500);
  const imported=await p2.evaluate(async()=>{
   const db=await new Promise(resolve=>{const r=indexedDB.open('keyval-store');r.onsuccess=()=>resolve(r.result)});
   const get=key=>new Promise(resolve=>{const r=db.transaction('keyval','readonly').objectStore('keyval').get(key);r.onsuccess=()=>resolve(JSON.parse(r.result).state)});
@@ -87,8 +95,9 @@ const pause=ms=>new Promise(r=>setTimeout(r,ms));
   return {chat:chat.sessions.some(s=>s.topic==='Maintenance fixture'&&s.messages.some(m=>m.content==='Preserve literature fixture 文学分析测试')),mask:mask.masks['fixture-mask']?.context[0]?.content==='Preserve fixture prompt 原文保留',prompt:prompt.prompts['fixture-prompt']?.content==='Preserve fixture prompt 原文保留'};
  });
  assert.deepEqual(imported,{chat:true,mask:true,prompt:true});
+ const noKey=await p2.request.post(base+'/api/mistral/v1/chat/completions',{data:{model:'mistral-small-latest',messages:[{role:'user',content:'test'}]}});assert.equal(noKey.status(),401,'Mistral proxy must reject missing caller key');
  const overflow=await p2.evaluate(()=>document.documentElement.scrollWidth>innerWidth+2);assert.equal(overflow,false);
- fs.writeFileSync(`maintenance/evidence/${label}-${engine}.json`,JSON.stringify({engine,viewport:'390x844',mockProviders:Object.keys(providers),apiCalls:called,configMistral:true,exportImport:{chat:true,mask:true,prompt:true},horizontalOverflow:overflow,imeEnterProtected:true,physicalIPhone:false,pageErrors:errors},null,2));
+ fs.writeFileSync(`maintenance/evidence/${label}-${engine}.json`,JSON.stringify({engine,viewport:'390x844',mockProviders:Object.keys(providers),apiCalls:called,configMistral:true,exportImport:{chat:true,mask:true,prompt:true},horizontalOverflow:overflow,imeEnterProtected:true,physicalIPhone:false,serviceWorkersBlockedForMocking:true,mistralMissingKeyStatus:401,pageErrors:errors},null,2));
  assert.deepEqual(errors,[]);
  await browser.close();console.log(`PASS ${label} ${engine}: five mocked provider streams, Mistral settings, IndexedDB export/import, mobile viewport`);
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(async e=>{console.error(e);if(activePage){await activePage.screenshot({path:`maintenance/evidence/${label}-${engine}-failure.png`,animations:'disabled'}).catch(()=>{});const body=await activePage.locator('body').innerText().catch(()=> '');fs.writeFileSync(`maintenance/evidence/${label}-${engine}-failure.json`,JSON.stringify({...progress,body},null,2));}if(activeBrowser)await activeBrowser.close();process.exitCode=1});
