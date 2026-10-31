@@ -20,7 +20,6 @@ jobs:
     env:
       CI: "true"
       NEXT_TELEMETRY_DISABLED: "1"
-      PLAYWRIGHT_MODULE: ${{ runner.temp }}/nextchat-browser/node_modules/playwright
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -43,6 +42,8 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/nextchat-browser" --no-package-lock --ignore-scripts playwright@1.56.1
           "$RUNNER_TEMP/nextchat-browser/node_modules/.bin/playwright" install --with-deps chromium webkit
       - name: Browser acceptance with synthetic responses only
+        env:
+          PLAYWRIGHT_MODULE: ${{ runner.temp }}/nextchat-browser/node_modules/playwright
         run: node maintenance/tests/provider-onboarding.cjs
       - name: Upload acceptance evidence
         if: always()
