@@ -1619,7 +1619,7 @@ export function Settings() {
           </ListItem>
 
           <ListItem
-            title="NextChat 定制版"
+            title={Locale.Settings.LocalizationInfo.Edition}
             className={styles["version-card"]}
             subTitle={
               <div className={styles["version-info"]} data-testid="build-version">
