@@ -316,6 +316,9 @@ export class ChatGPTApi implements LLMApi {
           (text: string, runTools: ChatMessageTool[]) => {
             // console.log("parseSSE", text, runTools);
             const json = JSON.parse(text);
+            if (json.error) {
+              throw new Error(formatApiError(json.error.message ?? json.error.code ?? json.error.type));
+            }
             const choices = json.choices as Array<{
               delta: {
                 content: string;

@@ -77,6 +77,9 @@ async function run(engine) {
         assert.ok(!("temperature" in payload) && !("top_p" in payload));
       }
       calls++;
+      if (mode === "sse-error") {
+        return route.fulfill({ contentType: "text/event-stream", body: 'data: {"error":{"code":"insufficient_quota"}}\n\n' });
+      }
       if (mode === "timeout") {
         await delay(35000);
         return route.fulfill({ contentType: "application/json", body: "{}" }).catch(() => {});
@@ -125,6 +128,8 @@ async function run(engine) {
     await provider.waitFor({ timeout: 60000 });
     const details = page.locator("details").filter({ has: page.locator("summary").filter({ hasText: "高级设置" }) });
     assert.equal(await details.getAttribute("open"), null, "advanced settings must be collapsed initially");
+    const initial = await snapshot(page);
+    assert.equal(initial["app-config"].modelConfig.model, "gpt-5.4-mini", "fresh install has a usable OpenAI default");
     for (const preset of presets) {
       active = preset;
       await provider.selectOption(preset.provider);
@@ -164,6 +169,16 @@ async function run(engine) {
       await page.goto(base + "/#/settings");
       await provider.waitFor();
     }
+    // A 200/SSE error frame must show a classified error and terminate streaming.
+    mode = "sse-error";
+    await page.goto(base + "/#/chat");
+    await page.locator("textarea").first().fill("Error fixture");
+    await page.locator("textarea").first().press("Enter");
+    await page.getByText("服务商额度不足", { exact: false }).last().waitFor({ timeout: 10000 });
+    const afterError = await snapshot(page);
+    assert.equal(afterError["chat-next-web-store"].sessions[0].messages.at(-1).streaming, false);
+    mode = "success";
+    await page.goto(base + "/#/settings"); await provider.waitFor();
     // Switching back restores that provider's own saved key and selects its default.
     active = presets[0];
     await provider.selectOption(active.provider);
@@ -209,6 +224,9 @@ async function run(engine) {
     await provider.selectOption("Google"); await provider.selectOption("DeepSeek");
     assert.equal((await snapshot(page))["access-control"].deepseekUrl, "https://fixture.invalid/v1/custom", "switching must not reset custom URL");
     assert.equal((await snapshot(page))["app-config"].customModels, "legacy-custom@DeepSeek");
+    await page.getByRole("button", { name: "测试连接", exact: true }).click();
+    await page.getByRole("status").filter({ hasText: "连接成功：" + active.model }).waitFor({ timeout: 10000 });
+    if (failure) throw failure;
     // Real export/import controls; the backup contains synthetic fixtures only and is never uploaded.
     const downloadPromise = page.waitForEvent("download");
     await page.getByRole("button", { name: /Local Data.*Export/i }).click();
@@ -240,7 +258,7 @@ async function run(engine) {
       engine, viewport: "390x844", providers: presets.map((p) => p.label), syntheticResponsesOnly: true,
       realApiVerified: false, physicalIPhoneVerified: false, calls, streamCalls,
       providerSwitch: true, separateKeys: true, defaultModels: true, advancedCollapsed: true,
-      contextContinuity: true, imeEnter: true, connectionErrors: ["invalid key", "quota", "model", "30s timeout"],
+      contextContinuity: true, imeEnter: true, sseErrorTerminates: true, customUrlConnection: true, connectionErrors: ["invalid key", "quota", "model", "30s timeout"],
       legacyConfigPreserved: true, masksPromptsAndHistory: true, exportImport: true, horizontalOverflow: false,
       serviceWorkerCacheVerified: false, pageErrors: [],
     };
