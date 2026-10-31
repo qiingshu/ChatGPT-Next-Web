@@ -241,7 +241,7 @@ export function PluginPage() {
                 aria="保存插件"
                 onClick={async () => {
                   if (await saveSchema(editingPlugin, schemaDraft)) closePluginModal();
-                }
+                }}
               />,
             ]}
           >
