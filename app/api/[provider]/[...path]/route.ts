@@ -1,5 +1,5 @@
 import { ApiPath } from "@/app/constant";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { handle as openaiHandler } from "../../openai";
 import { handle as azureHandler } from "../../azure";
 import { handle as googleHandler } from "../../google";
@@ -15,7 +15,6 @@ import { handle as deepseekHandler } from "../../deepseek";
 import { handle as siliconflowHandler } from "../../siliconflow";
 import { handle as xaiHandler } from "../../xai";
 import { handle as chatglmHandler } from "../../glm";
-import { handle as proxyHandler } from "../../proxy";
 
 async function handle(
   req: NextRequest,
@@ -59,7 +58,7 @@ async function handle(
     case ApiPath.OpenAI:
       return openaiHandler(req, { params });
     default:
-      return proxyHandler(req, { params });
+      return NextResponse.json({ error: "Unknown provider; use /api/proxy for third-party HTTPS APIs" }, { status: 404 });
   }
 }
 

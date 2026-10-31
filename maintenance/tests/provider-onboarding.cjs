@@ -252,10 +252,11 @@ async function run(engine) {
     const buttonBox = await page.getByRole("button", { name: "测试连接", exact: true }).boundingBox();
     assert.ok(buttonBox.height >= 40, "mobile connection button must have a usable touch target");
     await page.screenshot({ path: out + "/" + engine + "-settings.png", mask: [page.locator("input")], animations: "disabled" });
+    const security = await require("./security-browser.cjs")(page, context, base);
     assert.deepEqual(pageErrors, []);
     if (failure) throw failure;
     const summary = {
-      engine, viewport: "390x844", providers: presets.map((p) => p.label), syntheticResponsesOnly: true,
+      engine, security, viewport: "390x844", providers: presets.map((p) => p.label), syntheticResponsesOnly: true,
       realApiVerified: false, physicalIPhoneVerified: false, calls, streamCalls,
       providerSwitch: true, separateKeys: true, defaultModels: true, advancedCollapsed: true,
       contextContinuity: true, imeEnter: true, sseErrorTerminates: true, customUrlConnection: true, connectionErrors: ["invalid key", "quota", "model", "30s timeout"],
@@ -275,7 +276,7 @@ async function run(engine) {
 }
 (async () => {
   const server = spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "--hostname", "127.0.0.1", "--port", "3100"], {
-    env: { ...process.env, NEXT_TELEMETRY_DISABLED: "1" }, stdio: ["ignore", "ignore", "ignore"],
+    env: { ...process.env, NEXT_TELEMETRY_DISABLED: "1", CODE: "nextchat-security-fixture-code", ENABLE_MCP: "false" }, stdio: ["ignore", "ignore", "ignore"],
   });
   try {
     let ready = false;
@@ -285,6 +286,7 @@ async function run(engine) {
       await delay(1000);
     }
     assert.ok(ready, "GitHub hosted test server did not start");
+    await require("./security-network.cjs")(base, out);
     for (const engine of ["chromium", "webkit"]) await run(engine);
   } finally { server.kill("SIGTERM"); }
 })().catch((error) => {

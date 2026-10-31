@@ -1624,14 +1624,16 @@ export function Settings() {
           </ListItem>
 
           <ListItem
-            title={Locale.Settings.Update.Version(currentVersion ?? "unknown")}
+            title="NextChat 定制维护版"
             subTitle={
-              checkingUpdate
-                ? Locale.Settings.Update.IsChecking
-                : hasNewVersion
-                ? Locale.Settings.Update.FoundUpdate(remoteId ?? "ERROR")
-                : Locale.Settings.Update.IsLatest
+              <div style={{ overflowWrap: "anywhere", maxWidth: "100%" }} data-testid="build-version">
+                <div>上游基础：{clientConfig?.upstreamBaseVersion ?? currentVersion}（含选择性移植，非完整官方 v2.16.1）</div>
+                <div>定制版本：{clientConfig?.customVersion ?? "unknown"}</div>
+                <div>构建提交：{clientConfig?.commitHash ?? "unknown"}</div>
+                <div>{checkingUpdate ? Locale.Settings.Update.IsChecking : hasNewVersion ? `官方参考版本：${remoteId}` : "官方版本信息仅供参考"}</div>
+              </div>
             }
+            vertical
           >
             {checkingUpdate ? (
               <LoadingIcon />
