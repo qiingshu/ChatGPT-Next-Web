@@ -5,7 +5,7 @@ export function formatApiError(error: unknown, status?: number): string {
   const http = status ?? Number(text.match(/HTTP\s+(\d{3})/i)?.[1]);
   if (/超时|timeout|timed out|AbortError|aborted/i.test(text) || http === 408 || http === 504)
     return "请求超时，请稍后重试，或在高级设置中检查接口地址。";
-  if (/额度|余额|quota|insufficient|credit|billing|balance/i.test(text) || http === 402)
+  if (/额度不足|余额不足|quota|insufficient|credit|billing|balance/i.test(text) || http === 402)
     return "服务商额度不足，请检查账户余额、付费状态或用量限制。";
   if (/访问码|access code|wrong code/i.test(text))
     return "访问码无效，请检查本站访问码。";

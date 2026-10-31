@@ -15,7 +15,7 @@ concurrency:
 jobs:
   acceptance:
     if: github.ref == 'refs/heads/maintenance/nextchat-upgrade'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
     env:
       CI: "true"
