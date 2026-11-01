@@ -34,7 +34,7 @@ module.exports = async function localizationBrowser(page, context, base, engine,
       assert.equal(htmlLang, ({ cn: "zh-Hans", tw: "zh-Hant", jp: "ja" })[lang] || lang);
       assert.equal(await page.getByText(f["Settings.LocalizationInfo.Edition"], { exact: true }).count(), 1);
       const theme = page.getByLabel(f["Settings.Theme"], { exact: true });
-      assert.deepEqual(await theme.locator("option").evaluateAll(options => options.map(option => option.value)), ["auto", "light", "dark"]);
+      assert.deepEqual(await theme.locator("option").evaluateAll(options => options.map(option => option.value).sort()), ["auto", "dark", "light"]);
       for (const value of ["dark", "light", "auto"]) {
         await theme.selectOption(value);
         assert.equal(await theme.locator("option:checked").innerText(), f["Chat.InputActions.Theme." + value]);

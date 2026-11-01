@@ -56,11 +56,11 @@ export async function downloadAs(text: string, filename: string) {
       defaultPath: `${filename}`,
       filters: [
         {
-          name: `${filename.split(".").pop()} files`,
+          name: `${filename.split(".").pop()?.toUpperCase()}`,
           extensions: [`${filename.split(".").pop()}`],
         },
         {
-          name: "All Files",
+          name: Locale.UI.AllFiles,
           extensions: ["*"],
         },
       ],

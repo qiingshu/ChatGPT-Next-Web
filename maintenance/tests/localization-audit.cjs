@@ -58,12 +58,13 @@ const attrs = new Set(["title", "text", "placeholder", "aria", "aria-label", "al
 function string(node) {
   if (!node) return undefined;
   if (ts.isStringLiteralLike(node)) return node.text;
+  if (ts.isTemplateExpression(node)) return node.head.text + node.templateSpans.map(span => span.literal.text).join(" ");
   if (ts.isJsxExpression(node) && node.expression) {
     if (ts.isStringLiteralLike(node.expression)) return node.expression.text;
     if (ts.isTemplateExpression(node.expression)) return node.expression.head.text + node.expression.templateSpans.map(span => span.literal.text).join(" ");
   }
 }
-for (const file of [...files("app/components"), "app/store/chat.ts", "app/utils/api-error.ts"].filter(file => /\.tsx?$/.test(file))) {
+for (const file of [...files("app/components"), "app/utils.ts", "app/store/chat.ts", "app/utils/api-error.ts"].filter(file => /\.tsx?$/.test(file))) {
   const sf = parse(file);
   function report(node, value) {
     if (ordinary(value)) {
@@ -83,6 +84,10 @@ for (const file of [...files("app/components"), "app/store/chat.ts", "app/utils/
     }
     if (ts.isCallExpression(node) && ["showToast", "showConfirm", "alert", "confirm"].includes(node.expression.getText(sf))) {
       const value = string(node.arguments[0]);
+      if (value !== undefined) report(node, value);
+    }
+    if (ts.isPropertyAssignment(node) && ["name", "title", "placeholder", "label"].includes(node.name.getText(sf).replace(/^["']|["']$/g, ""))) {
+      const value = string(node.initializer);
       if (value !== undefined) report(node, value);
     }
     // Icon-only controls must have a localized/technical accessible name.
