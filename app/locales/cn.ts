@@ -223,6 +223,7 @@ const cn = {
       Note: "含选择性移植，非完整官方 v2.16.1。官方版本信息仅供参考。",
     },
     ProviderSetup: {
+      ModelIdPlaceholder: "模型 ID@服务商",
       Provider: "服务商",
       ProviderHelp: "选择服务商并填写对应 API Key，即可使用默认模型",
       ProviderKeyPlaceholder: "填写该服务商的 API Key",
