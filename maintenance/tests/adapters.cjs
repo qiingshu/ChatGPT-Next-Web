@@ -86,14 +86,14 @@ function load(file, overrides={}) {
  }
  console.log('PASS: stream HTTP failures, malformed SSE, empty response, valid SSE lifecycle');
  const primary=new Map(),fallback=new Map([['fixture','stale']]);
- const storage=load(`${root}/app/utils/indexedDB-storage.ts`,{'idb-keyval':{get:async k=>primary.get(k),set:async(k,v)=>primary.set(k,v),del:async k=>primary.delete(k),clear:async()=>primary.clear()},'@/app/utils':{safeLocalStorage:()=>({getItem:k=>fallback.get(k)??null,setItem:(k,v)=>fallback.set(k,v),removeItem:k=>fallback.delete(k),clear:()=>fallback.clear()})}}).indexedDBStorage;
+ const storage=load(`${root}/app/utils/indexedDB-storage.ts`,{'idb-keyval':{get:async k=>primary.get(k),set:async(k,v)=>primary.set(k,v),del:async k=>primary.delete(k),clear:async()=>primary.clear()},'./safe-storage':{safeLocalStorage:()=>({getItem:k=>fallback.get(k)??null,setItem:(k,v)=>fallback.set(k,v),removeItem:k=>fallback.delete(k),clear:()=>fallback.clear()})}}).indexedDBStorage;
  await storage.setItem('fixture',JSON.stringify({state:{_hasHydrated:true,text:'preserved'}}));
  assert.ok((await storage.getItem('fixture')).includes('preserved'));
  await storage.removeItem('fixture');assert.equal(await storage.getItem('fixture'),null,'Deleted data must not resurrect from localStorage');
  primary.set('fixture','value');fallback.set('fixture','stale');await storage.clear();assert.equal(primary.size+fallback.size,0);
  console.log('PASS: hydrated IndexedDB write/read, removal clears legacy fallback, clear removes both stores');
  let release;
- const slowStorage=load(`${root}/app/utils/indexedDB-storage.ts`,{'idb-keyval':{set:()=>new Promise(resolve=>release=resolve)},'@/app/utils':{safeLocalStorage:()=>({setItem(){}})}}).indexedDBStorage;
+ const slowStorage=load(`${root}/app/utils/indexedDB-storage.ts`,{'idb-keyval':{set:()=>new Promise(resolve=>release=resolve)},'./safe-storage':{safeLocalStorage:()=>({setItem(){}})}}).indexedDBStorage;
  const write=slowStorage.setItem('fixture',JSON.stringify({state:{_hasHydrated:true}}));let flushed=false;const flush=slowStorage.flush().then(()=>flushed=true);
  await Promise.resolve();assert.equal(flushed,false,'Flush waits for IndexedDB transaction completion');release();await flush;await write;assert.equal(flushed,true);
  const merger=load(`${root}/app/utils/merge.ts`).merge;

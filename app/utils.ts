@@ -1,3 +1,4 @@
+export { safeLocalStorage } from "./utils/safe-storage";
 import { useEffect, useState } from "react";
 import { showToast } from "./components/ui-lib";
 import Locale from "./locales";
@@ -375,7 +376,6 @@ export function adapter(config: Record<string, unknown>) {
   });
 }
 
-export { safeLocalStorage } from "./utils/safe-storage";
 
 export function getOperationId(operation: {
   operationId?: string;
