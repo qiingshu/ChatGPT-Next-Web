@@ -177,7 +177,7 @@ async function run(engine) {
     await page.goto(base + "/#/chat");
     await page.locator("textarea").first().fill("Error fixture");
     await page.locator("textarea").first().press("Enter");
-    await page.getByText("ProviderProvider quota is insufficient", { exact: false }).last().waitFor({ timeout: 10000 });
+    await page.getByText("Provider quota is insufficient", { exact: false }).last().waitFor({ timeout: 10000 });
     const afterError = await snapshot(page);
     assert.equal(afterError["chat-next-web-store"].sessions[0].messages.at(-1).streaming, false);
     mode = "success";
@@ -299,8 +299,12 @@ async function run(engine) {
     assert.ok(ready, "GitHub hosted test server did not start");
     let networkError;
     try { if (!external) await require("./security-network.cjs")(base, out); } catch (error) { networkError = error; }
-    for (const engine of ["chromium", "webkit"]) await run(engine);
-    if (networkError) throw networkError;
+    const browserErrors = [];
+    for (const engine of ["chromium", "webkit"]) {
+      try { await run(engine); } catch (error) { browserErrors.push(error); }
+    }
+    if (networkError) browserErrors.push(networkError);
+    if (browserErrors.length) throw new AggregateError(browserErrors, browserErrors.map(error => error.message).join("\\n"));
     const report = [
       "# NextChat 全站多语言验收报告",
       "",

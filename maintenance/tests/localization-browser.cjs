@@ -7,6 +7,7 @@ module.exports = async function localizationBrowser(page, context, base, engine,
   assert.equal(process.env.RUNNER_ENVIRONMENT, "github-hosted");
   const out = process.env.NEXTCHAT_EVIDENCE_DIR || "maintenance/acceptance-results";
   const evidence = [];
+  const failures = [];
   let current = "en";
   async function switchLanguage(lang) {
     await page.goto(base + "/#/settings");
@@ -95,9 +96,17 @@ module.exports = async function localizationBrowser(page, context, base, engine,
       fs.writeFileSync(out + "/" + engine + "-localization.json", JSON.stringify({ engine, physicalIPhoneVerified: false, syntheticModelResponsesOnly: true, languages: evidence }, null, 2));
     } catch (error) {
       await page.screenshot({ path: out + "/" + engine + "-" + lang + "-localization-failure.png", mask: [page.locator("input")], animations: "disabled" }).catch(() => {});
-      throw new Error(engine + "/" + lang + ": " + error.message);
+      failures.push(engine + "/" + lang + ": " + error.message);
+      fs.writeFileSync(out + "/" + engine + "-localization-failures.json", JSON.stringify(failures, null, 2));
+      if (failures.length >= 3) break;
+      // Recover only to collect independent failures; a failed case never counts as passed.
+      await page.evaluate(() => localStorage.setItem("lang", "en"));
+      await page.goto(base + "/#/settings");
+      await page.reload();
+      current = "en";
     }
   }
+  if (failures.length) throw new Error(failures.join("\\n"));
   await switchLanguage("en");
   console.log("PASS " + engine + ": all 20 languages, settings, themes, errors, versions, Masks, roles, plugins and chat");
 };
