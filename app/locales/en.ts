@@ -225,6 +225,7 @@ const en: LocaleType = {
       Note: "Includes selective backports, not the complete official v2.16.1 release. Official version information is for reference only.",
     },
     ProviderSetup: {
+      ModelIdPlaceholder: "Model ID@provider",
       Provider: "Provider",
       ProviderHelp: "Select a provider and enter its API Key to use the default model",
       ProviderKeyPlaceholder: "Enter this provider's API Key",
