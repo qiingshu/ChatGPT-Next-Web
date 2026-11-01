@@ -1,10 +1,10 @@
 import { SubmitKey } from "../store/config";
-import type { PartialLocaleType } from "./index";
+import type { LocaleType } from "./index";
 import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 const isApp = !!getClientConfig()?.isApp;
 
-const ko: PartialLocaleType = {
+const ko: LocaleType = {
   WIP: "곧 출시 예정...",
   Error: {
     Unauthorized: isApp
@@ -55,6 +55,10 @@ const ko: PartialLocaleType = {
       Edit: "편집",
       RefreshTitle: "제목 새로고침",
       RefreshToast: "제목 새로고침 요청이 전송되었습니다",
+    
+      "FullScreen": "전체 화면",
+      "Speech": "읽어 주기",
+      "StopSpeech": "정지",
     },
     Commands: {
       new: "새 채팅",
@@ -63,6 +67,8 @@ const ko: PartialLocaleType = {
       prev: "이전 채팅",
       clear: "컨텍스트 지우기",
       del: "채팅 삭제",
+    
+      "fork": "대화 복사",
     },
     InputActions: {
       Stop: "응답 중지",
@@ -93,6 +99,18 @@ const ko: PartialLocaleType = {
       SaveAs: "마스크로 저장",
     },
     IsContext: "프롬프트 설정",
+  
+    "StartSpeak": "말하기 시작",
+    "StopSpeak": "정지",
+    "ShortcutKey": {
+      "Title": "키보드 단축키",
+      "newChat": "새 대화 열기",
+      "focusInput": "입력란에 초점 맞추기",
+      "copyLastMessage": "마지막 답변 복사",
+      "copyLastCode": "마지막 코드 블록 복사",
+      "showShortcutKey": "단축키 표시",
+      "clearContext": "채팅 지우기",
+    },
   },
   Export: {
     Title: "채팅 기록 공유",
@@ -116,6 +134,11 @@ const ko: PartialLocaleType = {
     Image: {
       Toast: "스크린샷 생성 중",
       Modal: "길게 누르거나 오른쪽 클릭하여 이미지를 저장하십시오.",
+    },
+  
+    "Artifacts": {
+      "Title": "Artifacts 공유",
+      "Error": "Artifacts 공유 — 오류",
     },
   },
   Select: {
@@ -157,7 +180,7 @@ const ko: PartialLocaleType = {
       },
     },
     Lang: {
-      Name: "Language", // 주의: 새 번역을 추가하려면 이 값을 번역하지 말고 그대로 유지하세요.
+      Name: "언어", // 주의: 새 번역을 추가하려면 이 값을 번역하지 말고 그대로 유지하세요.
       All: "모든 언어",
     },
     Avatar: "아바타",
@@ -187,6 +210,9 @@ const ko: PartialLocaleType = {
       IsChecking: "업데이트 확인 중...",
       FoundUpdate: (x: string) => `새 버전 발견: ${x}`,
       GoToUpdate: "업데이트로 이동",
+    
+      "Success": "업데이트 완료",
+      "Failed": "업데이트 실패",
     },
     SendKey: "전송 키",
     Theme: "테마",
@@ -314,7 +340,7 @@ const ko: PartialLocaleType = {
       },
       OpenAI: {
         ApiKey: {
-          Title: "API 키",
+          Title: "OpenAI API Key",
           SubTitle: "커스텀 OpenAI 키를 사용하여 비밀번호 접근 제한 우회",
           Placeholder: "OpenAI API 키",
         },
@@ -326,7 +352,7 @@ const ko: PartialLocaleType = {
       },
       Azure: {
         ApiKey: {
-          Title: "엔드포인트 키",
+          Title: "Azure API Key",
           SubTitle: "커스텀 Azure 키를 사용하여 비밀번호 접근 제한 우회",
           Placeholder: "Azure API 키",
         },
@@ -343,7 +369,7 @@ const ko: PartialLocaleType = {
       },
       Anthropic: {
         ApiKey: {
-          Title: "엔드포인트 키",
+          Title: "Anthropic API Key",
           SubTitle: "커스텀 Anthropic 키를 사용하여 비밀번호 접근 제한 우회",
           Placeholder: "Anthropic API 키",
         },
@@ -360,7 +386,7 @@ const ko: PartialLocaleType = {
       },
       Google: {
         ApiKey: {
-          Title: "API 키",
+          Title: "Google API Key",
           SubTitle: "Google AI에서 API 키를 가져오세요.",
           Placeholder: "Google AI Studio API 키 입력",
         },
@@ -381,7 +407,7 @@ const ko: PartialLocaleType = {
       },
       Baidu: {
         ApiKey: {
-          Title: "API 키",
+          Title: "Baidu API Key",
           SubTitle: "커스텀 Baidu API 키 사용",
           Placeholder: "Baidu API 키",
         },
@@ -397,7 +423,7 @@ const ko: PartialLocaleType = {
       },
       ByteDance: {
         ApiKey: {
-          Title: "엔드포인트 키",
+          Title: "ByteDance API Key",
           SubTitle: "커스텀 ByteDance API 키 사용",
           Placeholder: "ByteDance API 키",
         },
@@ -408,7 +434,7 @@ const ko: PartialLocaleType = {
       },
       Alibaba: {
         ApiKey: {
-          Title: "엔드포인트 키",
+          Title: "Alibaba API Key",
           SubTitle: "커스텀 Alibaba Cloud API 키 사용",
           Placeholder: "Alibaba Cloud API 키",
         },
@@ -420,6 +446,105 @@ const ko: PartialLocaleType = {
       CustomModel: {
         Title: "커스텀 모델 이름",
         SubTitle: "커스텀 모델 옵션 추가, 영어 쉼표로 구분",
+      },
+    
+      "Tencent": {
+        "ApiKey": {
+          "Title": "Tencent API Key",
+          "SubTitle": "사용자 지정 API Key 사용",
+          "Placeholder": "Tencent API Key",
+        },
+        "SecretKey": {
+          "Title": "Tencent Secret Key",
+          "SubTitle": "사용자 지정 인증 정보 사용 — Secret Key",
+          "Placeholder": "Tencent Secret Key",
+        },
+        "Endpoint": {
+          "Title": "인터페이스 주소",
+          "SubTitle": "이 값은 .env에서 설정하세요",
+        },
+      },
+      "Moonshot": {
+        "ApiKey": {
+          "Title": "Moonshot API Key",
+          "SubTitle": "사용자 지정 API Key 사용",
+          "Placeholder": "Moonshot API Key",
+        },
+        "Endpoint": {
+          "Title": "인터페이스 주소",
+          "SubTitle": "예시: ",
+        },
+      },
+      "DeepSeek": {
+        "ApiKey": {
+          "Title": "DeepSeek API Key",
+          "SubTitle": "사용자 지정 API Key 사용",
+          "Placeholder": "DeepSeek API Key",
+        },
+        "Endpoint": {
+          "Title": "인터페이스 주소",
+          "SubTitle": "예시: ",
+        },
+      },
+      "XAI": {
+        "ApiKey": {
+          "Title": "XAI API Key",
+          "SubTitle": "사용자 지정 API Key 사용",
+          "Placeholder": "XAI API Key",
+        },
+        "Endpoint": {
+          "Title": "인터페이스 주소",
+          "SubTitle": "예시: ",
+        },
+      },
+      "ChatGLM": {
+        "ApiKey": {
+          "Title": "ChatGLM API Key",
+          "SubTitle": "사용자 지정 API Key 사용",
+          "Placeholder": "ChatGLM API Key",
+        },
+        "Endpoint": {
+          "Title": "인터페이스 주소",
+          "SubTitle": "예시: ",
+        },
+      },
+      "SiliconFlow": {
+        "ApiKey": {
+          "Title": "SiliconFlow API Key",
+          "SubTitle": "사용자 지정 API Key 사용",
+          "Placeholder": "SiliconFlow API Key",
+        },
+        "Endpoint": {
+          "Title": "인터페이스 주소",
+          "SubTitle": "예시: ",
+        },
+      },
+      "Stability": {
+        "ApiKey": {
+          "Title": "Stability API Key",
+          "SubTitle": "사용자 지정 API Key 사용",
+          "Placeholder": "Stability API Key",
+        },
+        "Endpoint": {
+          "Title": "인터페이스 주소",
+          "SubTitle": "예시: ",
+        },
+      },
+      "Iflytek": {
+        "ApiKey": {
+          "Title": "Iflytek API Key",
+          "SubTitle": "사용자 지정 API Key 사용",
+          "Placeholder": "Iflytek API Key",
+        },
+        "ApiSecret": {
+          "Title": "Iflytek API Secret",
+          "SubTitle": "사용자 지정 인증 정보 사용 — API Secret",
+          "Placeholder": "Iflytek API Secret",
+        },
+        "Endpoint": {
+          "Title": "인터페이스 주소",
+          "SubTitle": "예시: ",
+        },
       },
     },
 
@@ -447,6 +572,96 @@ const ko: PartialLocaleType = {
     FrequencyPenalty: {
       Title: "빈도 벌점 (frequency_penalty)",
       SubTitle: "값이 클수록 중복 단어 감소 가능성 높음",
+    },
+  
+    "ShowPassword": "비밀번호 표시",
+    "LocalizationInfo": {
+      "Edition": "NextChat 사용자 지정판",
+      "Timeout": "연결 테스트가 30초 후 시간 초과되었습니다. 네트워크와 API 주소를 확인하세요.",
+      "Success": "연결 성공",
+      "NoResponse": "유효한 응답이 없습니다. 모델 및 인터페이스 설정을 확인하세요.",
+      "Upstream": "원본 기반 버전",
+      "Details": "자세한 버전 정보",
+      "Security": "보안 유지 관리 ID",
+      "Commit": "빌드 커밋",
+      "Official": "공식 참조 버전",
+      "Unavailable": "아직 확인되지 않음",
+      "Note": "선택적으로 이식한 수정 사항을 포함하며 공식 v2.16.1 전체가 아닙니다. 공식 버전 정보는 참고용입니다.",
+    },
+    "ProviderSetup": {
+      "ModelIdPlaceholder": "모델 ID@제공업체",
+      "Provider": "제공업체",
+      "ProviderHelp": "제공업체를 선택하고 API Key를 입력하면 기본 모델을 사용할 수 있습니다",
+      "ProviderKeyPlaceholder": "이 제공업체의 API Key 입력",
+      "CurrentModel": "현재 대화 모델",
+      "DefaultModel": "기본 모델",
+      "ModelHelp": "인터페이스와 사용자 지정 모델은 고급 설정에서 변경할 수 있습니다",
+      "TestModel": "현재 대화 모델 테스트",
+      "TestHelp": "짧은 요청을 전송하며 API 요금이 발생할 수 있습니다. 대화 기록에는 저장하지 않습니다",
+      "TestConnection": "연결 테스트",
+      "Testing": "테스트 중…",
+      "Advanced": "고급 설정",
+      "OfficialURL": "공식 주소",
+      "DefaultRoute": "기본적으로 이 사이트의 경로를 사용합니다",
+    },
+    "TTS": {
+      "Enable": {
+        "Title": "TTS 활성화",
+        "SubTitle": "텍스트 음성 변환 활성화",
+      },
+      "Autoplay": {
+        "Title": "자동 재생 활성화",
+        "SubTitle": "음성을 자동 생성하고 재생합니다. 먼저 TTS를 켜세요",
+      },
+      "Model": "모델 (model)",
+      "Engine": "TTS 엔진",
+      "Voice": {
+        "Title": "목소리",
+        "SubTitle": "음성 생성에 사용할 목소리",
+      },
+      "Speed": {
+        "Title": "속도",
+        "SubTitle": "생성된 음성의 속도",
+      },
+    },
+    "Realtime": {
+      "Enable": {
+        "Title": "실시간 대화",
+        "SubTitle": "실시간 대화 기능 활성화",
+      },
+      "Provider": {
+        "Title": "모델 제공업체",
+        "SubTitle": "제공업체 전환",
+      },
+      "Model": {
+        "Title": "모델 (model)",
+        "SubTitle": "모델 선택",
+      },
+      "ApiKey": {
+        "Title": "API Key",
+        "SubTitle": "API Key",
+        "Placeholder": "API Key",
+      },
+      "Azure": {
+        "Endpoint": {
+          "Title": "인터페이스 주소",
+          "SubTitle": "인터페이스 주소",
+        },
+        "Deployment": {
+          "Title": "배포 이름",
+          "SubTitle": "배포 이름",
+        },
+      },
+      "Temperature": {
+        "Title": "무작위성 (temperature)",
+        "SubTitle": "값이 클수록 응답이 더 무작위적",
+      },
+    },
+    "SafetyLabels": {
+      "BLOCK_NONE": "차단 안 함",
+      "BLOCK_ONLY_HIGH": "높은 위험만",
+      "BLOCK_MEDIUM_AND_ABOVE": "중간 위험 이상",
+      "BLOCK_LOW_AND_ABOVE": "낮은 위험 이상",
     },
   },
   Store: {
@@ -478,6 +693,52 @@ const ko: PartialLocaleType = {
   },
   Plugin: {
     Name: "플러그인",
+  
+    "Accessibility": {
+      "Create": "새로 만들기: 플러그인",
+      "Edit": "편집: 플러그인",
+      "Save": "저장: 플러그인",
+      "SchemaUrl": "플러그인 Schema URL",
+      "LoadSchema": "URL에서 불러오기: 플러그인 Schema",
+      "Schema": "플러그인 Schema",
+    },
+    "Page": {
+      "Title": "플러그인",
+      "SubTitle": (count: number) => "플러그인: " + count,
+      "Search": "메시지 검색 — 플러그인",
+      "Create": "새로 만들기",
+      "Find": "GitHub에서 플러그인 찾기: ",
+    },
+    "Item": {
+      "Info": (count: number) => "메서드: " + count,
+      "View": "보기",
+      "Edit": "편집",
+      "Delete": "삭제",
+      "DeleteConfirm": "삭제를 확인하시겠습니까?",
+    },
+    "Auth": {
+      "None": "인증 없음",
+      "Basic": "Basic",
+      "Bearer": "Bearer",
+      "Custom": "사용자 지정",
+      "CustomHeader": "매개변수 이름",
+      "Token": "Token",
+      "Proxy": "프록시 사용",
+      "ProxyDescription": "프록시로 CORS 제한을 피합니다",
+      "Location": "위치",
+      "LocationHeader": "Header",
+      "LocationQuery": "Query",
+      "LocationBody": "Body",
+    },
+    "EditModal": {
+      "Title": (readonly: boolean) => "편집: 플러그인" + (readonly ? " (읽기 전용)" : ""),
+      "Download": "다운로드",
+      "Auth": "인증 방식",
+      "Content": "OpenAPI Schema",
+      "Load": "URL에서 불러오기",
+      "Method": "메서드",
+      "Error": "잘못된 OpenAPI Schema 형식",
+    },
   },
   FineTuned: {
     Sysmessage: "당신은 보조자입니다.",
@@ -537,6 +798,15 @@ const ko: PartialLocaleType = {
         SubTitle: "이 마스크의 직접 링크 생성",
         Action: "링크 복사",
       },
+    
+      "Artifacts": {
+        "Title": "Artifacts 활성화",
+        "SubTitle": "Artifacts로 HTML 페이지 표시",
+      },
+      "CodeFold": {
+        "Title": "코드 접기 활성화",
+        "SubTitle": "긴 코드 블록을 자동으로 접습니다",
+      },
     },
   },
   NewChat: {
@@ -566,6 +836,28 @@ const ko: PartialLocaleType = {
     Import: "가져오기",
     Sync: "동기화",
     Config: "구성",
+  
+    "Save": "저장",
+    "Loading": "불러오는 중…",
+    "Seed": "난수 시드",
+    "User": "사용자",
+    "Assistant": "도우미",
+    "System": "시스템",
+    "Text": "텍스트",
+    "Image": "이미지",
+    "Standard": "표준",
+    "Vivid": "선명하게",
+    "Natural": "자연스럽게",
+    "ErrorTitle": "오류가 발생했습니다",
+    "ReportError": "오류 신고",
+    "ClearData": "모든 데이터 삭제",
+    "AssistantTagline": "나만의 AI 도우미를 만드세요.",
+    "EmptyPrompt": "새 프롬프트",
+    "EmptyPromptContent": "프롬프트 내용을 입력하세요",
+    "AllFiles": "모든 파일",
+  
+    "Refresh": "새로 고침",
+    "HidePassword": "비밀번호 숨기기",
   },
   Exporter: {
     Description: {
@@ -575,6 +867,114 @@ const ko: PartialLocaleType = {
     Messages: "메시지",
     Topic: "주제",
     Time: "시간",
+  },
+
+  "Discovery": {
+    "Name": "탐색",
+  },
+  "Mcp": {
+    "Name": "MCP",
+    "UI": {
+      "Market": "MCP 마켓",
+      "PresetLoadFailed": "사전 설정 서버를 불러오지 못했습니다",
+      "InitFailed": "초기 상태를 불러오지 못했습니다",
+      "ConfigSaved": "서버 설정을 저장했습니다",
+      "ConfigSaveFailed": "설정을 저장하지 못했습니다",
+      "ToolsFailed": "도구를 불러오지 못했습니다",
+      "Stopped": "중지됨",
+      "StopFailed": "서버를 중지하지 못했습니다",
+      "StartFailed": "서버를 시작하지 못했습니다. 로그를 확인하세요",
+      "RestartingClients": "모든 클라이언트 다시 시작 중",
+      "RestartFailed": "클라이언트를 다시 시작하지 못했습니다",
+      "Initializing": "초기화 중",
+      "NoServers": "사용 가능한 서버가 없습니다",
+      "OpenRepo": "저장소 열기",
+      "Start": "시작",
+      "Tools": "도구",
+      "Add": "추가",
+      "RestartAll": "모두 다시 시작",
+      "Search": "MCP 서버 검색",
+      "ConfigureServer": "서버 설정",
+      "ServerDetails": "서버 상세 정보",
+      "NoTools": "사용 가능한 도구가 없습니다",
+      "LoadingPresets": "사전 설정 서버를 불러오는 중…",
+      "ConfiguredServers": "설정된 서버",
+      "UpdatingConfig": "설정 업데이트 중…",
+      "CreatingClient": "MCP 클라이언트 생성 중…",
+      "Stopping": "서버 중지 중…",
+      "Starting": "서버 시작 중…",
+      "RestartingServers": "모든 서버 다시 시작 중…",
+      "ExecutionFailed": "MCP 실행 실패",
+    },
+  },
+  "SdPanel": {
+    "Prompt": "이미지 프롬프트",
+    "NegativePrompt": "부정 프롬프트",
+    "PleaseInput": (name: string) => name + " — 값을 입력하세요",
+    "AspectRatio": "가로세로 비율",
+    "ImageStyle": "이미지 스타일",
+    "OutFormat": "출력 형식",
+    "AIModel": "모델 (model)",
+    "ModelVersion": "모델 버전",
+    "Submit": "생성",
+    "ParamIsRequired": (name: string) => name + ": 필수",
+    "Styles": {
+      "D3Model": "3D 모델",
+      "AnalogFilm": "아날로그 필름",
+      "Anime": "애니메이션",
+      "Cinematic": "영화 스타일",
+      "ComicBook": "만화",
+      "DigitalArt": "디지털 아트",
+      "Enhance": "강조",
+      "FantasyArt": "판타지 아트",
+      "Isometric": "등각 투영",
+      "LineArt": "선화",
+      "LowPoly": "저다각형",
+      "ModelingCompound": "점토 모델",
+      "NeonPunk": "네온 펑크",
+      "Origami": "종이접기",
+      "Photographic": "사진 스타일",
+      "PixelArt": "픽셀 아트",
+      "TileTexture": "타일 질감",
+    },
+  },
+  "Sd": {
+    "SubTitle": (count: number) => "이미지: " + count,
+    "Actions": {
+      "Params": "매개변수 보기",
+      "Copy": "복사: 이미지 프롬프트",
+      "Delete": "삭제",
+      "Retry": "다시 시도",
+      "ReturnHome": "홈으로 돌아가기",
+      "History": "기록",
+    },
+    "EmptyRecord": "이미지가 없습니다",
+    "Status": {
+      "Name": "상태",
+      "Success": "성공",
+      "Error": "오류",
+      "Wait": "대기 중",
+      "Running": "실행 중",
+    },
+    "Danger": {
+      "Delete": "삭제를 확인하시겠습니까?",
+    },
+    "GenerateParams": "생성 매개변수",
+    "Detail": "상세 정보",
+  },
+  "ApiError": {
+    "Timeout": "요청 시간이 초과되었습니다. 다시 시도하거나 고급 설정에서 주소를 확인하세요.",
+    "Quota": "제공업체 할당량이 부족합니다. 잔액, 결제 상태 및 사용 한도를 확인하세요.",
+    "AccessCode": "사이트 액세스 코드가 잘못되었습니다. 코드를 확인하세요.",
+    "InvalidKey": "API Key가 잘못되었거나 만료되었습니다. 선택한 제공업체의 Key를 확인하세요.",
+    "Permission": "접근이 거부되었습니다. 모델 권한 및 지역 제한을 확인하세요.",
+    "Model": "모델 또는 인터페이스를 찾을 수 없습니다. 고급 설정에서 모델 ID와 주소를 확인하세요.",
+    "RateLimit": "요청이 너무 많거나 사용 한도에 도달했습니다. 잠시 후 다시 시도하고 할당량을 확인하세요.",
+    "Parameters": "요청 매개변수가 호환되지 않습니다. 고급 설정에서 모델 ID와 매개변수를 확인하세요.",
+    "Unavailable": "제공업체를 일시적으로 사용할 수 없습니다. 나중에 다시 시도하세요.",
+    "Empty": "유효한 내용이 없습니다. 모델 상태를 확인한 뒤 다시 시도하세요.",
+    "Network": "네트워크 연결에 실패했습니다. 네트워크, 주소 및 타사 CORS 설정을 확인하세요.",
+    "Generic": "요청에 실패했습니다. 제공업체의 API Key, 모델 및 인터페이스 설정을 확인하세요.",
   },
 };
 

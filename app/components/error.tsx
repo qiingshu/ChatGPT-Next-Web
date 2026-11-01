@@ -40,7 +40,7 @@ export class ErrorBoundary extends React.Component<any, IErrorBoundaryState> {
       // Render error message
       return (
         <div className="error">
-          <h2>Oops, something went wrong!</h2>
+          <h2>{Locale.UI.ErrorTitle}</h2>
           <pre>
             <code>{this.state.error?.toString()}</code>
             <code>{this.state.info?.componentStack}</code>
@@ -49,14 +49,14 @@ export class ErrorBoundary extends React.Component<any, IErrorBoundaryState> {
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <a href={ISSUE_URL} className="report">
               <IconButton
-                text="Report This Error"
+                text={Locale.UI.ReportError}
                 icon={<GithubIcon />}
                 bordered
               />
             </a>
             <IconButton
               icon={<ResetIcon />}
-              text="Clear All Data"
+              text={Locale.UI.ClearData}
               onClick={async () => {
                 if (await showConfirm(Locale.Settings.Danger.Reset.Confirm)) {
                   this.clearAndSaveData();

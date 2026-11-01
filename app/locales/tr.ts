@@ -1,10 +1,10 @@
 import { SubmitKey } from "../store/config";
-import type { PartialLocaleType } from "./index";
+import type { LocaleType } from "./index";
 import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 const isApp = !!getClientConfig()?.isApp;
 
-const tr: PartialLocaleType = {
+const tr: LocaleType = {
   WIP: "Çalışma devam ediyor...",
   Error: {
     Unauthorized: isApp
@@ -55,6 +55,10 @@ const tr: PartialLocaleType = {
       Edit: "Düzenle",
       RefreshTitle: "Başlığı Yenile",
       RefreshToast: "Başlık yenileme isteği gönderildi",
+    
+      "FullScreen": "Tam ekran",
+      "Speech": "Sesli oku",
+      "StopSpeech": "Durdur",
     },
     Commands: {
       new: "Yeni sohbet",
@@ -63,6 +67,8 @@ const tr: PartialLocaleType = {
       prev: "Önceki sohbet",
       clear: "Konteksti temizle",
       del: "Sohbeti sil",
+    
+      "fork": "Sohbeti kopyala",
     },
     InputActions: {
       Stop: "Yanıtı durdur",
@@ -93,6 +99,18 @@ const tr: PartialLocaleType = {
       SaveAs: "Maske olarak kaydet",
     },
     IsContext: "Varsayılan ifade",
+  
+    "StartSpeak": "Konuşmaya başla",
+    "StopSpeak": "Durdur",
+    "ShortcutKey": {
+      "Title": "Klavye kısayolları",
+      "newChat": "Yeni sohbet aç",
+      "focusInput": "Giriş alanına odaklan",
+      "copyLastMessage": "Son yanıtı kopyala",
+      "copyLastCode": "Son kod bloğunu kopyala",
+      "showShortcutKey": "Kısayolları göster",
+      "clearContext": "Sohbeti temizle",
+    },
   },
   Export: {
     Title: "Sohbet kayıtlarını paylaş",
@@ -116,6 +134,11 @@ const tr: PartialLocaleType = {
     Image: {
       Toast: "Ekran görüntüsü oluşturuluyor",
       Modal: "Resmi uzun basın veya sağ tıklayın ve kaydedin",
+    },
+  
+    "Artifacts": {
+      "Title": "Artifacts paylaş",
+      "Error": "Artifacts paylaş — Hata",
     },
   },
   Select: {
@@ -158,7 +181,7 @@ const tr: PartialLocaleType = {
       },
     },
     Lang: {
-      Name: "Language", // Dikkat: yeni bir çeviri eklemek isterseniz, bu değeri çevirmeyin, `Language` olarak bırakın
+      Name: "Dil", // Dikkat: yeni bir çeviri eklemek isterseniz, bu değeri çevirmeyin, `Language` olarak bırakın
       All: "Tüm diller",
     },
     Avatar: "Profil Resmi",
@@ -188,6 +211,9 @@ const tr: PartialLocaleType = {
       IsChecking: "Güncellemeler kontrol ediliyor...",
       FoundUpdate: (x: string) => `Yeni sürüm bulundu: ${x}`,
       GoToUpdate: "Güncellemeye git",
+    
+      "Success": "Güncelleme başarılı",
+      "Failed": "Güncelleme başarısız",
     },
     SendKey: "Gönderme Tuşu",
     Theme: "Tema",
@@ -320,7 +346,7 @@ const tr: PartialLocaleType = {
       },
       OpenAI: {
         ApiKey: {
-          Title: "API Anahtarı",
+          Title: "OpenAI API Key",
           SubTitle:
             "Özelleştirilmiş OpenAI Anahtarı kullanarak şifreli erişim kısıtlamalarını atlayın",
           Placeholder: "OpenAI API Anahtarı",
@@ -333,7 +359,7 @@ const tr: PartialLocaleType = {
       },
       Azure: {
         ApiKey: {
-          Title: "API Anahtarı",
+          Title: "Azure API Key",
           SubTitle:
             "Özelleştirilmiş Azure Anahtarı kullanarak şifreli erişim kısıtlamalarını atlayın",
           Placeholder: "Azure API Anahtarı",
@@ -351,7 +377,7 @@ const tr: PartialLocaleType = {
       },
       Anthropic: {
         ApiKey: {
-          Title: "API Anahtarı",
+          Title: "Anthropic API Key",
           SubTitle:
             "Özelleştirilmiş Anthropic Anahtarı kullanarak şifreli erişim kısıtlamalarını atlayın",
           Placeholder: "Anthropic API Anahtarı",
@@ -369,7 +395,7 @@ const tr: PartialLocaleType = {
       },
       Google: {
         ApiKey: {
-          Title: "API Anahtarı",
+          Title: "Google API Key",
           SubTitle: "Google AI'den API Anahtarınızı alın",
           Placeholder: "Google AI Studio API Anahtarınızı girin",
         },
@@ -390,7 +416,7 @@ const tr: PartialLocaleType = {
       },
       Baidu: {
         ApiKey: {
-          Title: "API Anahtarı",
+          Title: "Baidu API Key",
           SubTitle: "Özelleştirilmiş Baidu API Anahtarı kullanın",
           Placeholder: "Baidu API Anahtarı",
         },
@@ -406,7 +432,7 @@ const tr: PartialLocaleType = {
       },
       ByteDance: {
         ApiKey: {
-          Title: "API Anahtarı",
+          Title: "ByteDance API Key",
           SubTitle: "Özelleştirilmiş ByteDance API Anahtarı kullanın",
           Placeholder: "ByteDance API Anahtarı",
         },
@@ -417,7 +443,7 @@ const tr: PartialLocaleType = {
       },
       Alibaba: {
         ApiKey: {
-          Title: "API Anahtarı",
+          Title: "Alibaba API Key",
           SubTitle: "Özelleştirilmiş Alibaba Cloud API Anahtarı kullanın",
           Placeholder: "Alibaba Cloud API Anahtarı",
         },
@@ -430,6 +456,105 @@ const tr: PartialLocaleType = {
         Title: "Özelleştirilmiş Model Adı",
         SubTitle:
           "Özelleştirilmiş model seçenekleri ekleyin, İngilizce virgül ile ayırın",
+      },
+    
+      "Tencent": {
+        "ApiKey": {
+          "Title": "Tencent API Key",
+          "SubTitle": "Özel API Key kullan",
+          "Placeholder": "Tencent API Key",
+        },
+        "SecretKey": {
+          "Title": "Tencent Secret Key",
+          "SubTitle": "Özel kimlik bilgileri kullan — Secret Key",
+          "Placeholder": "Tencent Secret Key",
+        },
+        "Endpoint": {
+          "Title": "Arayüz adresi",
+          "SubTitle": "Bu değeri .env içinde yapılandırın",
+        },
+      },
+      "Moonshot": {
+        "ApiKey": {
+          "Title": "Moonshot API Key",
+          "SubTitle": "Özel API Key kullan",
+          "Placeholder": "Moonshot API Key",
+        },
+        "Endpoint": {
+          "Title": "Arayüz adresi",
+          "SubTitle": "Örnek: ",
+        },
+      },
+      "DeepSeek": {
+        "ApiKey": {
+          "Title": "DeepSeek API Key",
+          "SubTitle": "Özel API Key kullan",
+          "Placeholder": "DeepSeek API Key",
+        },
+        "Endpoint": {
+          "Title": "Arayüz adresi",
+          "SubTitle": "Örnek: ",
+        },
+      },
+      "XAI": {
+        "ApiKey": {
+          "Title": "XAI API Key",
+          "SubTitle": "Özel API Key kullan",
+          "Placeholder": "XAI API Key",
+        },
+        "Endpoint": {
+          "Title": "Arayüz adresi",
+          "SubTitle": "Örnek: ",
+        },
+      },
+      "ChatGLM": {
+        "ApiKey": {
+          "Title": "ChatGLM API Key",
+          "SubTitle": "Özel API Key kullan",
+          "Placeholder": "ChatGLM API Key",
+        },
+        "Endpoint": {
+          "Title": "Arayüz adresi",
+          "SubTitle": "Örnek: ",
+        },
+      },
+      "SiliconFlow": {
+        "ApiKey": {
+          "Title": "SiliconFlow API Key",
+          "SubTitle": "Özel API Key kullan",
+          "Placeholder": "SiliconFlow API Key",
+        },
+        "Endpoint": {
+          "Title": "Arayüz adresi",
+          "SubTitle": "Örnek: ",
+        },
+      },
+      "Stability": {
+        "ApiKey": {
+          "Title": "Stability API Key",
+          "SubTitle": "Özel API Key kullan",
+          "Placeholder": "Stability API Key",
+        },
+        "Endpoint": {
+          "Title": "Arayüz adresi",
+          "SubTitle": "Örnek: ",
+        },
+      },
+      "Iflytek": {
+        "ApiKey": {
+          "Title": "Iflytek API Key",
+          "SubTitle": "Özel API Key kullan",
+          "Placeholder": "Iflytek API Key",
+        },
+        "ApiSecret": {
+          "Title": "Iflytek API Secret",
+          "SubTitle": "Özel kimlik bilgileri kullan — API Secret",
+          "Placeholder": "Iflytek API Secret",
+        },
+        "Endpoint": {
+          "Title": "Arayüz adresi",
+          "SubTitle": "Örnek: ",
+        },
       },
     },
 
@@ -459,6 +584,96 @@ const tr: PartialLocaleType = {
       Title: "Frekans Cezası (frequency_penalty)",
       SubTitle:
         "Değer arttıkça, tekrar eden kelimelerin azalması olasılığı artar",
+    },
+  
+    "ShowPassword": "Parolayı göster",
+    "LocalizationInfo": {
+      "Edition": "NextChat özel sürüm",
+      "Timeout": "Bağlantı testi 30 saniye sonra zaman aşımına uğradı. Ağı ve API adresini kontrol edin.",
+      "Success": "Bağlantı başarılı",
+      "NoResponse": "Sağlayıcı geçerli bir yanıt vermedi. Model ve arayüz ayarlarını kontrol edin.",
+      "Upstream": "Kaynak temel sürüm",
+      "Details": "Ayrıntılı sürüm bilgileri",
+      "Security": "Güvenlik bakım kimliği",
+      "Commit": "Derleme commit’i",
+      "Official": "Resmî referans sürüm",
+      "Unavailable": "Henüz alınamadı",
+      "Note": "Seçilmiş düzeltmeleri içerir; resmî v2.16.1 sürümünün tamamı değildir. Resmî sürüm bilgileri yalnızca referans içindir.",
+    },
+    "ProviderSetup": {
+      "ModelIdPlaceholder": "Model ID@sağlayıcı",
+      "Provider": "Sağlayıcı",
+      "ProviderHelp": "Varsayılan modeli kullanmak için sağlayıcı seçip API Key girin",
+      "ProviderKeyPlaceholder": "Bu sağlayıcının API Key değerini girin",
+      "CurrentModel": "Geçerli sohbet modeli",
+      "DefaultModel": "Varsayılan model",
+      "ModelHelp": "Arayüzü ve özel modelleri gelişmiş ayarlarda düzenleyin",
+      "TestModel": "Geçerli sohbet modelini test et",
+      "TestHelp": "API ücreti doğurabilecek kısa bir istek gönderir; sohbet geçmişine kaydetmez",
+      "TestConnection": "Bağlantıyı test et",
+      "Testing": "Test ediliyor…",
+      "Advanced": "Gelişmiş ayarlar",
+      "OfficialURL": "Resmî adres",
+      "DefaultRoute": "Varsayılan olarak bu sitenin yolunu kullanır",
+    },
+    "TTS": {
+      "Enable": {
+        "Title": "TTS etkinleştir",
+        "SubTitle": "Metinden konuşmaya dönüştürmeyi etkinleştir",
+      },
+      "Autoplay": {
+        "Title": "Otomatik oynatmayı etkinleştir",
+        "SubTitle": "Sesi otomatik üret ve oynat; önce TTS etkinleştirilmeli",
+      },
+      "Model": "Model (model)",
+      "Engine": "TTS motoru",
+      "Voice": {
+        "Title": "Ses",
+        "SubTitle": "Üretilen seste kullanılacak ses",
+      },
+      "Speed": {
+        "Title": "Hız",
+        "SubTitle": "Üretilen sesin hızı",
+      },
+    },
+    "Realtime": {
+      "Enable": {
+        "Title": "Gerçek zamanlı sohbet",
+        "SubTitle": "Gerçek zamanlı sohbeti etkinleştir",
+      },
+      "Provider": {
+        "Title": "Model sağlayıcısı",
+        "SubTitle": "Sağlayıcı değiştir",
+      },
+      "Model": {
+        "Title": "Model (model)",
+        "SubTitle": "Model seç",
+      },
+      "ApiKey": {
+        "Title": "API Key",
+        "SubTitle": "API Key",
+        "Placeholder": "API Key",
+      },
+      "Azure": {
+        "Endpoint": {
+          "Title": "Arayüz adresi",
+          "SubTitle": "Arayüz adresi",
+        },
+        "Deployment": {
+          "Title": "Dağıtım adı",
+          "SubTitle": "Dağıtım adı",
+        },
+      },
+      "Temperature": {
+        "Title": "Rastgelelik (temperature)",
+        "SubTitle": "Değer arttıkça yanıt daha rastgele olur",
+      },
+    },
+    "SafetyLabels": {
+      "BLOCK_NONE": "Yok",
+      "BLOCK_ONLY_HIGH": "Yalnızca yüksek",
+      "BLOCK_MEDIUM_AND_ABOVE": "Orta ve üzeri",
+      "BLOCK_LOW_AND_ABOVE": "Düşük ve üzeri",
     },
   },
   Store: {
@@ -490,6 +705,52 @@ const tr: PartialLocaleType = {
   },
   Plugin: {
     Name: "Eklenti",
+  
+    "Accessibility": {
+      "Create": "Yeni oluştur: Eklenti",
+      "Edit": "Düzenle: Eklenti",
+      "Save": "Kaydet: Eklenti",
+      "SchemaUrl": "Eklenti Schema URL",
+      "LoadSchema": "URL’den yükle: Eklenti Schema",
+      "Schema": "Eklenti Schema",
+    },
+    "Page": {
+      "Title": "Eklentiler",
+      "SubTitle": (count: number) => "Eklentiler: " + count,
+      "Search": "Mesajları ara — Eklentiler",
+      "Create": "Yeni oluştur",
+      "Find": "GitHub’da eklenti bulun: ",
+    },
+    "Item": {
+      "Info": (count: number) => "Yöntemler: " + count,
+      "View": "Görünüm",
+      "Edit": "Düzenle",
+      "Delete": "Sil",
+      "DeleteConfirm": "Silmek istediğinizden emin misiniz?",
+    },
+    "Auth": {
+      "None": "Kimlik doğrulama yok",
+      "Basic": "Basic",
+      "Bearer": "Bearer",
+      "Custom": "Özel",
+      "CustomHeader": "Parametre adı",
+      "Token": "Token",
+      "Proxy": "Vekil sunucu kullan",
+      "ProxyDescription": "CORS kısıtlamalarını aşmak için vekil sunucu kullan",
+      "Location": "Konum",
+      "LocationHeader": "Header",
+      "LocationQuery": "Query",
+      "LocationBody": "Body",
+    },
+    "EditModal": {
+      "Title": (readonly: boolean) => "Düzenle: Eklenti" + (readonly ? " (Salt okunur)" : ""),
+      "Download": "İndir",
+      "Auth": "Kimlik doğrulama türü",
+      "Content": "OpenAPI Schema",
+      "Load": "URL’den yükle",
+      "Method": "Yöntemler",
+      "Error": "Geçersiz OpenAPI Schema",
+    },
   },
   FineTuned: {
     Sysmessage: "Sen bir asistansın",
@@ -551,6 +812,15 @@ const tr: PartialLocaleType = {
         SubTitle: "Bu maskenin doğrudan bağlantısını oluştur",
         Action: "Bağlantıyı Kopyala",
       },
+    
+      "Artifacts": {
+        "Title": "Artifacts etkinleştir",
+        "SubTitle": "Artifacts ile HTML sayfaları görüntüle",
+      },
+      "CodeFold": {
+        "Title": "Kod katlamayı etkinleştir",
+        "SubTitle": "Uzun kod bloklarını otomatik katla",
+      },
     },
   },
   NewChat: {
@@ -581,6 +851,28 @@ const tr: PartialLocaleType = {
     Import: "İçe Aktar",
     Sync: "Senkronize et",
     Config: "Yapılandır",
+  
+    "Save": "Kaydet",
+    "Loading": "Yükleniyor…",
+    "Seed": "Rastgelelik tohumu",
+    "User": "Kullanıcı",
+    "Assistant": "Asistan",
+    "System": "Sistem",
+    "Text": "Metin",
+    "Image": "Görsel",
+    "Standard": "Standart",
+    "Vivid": "Canlı",
+    "Natural": "Doğal",
+    "ErrorTitle": "Bir hata oluştu",
+    "ReportError": "Bu hatayı bildir",
+    "ClearData": "Tüm verileri temizle",
+    "AssistantTagline": "Kendi yapay zekâ asistanınızı oluşturun.",
+    "EmptyPrompt": "Yeni istem",
+    "EmptyPromptContent": "İstem içeriğini girin",
+    "AllFiles": "Tüm dosyalar",
+  
+    "Refresh": "Yeniden yükle",
+    "HidePassword": "Parolayı gizle",
   },
   Exporter: {
     Description: {
@@ -590,6 +882,114 @@ const tr: PartialLocaleType = {
     Messages: "Mesajlar",
     Topic: "Konu",
     Time: "Zaman",
+  },
+
+  "Discovery": {
+    "Name": "Keşfet",
+  },
+  "Mcp": {
+    "Name": "MCP",
+    "UI": {
+      "Market": "MCP pazarı",
+      "PresetLoadFailed": "Ön ayarlı sunucular yüklenemedi",
+      "InitFailed": "Başlangıç durumu yüklenemedi",
+      "ConfigSaved": "Sunucu yapılandırması kaydedildi",
+      "ConfigSaveFailed": "Yapılandırma kaydedilemedi",
+      "ToolsFailed": "Araçlar yüklenemedi",
+      "Stopped": "Durduruldu",
+      "StopFailed": "Sunucu durdurulamadı",
+      "StartFailed": "Sunucu başlatılamadı; günlükleri kontrol edin",
+      "RestartingClients": "Tüm istemciler yeniden başlatılıyor",
+      "RestartFailed": "İstemciler yeniden başlatılamadı",
+      "Initializing": "Başlatılıyor",
+      "NoServers": "Kullanılabilir sunucu yok",
+      "OpenRepo": "Depoyu aç",
+      "Start": "Başlat",
+      "Tools": "Araçlar",
+      "Add": "Ekle",
+      "RestartAll": "Tümünü yeniden başlat",
+      "Search": "MCP sunucusu ara",
+      "ConfigureServer": "Sunucuyu yapılandır",
+      "ServerDetails": "Sunucu ayrıntıları",
+      "NoTools": "Kullanılabilir araç yok",
+      "LoadingPresets": "Ön ayarlı sunucu listesi yükleniyor…",
+      "ConfiguredServers": "Yapılandırılmış sunucular",
+      "UpdatingConfig": "Yapılandırma güncelleniyor…",
+      "CreatingClient": "MCP istemcisi oluşturuluyor…",
+      "Stopping": "Sunucu durduruluyor…",
+      "Starting": "Sunucu başlatılıyor…",
+      "RestartingServers": "Tüm sunucular yeniden başlatılıyor…",
+      "ExecutionFailed": "MCP yürütmesi başarısız",
+    },
+  },
+  "SdPanel": {
+    "Prompt": "Görsel istemi",
+    "NegativePrompt": "Olumsuz istem",
+    "PleaseInput": (name: string) => name + " — Bir değer girin",
+    "AspectRatio": "En boy oranı",
+    "ImageStyle": "Görsel stili",
+    "OutFormat": "Çıktı biçimi",
+    "AIModel": "Model (model)",
+    "ModelVersion": "Model sürümü",
+    "Submit": "Üret",
+    "ParamIsRequired": (name: string) => name + ": Gerekli",
+    "Styles": {
+      "D3Model": "3D model",
+      "AnalogFilm": "Analog film",
+      "Anime": "Japon animasyonu",
+      "Cinematic": "Sinematik",
+      "ComicBook": "Çizgi roman",
+      "DigitalArt": "Dijital sanat",
+      "Enhance": "Geliştirilmiş",
+      "FantasyArt": "Fantastik sanat",
+      "Isometric": "İzometrik",
+      "LineArt": "Çizgi sanatı",
+      "LowPoly": "Düşük poligon",
+      "ModelingCompound": "Model hamuru",
+      "NeonPunk": "Neon punk",
+      "Origami": "Kâğıt katlama",
+      "Photographic": "Fotoğrafik",
+      "PixelArt": "Piksel sanatı",
+      "TileTexture": "Karo dokusu",
+    },
+  },
+  "Sd": {
+    "SubTitle": (count: number) => "Görseller: " + count,
+    "Actions": {
+      "Params": "Parametreleri göster",
+      "Copy": "Kopyala: Görsel istemi",
+      "Delete": "Sil",
+      "Retry": "Yeniden dene",
+      "ReturnHome": "Ana sayfaya dön",
+      "History": "Geçmiş",
+    },
+    "EmptyRecord": "Henüz görsel yok",
+    "Status": {
+      "Name": "Durum",
+      "Success": "Başarılı",
+      "Error": "Hata",
+      "Wait": "Bekliyor",
+      "Running": "Çalışıyor",
+    },
+    "Danger": {
+      "Delete": "Silmek istediğinizden emin misiniz?",
+    },
+    "GenerateParams": "Üretim parametreleri",
+    "Detail": "Ayrıntılar",
+  },
+  "ApiError": {
+    "Timeout": "İstek zaman aşımına uğradı. Yeniden deneyin veya gelişmiş ayarlarda adresi kontrol edin.",
+    "Quota": "Sağlayıcı kotası yetersiz. Bakiye, ödeme durumu ve kullanım sınırlarını kontrol edin.",
+    "AccessCode": "Site erişim kodu geçersiz. Kodunuzu kontrol edin.",
+    "InvalidKey": "API Key geçersiz veya süresi dolmuş. Seçili sağlayıcının Key değerini kontrol edin.",
+    "Permission": "Erişim reddedildi. Model izinlerini ve bölge kısıtlamalarını kontrol edin.",
+    "Model": "Model veya arayüz bulunamadı. Gelişmiş ayarlarda model ID ve adresi kontrol edin.",
+    "RateLimit": "Çok fazla istek veya kullanım sınırına ulaşıldı. Daha sonra deneyip kotayı kontrol edin.",
+    "Parameters": "İstek parametreleri uyumsuz. Gelişmiş ayarlarda model ID ve parametreleri kontrol edin.",
+    "Unavailable": "Sağlayıcı geçici olarak kullanılamıyor. Daha sonra yeniden deneyin.",
+    "Empty": "Geçerli içerik dönmedi. Model durumunu kontrol edip yeniden deneyin.",
+    "Network": "Ağ bağlantısı başarısız. Ağı, adresi ve üçüncü taraf CORS ayarlarını kontrol edin.",
+    "Generic": "İstek başarısız. Sağlayıcının API Key, model ve arayüz ayarlarını kontrol edin.",
   },
 };
 

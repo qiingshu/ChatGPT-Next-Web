@@ -1,10 +1,10 @@
 import { SubmitKey } from "../store/config";
-import type { PartialLocaleType } from "./index";
+import type { LocaleType } from "./index";
 import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 const isApp = !!getClientConfig()?.isApp;
 
-const no: PartialLocaleType = {
+const no: LocaleType = {
   WIP: "Arbeid pågår ...",
   Error: {
     Unauthorized: isApp
@@ -57,6 +57,10 @@ const no: PartialLocaleType = {
       Edit: "Rediger",
       RefreshTitle: "Oppdater tittel",
       RefreshToast: "Forespørsel om titteloppdatering sendt",
+    
+      "FullScreen": "Fullskjerm",
+      "Speech": "Les opp",
+      "StopSpeech": "Stopp",
     },
     Commands: {
       new: "Ny samtale",
@@ -65,6 +69,8 @@ const no: PartialLocaleType = {
       prev: "Forrige samtale",
       clear: "Rydd kontekst",
       del: "Slett samtale",
+    
+      "fork": "Kopier samtale",
     },
     InputActions: {
       Stop: "Stopp respons",
@@ -97,6 +103,18 @@ const no: PartialLocaleType = {
       SaveAs: "Lagre som maske",
     },
     IsContext: "Forhåndsdefinerte oppfordringer",
+  
+    "StartSpeak": "Byrj å snakke",
+    "StopSpeak": "Stopp",
+    "ShortcutKey": {
+      "Title": "Tastatursnarvegar",
+      "newChat": "Opne ny samtale",
+      "focusInput": "Fokuser skrivefeltet",
+      "copyLastMessage": "Kopier siste svar",
+      "copyLastCode": "Kopier siste kodeblokk",
+      "showShortcutKey": "Vis snarvegar",
+      "clearContext": "Rydd samtale",
+    },
   },
   Export: {
     Title: "Del samtalehistorikk",
@@ -120,6 +138,11 @@ const no: PartialLocaleType = {
     Image: {
       Toast: "Genererer skjermbilde",
       Modal: "Langtrykk eller høyreklikk for å lagre bilde",
+    },
+  
+    "Artifacts": {
+      "Title": "Del Artifacts",
+      "Error": "Del Artifacts — Feil",
     },
   },
   Select: {
@@ -162,7 +185,7 @@ const no: PartialLocaleType = {
       },
     },
     Lang: {
-      Name: "Language", // ATTENTION: if you wanna add a new translation, please do not translate this value, leave it as `Language`
+      Name: "Språk", // ATTENTION: if you wanna add a new translation, please do not translate this value, leave it as `Language`
       All: "Alle språk",
     },
     Avatar: "Profilbilde",
@@ -194,6 +217,9 @@ const no: PartialLocaleType = {
       IsChecking: "Sjekker oppdateringer...",
       FoundUpdate: (x: string) => `Ny versjon oppdaget: ${x}`,
       GoToUpdate: "Gå til oppdatering",
+    
+      "Success": "Oppdateringa var vellukka",
+      "Failed": "Oppdateringa mislukkast",
     },
     SendKey: "Send-knapp",
     Theme: "Tema",
@@ -322,7 +348,7 @@ const no: PartialLocaleType = {
       },
       OpenAI: {
         ApiKey: {
-          Title: "API-nøkkel",
+          Title: "OpenAI API Key",
           SubTitle:
             "Bruk egendefinert OpenAI-nøkkel for å omgå passordtilgangsbegrensninger",
           Placeholder: "OpenAI API-nøkkel",
@@ -335,7 +361,7 @@ const no: PartialLocaleType = {
       },
       Azure: {
         ApiKey: {
-          Title: "API-nøkkel",
+          Title: "Azure API Key",
           SubTitle:
             "Bruk egendefinert Azure-nøkkel for å omgå passordtilgangsbegrensninger",
           Placeholder: "Azure API-nøkkel",
@@ -353,7 +379,7 @@ const no: PartialLocaleType = {
       },
       Anthropic: {
         ApiKey: {
-          Title: "API-nøkkel",
+          Title: "Anthropic API Key",
           SubTitle:
             "Bruk egendefinert Anthropic-nøkkel for å omgå passordtilgangsbegrensninger",
           Placeholder: "Anthropic API-nøkkel",
@@ -371,7 +397,7 @@ const no: PartialLocaleType = {
       },
       Google: {
         ApiKey: {
-          Title: "API-nøkkel",
+          Title: "Google API Key",
           SubTitle: "Hent din API-nøkkel fra Google AI",
           Placeholder: "Skriv inn din Google AI Studio API-nøkkel",
         },
@@ -392,7 +418,7 @@ const no: PartialLocaleType = {
       },
       Baidu: {
         ApiKey: {
-          Title: "API-nøkkel",
+          Title: "Baidu API Key",
           SubTitle: "Bruk egendefinert Baidu API-nøkkel",
           Placeholder: "Baidu API-nøkkel",
         },
@@ -409,7 +435,7 @@ const no: PartialLocaleType = {
       },
       ByteDance: {
         ApiKey: {
-          Title: "API-nøkkel",
+          Title: "ByteDance API Key",
           SubTitle: "Bruk egendefinert ByteDance API-nøkkel",
           Placeholder: "ByteDance API-nøkkel",
         },
@@ -420,7 +446,7 @@ const no: PartialLocaleType = {
       },
       Alibaba: {
         ApiKey: {
-          Title: "API-nøkkel",
+          Title: "Alibaba API Key",
           SubTitle: "Bruk egendefinert Alibaba Cloud API-nøkkel",
           Placeholder: "Alibaba Cloud API-nøkkel",
         },
@@ -432,6 +458,105 @@ const no: PartialLocaleType = {
       CustomModel: {
         Title: "Egendefinert modellnavn",
         SubTitle: "Legg til egendefinerte modellalternativer, skill med komma",
+      },
+    
+      "Tencent": {
+        "ApiKey": {
+          "Title": "Tencent API Key",
+          "SubTitle": "Bruk ein tilpassa API Key",
+          "Placeholder": "Tencent API Key",
+        },
+        "SecretKey": {
+          "Title": "Tencent Secret Key",
+          "SubTitle": "Bruk tilpassa innloggingsopplysningar — Secret Key",
+          "Placeholder": "Tencent Secret Key",
+        },
+        "Endpoint": {
+          "Title": "Grensesnittadresse",
+          "SubTitle": "Still inn denne verdien i .env",
+        },
+      },
+      "Moonshot": {
+        "ApiKey": {
+          "Title": "Moonshot API Key",
+          "SubTitle": "Bruk ein tilpassa API Key",
+          "Placeholder": "Moonshot API Key",
+        },
+        "Endpoint": {
+          "Title": "Grensesnittadresse",
+          "SubTitle": "Døme: ",
+        },
+      },
+      "DeepSeek": {
+        "ApiKey": {
+          "Title": "DeepSeek API Key",
+          "SubTitle": "Bruk ein tilpassa API Key",
+          "Placeholder": "DeepSeek API Key",
+        },
+        "Endpoint": {
+          "Title": "Grensesnittadresse",
+          "SubTitle": "Døme: ",
+        },
+      },
+      "XAI": {
+        "ApiKey": {
+          "Title": "XAI API Key",
+          "SubTitle": "Bruk ein tilpassa API Key",
+          "Placeholder": "XAI API Key",
+        },
+        "Endpoint": {
+          "Title": "Grensesnittadresse",
+          "SubTitle": "Døme: ",
+        },
+      },
+      "ChatGLM": {
+        "ApiKey": {
+          "Title": "ChatGLM API Key",
+          "SubTitle": "Bruk ein tilpassa API Key",
+          "Placeholder": "ChatGLM API Key",
+        },
+        "Endpoint": {
+          "Title": "Grensesnittadresse",
+          "SubTitle": "Døme: ",
+        },
+      },
+      "SiliconFlow": {
+        "ApiKey": {
+          "Title": "SiliconFlow API Key",
+          "SubTitle": "Bruk ein tilpassa API Key",
+          "Placeholder": "SiliconFlow API Key",
+        },
+        "Endpoint": {
+          "Title": "Grensesnittadresse",
+          "SubTitle": "Døme: ",
+        },
+      },
+      "Stability": {
+        "ApiKey": {
+          "Title": "Stability API Key",
+          "SubTitle": "Bruk ein tilpassa API Key",
+          "Placeholder": "Stability API Key",
+        },
+        "Endpoint": {
+          "Title": "Grensesnittadresse",
+          "SubTitle": "Døme: ",
+        },
+      },
+      "Iflytek": {
+        "ApiKey": {
+          "Title": "Iflytek API Key",
+          "SubTitle": "Bruk ein tilpassa API Key",
+          "Placeholder": "Iflytek API Key",
+        },
+        "ApiSecret": {
+          "Title": "Iflytek API Secret",
+          "SubTitle": "Bruk tilpassa innloggingsopplysningar — API Secret",
+          "Placeholder": "Iflytek API Secret",
+        },
+        "Endpoint": {
+          "Title": "Grensesnittadresse",
+          "SubTitle": "Døme: ",
+        },
       },
     },
 
@@ -462,6 +587,96 @@ const no: PartialLocaleType = {
       Title: "Frekvensstraff (frequency_penalty)",
       SubTitle:
         "Høyere verdi gir større sannsynlighet for å redusere gjentakende ord",
+    },
+  
+    "ShowPassword": "Vis passord",
+    "LocalizationInfo": {
+      "Edition": "NextChat – tilpassa utgåve",
+      "Timeout": "Tilkoplingstesten tok meir enn 30 sekund. Kontroller nettverk og API-adresse.",
+      "Success": "Tilkoplinga verkar",
+      "NoResponse": "Tilbydaren returnerte ikkje eit gyldig svar. Kontroller modell og grensesnitt.",
+      "Upstream": "Opphavleg basisversjon",
+      "Details": "Detaljert versjonsinformasjon",
+      "Security": "Id for tryggleiksvedlikehald",
+      "Commit": "Bygg-commit",
+      "Official": "Offisiell referanseversjon",
+      "Unavailable": "Ikkje tilgjengeleg",
+      "Note": "Inneheld utvalde rettingar, ikkje heile den offisielle v2.16.1. Offisiell versjonsinformasjon er berre til orientering.",
+    },
+    "ProviderSetup": {
+      "ModelIdPlaceholder": "Modell-id@tilbydar",
+      "Provider": "Tilbydar",
+      "ProviderHelp": "Vel ein tilbydar og skriv inn API Key for å bruke standardmodellen",
+      "ProviderKeyPlaceholder": "Skriv inn API Key for denne tilbydaren",
+      "CurrentModel": "Gjeldande samtalemodell",
+      "DefaultModel": "Standardmodell",
+      "ModelHelp": "Tilpass grensesnitt og eigne modellar i avanserte innstillingar",
+      "TestModel": "Test gjeldande modell",
+      "TestHelp": "Sender ein kort førespurnad som kan koste API-gebyr; lagrar ikkje samtalehistorikk",
+      "TestConnection": "Test tilkopling",
+      "Testing": "Testar…",
+      "Advanced": "Avanserte innstillingar",
+      "OfficialURL": "Offisiell adresse",
+      "DefaultRoute": "Brukar som standard ruta til denne nettstaden",
+    },
+    "TTS": {
+      "Enable": {
+        "Title": "Slå på TTS",
+        "SubTitle": "Slå på tekst til tale",
+      },
+      "Autoplay": {
+        "Title": "Slå på automatisk avspeling",
+        "SubTitle": "Lag og spel av tale automatisk; slå på TTS først",
+      },
+      "Model": "Modell",
+      "Engine": "TTS-motor",
+      "Voice": {
+        "Title": "Røyst",
+        "SubTitle": "Røysta som vert brukt i lyden",
+      },
+      "Speed": {
+        "Title": "Fart",
+        "SubTitle": "Farten på den genererte lyden",
+      },
+    },
+    "Realtime": {
+      "Enable": {
+        "Title": "Sanntidssamtale",
+        "SubTitle": "Slå på sanntidssamtale",
+      },
+      "Provider": {
+        "Title": "Modelltilbydar",
+        "SubTitle": "Byt tilbydar",
+      },
+      "Model": {
+        "Title": "Modell",
+        "SubTitle": "Vel ein modell",
+      },
+      "ApiKey": {
+        "Title": "API Key",
+        "SubTitle": "API Key",
+        "Placeholder": "API Key",
+      },
+      "Azure": {
+        "Endpoint": {
+          "Title": "Grensesnittadresse",
+          "SubTitle": "Grensesnittadresse",
+        },
+        "Deployment": {
+          "Title": "Utrullingsnamn",
+          "SubTitle": "Utrullingsnamn",
+        },
+      },
+      "Temperature": {
+        "Title": "Tilfeldighet (temperature)",
+        "SubTitle": "Høyere verdi gir mer tilfeldige svar",
+      },
+    },
+    "SafetyLabels": {
+      "BLOCK_NONE": "Ingen",
+      "BLOCK_ONLY_HIGH": "Berre høg",
+      "BLOCK_MEDIUM_AND_ABOVE": "Middels og høgare",
+      "BLOCK_LOW_AND_ABOVE": "Låg og høgare",
     },
   },
   Store: {
@@ -494,7 +709,53 @@ const no: PartialLocaleType = {
     Revert: "Gjenopprett konteksten",
   },
   Plugin: {
-    Name: "Plugin",
+    Name: "Tillegg",
+  
+    "Accessibility": {
+      "Create": "Opprett: Tillegg",
+      "Edit": "Rediger: Tillegg",
+      "Save": "Lagre: Tillegg",
+      "SchemaUrl": "Tillegg Schema URL",
+      "LoadSchema": "Last frå URL: Tillegg Schema",
+      "Schema": "Tillegg Schema",
+    },
+    "Page": {
+      "Title": "Tillegg",
+      "SubTitle": (count: number) => "Tillegg: " + count,
+      "Search": "Søk meldinger — Tillegg",
+      "Create": "Opprett",
+      "Find": "Finn tillegg på GitHub: ",
+    },
+    "Item": {
+      "Info": (count: number) => "Metodar: " + count,
+      "View": "Se",
+      "Edit": "Rediger",
+      "Delete": "Slett",
+      "DeleteConfirm": "Bekreft sletting?",
+    },
+    "Auth": {
+      "None": "Inga autentisering",
+      "Basic": "Basic",
+      "Bearer": "Bearer",
+      "Custom": "Tilpassa",
+      "CustomHeader": "Parameternamn",
+      "Token": "Token",
+      "Proxy": "Bruk mellomtenar",
+      "ProxyDescription": "Bruk ein mellomtenar for å unngå CORS-avgrensingar",
+      "Location": "Plassering",
+      "LocationHeader": "Header",
+      "LocationQuery": "Query",
+      "LocationBody": "Body",
+    },
+    "EditModal": {
+      "Title": (readonly: boolean) => "Rediger: Tillegg" + (readonly ? " (Skriveverna)" : ""),
+      "Download": "Last ned",
+      "Auth": "Autentiseringstype",
+      "Content": "OpenAPI Schema",
+      "Load": "Last frå URL",
+      "Method": "Metodar",
+      "Error": "Ugyldig OpenAPI Schema",
+    },
   },
   FineTuned: {
     Sysmessage: "Du er en assistent",
@@ -556,6 +817,15 @@ const no: PartialLocaleType = {
         SubTitle: "Generer en direkte lenke til denne masken",
         Action: "Kopier lenke",
       },
+    
+      "Artifacts": {
+        "Title": "Slå på Artifacts",
+        "SubTitle": "Vis HTML-sider med Artifacts",
+      },
+      "CodeFold": {
+        "Title": "Slå på kodefalding",
+        "SubTitle": "Slå automatisk saman lange kodeblokker",
+      },
     },
   },
   NewChat: {
@@ -585,6 +855,28 @@ const no: PartialLocaleType = {
     Import: "Importer",
     Sync: "Synkroniser",
     Config: "Konfigurer",
+  
+    "Save": "Lagre",
+    "Loading": "Lastar…",
+    "Seed": "Tilfeldig startverdi",
+    "User": "Brukar",
+    "Assistant": "Assistent",
+    "System": "System",
+    "Text": "Tekst",
+    "Image": "Bilete",
+    "Standard": "Standard",
+    "Vivid": "Livleg",
+    "Natural": "Naturleg",
+    "ErrorTitle": "Det oppstod ein feil",
+    "ReportError": "Meld frå om feilen",
+    "ClearData": "Tøm alle data",
+    "AssistantTagline": "Lag din eigen KI-assistent.",
+    "EmptyPrompt": "Ny instruksjon",
+    "EmptyPromptContent": "Skriv inn instruksjonen",
+    "AllFiles": "Alle filer",
+  
+    "Refresh": "Last på nytt",
+    "HidePassword": "Skjul passord",
   },
   Exporter: {
     Description: {
@@ -594,6 +886,114 @@ const no: PartialLocaleType = {
     Messages: "Meldinger",
     Topic: "Emne",
     Time: "Tid",
+  },
+
+  "Discovery": {
+    "Name": "Oppdag",
+  },
+  "Mcp": {
+    "Name": "MCP",
+    "UI": {
+      "Market": "MCP-marknad",
+      "PresetLoadFailed": "Kunne ikkje laste førehandsvalde tenarar",
+      "InitFailed": "Kunne ikkje laste starttilstanden",
+      "ConfigSaved": "Tenaroppsettet er lagra",
+      "ConfigSaveFailed": "Kunne ikkje lagre oppsettet",
+      "ToolsFailed": "Kunne ikkje laste verktøy",
+      "Stopped": "Stoppa",
+      "StopFailed": "Kunne ikkje stoppe tenaren",
+      "StartFailed": "Kunne ikkje starte tenaren; sjå loggane",
+      "RestartingClients": "Startar alle klientar på nytt",
+      "RestartFailed": "Kunne ikkje starte klientane på nytt",
+      "Initializing": "Gjer klar",
+      "NoServers": "Ingen tilgjengelege tenarar",
+      "OpenRepo": "Opne kodelager",
+      "Start": "Start",
+      "Tools": "Verktøy",
+      "Add": "Legg til",
+      "RestartAll": "Start alle på nytt",
+      "Search": "Søk etter MCP-tenarar",
+      "ConfigureServer": "Still inn tenar",
+      "ServerDetails": "Tenardetaljar",
+      "NoTools": "Ingen tilgjengelege verktøy",
+      "LoadingPresets": "Lastar førehandsvalde tenarar…",
+      "ConfiguredServers": "Oppsette tenarar",
+      "UpdatingConfig": "Oppdaterer oppsettet…",
+      "CreatingClient": "Lagar MCP-klient…",
+      "Stopping": "Stoppar tenaren…",
+      "Starting": "Startar tenaren…",
+      "RestartingServers": "Startar alle tenarar på nytt…",
+      "ExecutionFailed": "MCP-køyring mislukkast",
+    },
+  },
+  "SdPanel": {
+    "Prompt": "Biletskildring",
+    "NegativePrompt": "Negativ biletskildring",
+    "PleaseInput": (name: string) => name + " — Skriv inn ein verdi",
+    "AspectRatio": "Sideforhold",
+    "ImageStyle": "Biletstil",
+    "OutFormat": "Utformat",
+    "AIModel": "Modell",
+    "ModelVersion": "Modellversjon",
+    "Submit": "Generer",
+    "ParamIsRequired": (name: string) => name + ": Påkravd",
+    "Styles": {
+      "D3Model": "3D-modell",
+      "AnalogFilm": "Analogfilm",
+      "Anime": "Japansk animasjon",
+      "Cinematic": "Filmstil",
+      "ComicBook": "Teikneserie",
+      "DigitalArt": "Digital kunst",
+      "Enhance": "Forsterka",
+      "FantasyArt": "Fantasikunst",
+      "Isometric": "Isometrisk",
+      "LineArt": "Strekteikning",
+      "LowPoly": "Få polygon",
+      "ModelingCompound": "Modellervoks",
+      "NeonPunk": "Neonpunk",
+      "Origami": "Papirbretting",
+      "Photographic": "Fotografisk",
+      "PixelArt": "Pikselkunst",
+      "TileTexture": "Flisetekstur",
+    },
+  },
+  "Sd": {
+    "SubTitle": (count: number) => "Bilete: " + count,
+    "Actions": {
+      "Params": "Vis parametrar",
+      "Copy": "Kopier: Biletskildring",
+      "Delete": "Slett",
+      "Retry": "Prøv igjen",
+      "ReturnHome": "Til startsida",
+      "History": "Historikk",
+    },
+    "EmptyRecord": "Ingen bilete enno",
+    "Status": {
+      "Name": "Status",
+      "Success": "Vellukka",
+      "Error": "Feil",
+      "Wait": "Ventar",
+      "Running": "Køyrer",
+    },
+    "Danger": {
+      "Delete": "Bekreft sletting?",
+    },
+    "GenerateParams": "Genereringsparametrar",
+    "Detail": "Detaljar",
+  },
+  "ApiError": {
+    "Timeout": "Førespurnaden fekk tidsavbrot. Prøv igjen, eller kontroller adressa i avanserte innstillingar.",
+    "Quota": "Kvoten til tilbydaren er utilstrekkeleg. Kontroller saldo, betaling og bruksgrenser.",
+    "AccessCode": "Ugyldig tilgangskode til nettstaden. Kontroller koden.",
+    "InvalidKey": "Ugyldig eller utgått API Key. Kontroller Key for den valde tilbydaren.",
+    "Permission": "Tilgang nekta. Kontroller modellrettar og regionale avgrensingar.",
+    "Model": "Modell eller grensesnitt er ikkje tilgjengeleg. Kontroller modell-id og adresse i avanserte innstillingar.",
+    "RateLimit": "For mange førespurnader eller nådd grense. Prøv seinare og kontroller kvoten.",
+    "Parameters": "Uforeinlege parametrar. Kontroller modell-id og parametrar i avanserte innstillingar.",
+    "Unavailable": "Tilbydaren er mellombels utilgjengeleg. Prøv seinare.",
+    "Empty": "Ikkje noko gyldig innhald vart returnert. Kontroller modellen og prøv igjen.",
+    "Network": "Nettverkstilkoplinga mislukkast. Kontroller nettverket, adressa og CORS-innstillingane til tredjeparten.",
+    "Generic": "Førespurnaden mislukkast. Kontroller API Key, modell og adresse for tilbydaren.",
   },
 };
 

@@ -745,7 +745,7 @@ export function ChatActions(props: {
         {isDalle3(currentModel) && (
           <ChatAction
             onClick={() => setShowQualitySelector(true)}
-            text={currentQuality}
+            text={currentQuality === "standard" ? Locale.UI.Standard : "HD"}
             icon={<QualityIcon />}
           />
         )}
@@ -754,7 +754,7 @@ export function ChatActions(props: {
           <Selector
             defaultSelectedValue={currentQuality}
             items={dalle3Qualitys.map((m) => ({
-              title: m,
+              title: m === "standard" ? Locale.UI.Standard : "HD",
               value: m,
             }))}
             onClose={() => setShowQualitySelector(false)}
@@ -764,7 +764,7 @@ export function ChatActions(props: {
               chatStore.updateTargetSession(session, (session) => {
                 session.mask.modelConfig.quality = quality;
               });
-              showToast(quality);
+              showToast(quality === "standard" ? Locale.UI.Standard : "HD");
             }}
           />
         )}
@@ -772,7 +772,7 @@ export function ChatActions(props: {
         {isDalle3(currentModel) && (
           <ChatAction
             onClick={() => setShowStyleSelector(true)}
-            text={currentStyle}
+            text={currentStyle === "vivid" ? Locale.UI.Vivid : Locale.UI.Natural}
             icon={<StyleIcon />}
           />
         )}
@@ -781,7 +781,7 @@ export function ChatActions(props: {
           <Selector
             defaultSelectedValue={currentStyle}
             items={dalle3Styles.map((m) => ({
-              title: m,
+              title: m === "vivid" ? Locale.UI.Vivid : Locale.UI.Natural,
               value: m,
             }))}
             onClose={() => setShowStyleSelector(false)}
@@ -791,7 +791,7 @@ export function ChatActions(props: {
               chatStore.updateTargetSession(session, (session) => {
                 session.mask.modelConfig.style = style;
               });
-              showToast(style);
+              showToast(style === "vivid" ? Locale.UI.Vivid : Locale.UI.Natural);
             }}
           />
         )}
@@ -839,7 +839,7 @@ export function ChatActions(props: {
         {config.realtimeConfig.enable && (
           <ChatAction
             onClick={() => props.setShowChatSidePanel(true)}
-            text={"Realtime Chat"}
+            text={Locale.Settings.Realtime.Enable.Title}
             icon={<HeadphoneIcon />}
           />
         )}

@@ -1,3 +1,4 @@
+import Locale from "@/app/locales";
 import VoiceIcon from "@/app/icons/voice.svg";
 import VoiceOffIcon from "@/app/icons/voice-off.svg";
 import PowerIcon from "@/app/icons/power.svg";
@@ -109,7 +110,7 @@ export function RealtimeChat({
         // }
       } catch (error) {
         console.error("Connection failed:", error);
-        setStatus("Connection failed");
+        setStatus(Locale.ApiError.Network);
       } finally {
         setIsConnecting(false);
       }
@@ -336,7 +337,7 @@ export function RealtimeChat({
 
       <div className={styles["bottom-icons"]}>
         <div>
-          <IconButton
+          <IconButton aria={isRecording ? Locale.Chat.StopSpeak : Locale.Chat.StartSpeak}
             icon={isRecording ? <VoiceIcon /> : <VoiceOffIcon />}
             onClick={toggleRecording}
             disabled={!isConnected}
@@ -346,7 +347,7 @@ export function RealtimeChat({
         </div>
         <div className={styles["icon-center"]}>{status}</div>
         <div>
-          <IconButton
+          <IconButton aria={Locale.UI.Close}
             icon={<PowerIcon />}
             onClick={handleClose}
             shadow

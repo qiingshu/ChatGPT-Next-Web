@@ -858,7 +858,7 @@ export const useChatStore = createPersistStore(
                     true,
                   );
                 })
-                .catch((error) => showToast("MCP execution failed", error));
+                .catch((error) => showToast(Locale.Mcp.UI.ExecutionFailed, error));
             }
           } catch (error) {
             console.error("[Check MCP JSON]", error);

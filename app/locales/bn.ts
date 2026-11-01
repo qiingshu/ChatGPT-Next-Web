@@ -1,10 +1,10 @@
 import { SubmitKey } from "../store/config";
-import type { PartialLocaleType } from "./index";
+import type { LocaleType } from "./index";
 import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 const isApp = !!getClientConfig()?.isApp;
 
-const bn: PartialLocaleType = {
+const bn: LocaleType = {
   WIP: "শীঘ্রই আসছে...",
   Error: {
     Unauthorized: isApp
@@ -55,6 +55,10 @@ const bn: PartialLocaleType = {
       Edit: "সম্পাদনা করুন",
       RefreshTitle: "শিরোনাম রিফ্রেশ করুন",
       RefreshToast: "শিরোনাম রিফ্রেশ অনুরোধ পাঠানো হয়েছে",
+    
+      "FullScreen": "পূর্ণ পর্দা",
+      "Speech": "পড়ে শোনান",
+      "StopSpeech": "থামান",
     },
     Commands: {
       new: "নতুন চ্যাট",
@@ -63,6 +67,8 @@ const bn: PartialLocaleType = {
       prev: "পূর্ববর্তী চ্যাট",
       clear: "প্রসঙ্গ পরিষ্কার করুন",
       del: "চ্যাট মুছে ফেলুন",
+    
+      "fork": "কথোপকথন অনুলিপি",
     },
     InputActions: {
       Stop: "প্রতিক্রিয়া থামান",
@@ -93,6 +99,18 @@ const bn: PartialLocaleType = {
       SaveAs: "মাস্ক হিসাবে সংরক্ষণ করুন",
     },
     IsContext: "পূর্বনির্ধারিত প্রম্পট",
+  
+    "StartSpeak": "কথা বলা শুরু",
+    "StopSpeak": "থামান",
+    "ShortcutKey": {
+      "Title": "কীবোর্ড শর্টকাট",
+      "newChat": "নতুন কথোপকথন খুলুন",
+      "focusInput": "ইনপুট ঘরে ফোকাস করুন",
+      "copyLastMessage": "শেষ উত্তর অনুলিপি",
+      "copyLastCode": "শেষ কোড ব্লক অনুলিপি",
+      "showShortcutKey": "শর্টকাট দেখান",
+      "clearContext": "চ্যাট পরিষ্কার করুন",
+    },
   },
   Export: {
     Title: "চ্যাট ইতিহাস শেয়ার করুন",
@@ -116,6 +134,11 @@ const bn: PartialLocaleType = {
     Image: {
       Toast: "স্ক্রীনশট তৈরি করা হচ্ছে",
       Modal: "ছবি সংরক্ষণ করতে দীর্ঘ প্রেস করুন অথবা রাইট ক্লিক করুন",
+    },
+  
+    "Artifacts": {
+      "Title": "Artifacts শেয়ার করুন",
+      "Error": "Artifacts শেয়ার করুন — ত্রুটি",
     },
   },
   Select: {
@@ -157,7 +180,7 @@ const bn: PartialLocaleType = {
       },
     },
     Lang: {
-      Name: "Language", // ATTENTION: if you wanna add a new translation, please do not translate this value, leave it as `Language`
+      Name: "ভাষা", // ATTENTION: if you wanna add a new translation, please do not translate this value, leave it as `Language`
       All: "সমস্ত ভাষা",
     },
     Avatar: "অভিনেতা",
@@ -188,6 +211,9 @@ const bn: PartialLocaleType = {
       IsChecking: "আপডেট পরীক্ষা করা হচ্ছে...",
       FoundUpdate: (x: string) => `নতুন সংস্করণ পাওয়া গিয়েছে: ${x}`,
       GoToUpdate: "আপডেট করতে যান",
+    
+      "Success": "হালনাগাদ সফল",
+      "Failed": "হালনাগাদ ব্যর্থ",
     },
     SendKey: "পাঠানোর কী",
     Theme: "থিম",
@@ -317,7 +343,7 @@ const bn: PartialLocaleType = {
       },
       OpenAI: {
         ApiKey: {
-          Title: "API কী",
+          Title: "OpenAI API Key",
           SubTitle:
             "পাসওয়ার্ড অ্যাক্সেস সীমাবদ্ধতা এড়াতে স্বনির্ধারিত OpenAI কী ব্যবহার করুন",
           Placeholder: "OpenAI API কী",
@@ -330,7 +356,7 @@ const bn: PartialLocaleType = {
       },
       Azure: {
         ApiKey: {
-          Title: "ইন্টারফেস কী",
+          Title: "Azure API Key",
           SubTitle:
             "পাসওয়ার্ড অ্যাক্সেস সীমাবদ্ধতা এড়াতে স্বনির্ধারিত Azure কী ব্যবহার করুন",
           Placeholder: "Azure API কী",
@@ -348,7 +374,7 @@ const bn: PartialLocaleType = {
       },
       Anthropic: {
         ApiKey: {
-          Title: "ইন্টারফেস কী",
+          Title: "Anthropic API Key",
           SubTitle:
             "পাসওয়ার্ড অ্যাক্সেস সীমাবদ্ধতা এড়াতে স্বনির্ধারিত Anthropic কী ব্যবহার করুন",
           Placeholder: "Anthropic API কী",
@@ -366,7 +392,7 @@ const bn: PartialLocaleType = {
       },
       Google: {
         ApiKey: {
-          Title: "API কী",
+          Title: "Google API Key",
           SubTitle: "Google AI থেকে আপনার API কী পান",
           Placeholder: "আপনার Google AI Studio API কী প্রবেশ করুন",
         },
@@ -387,7 +413,7 @@ const bn: PartialLocaleType = {
       },
       Baidu: {
         ApiKey: {
-          Title: "API কী",
+          Title: "Baidu API Key",
           SubTitle: "স্বনির্ধারিত Baidu API কী ব্যবহার করুন",
           Placeholder: "Baidu API কী",
         },
@@ -403,7 +429,7 @@ const bn: PartialLocaleType = {
       },
       ByteDance: {
         ApiKey: {
-          Title: "ইন্টারফেস কী",
+          Title: "ByteDance API Key",
           SubTitle: "স্বনির্ধারিত ByteDance API কী ব্যবহার করুন",
           Placeholder: "ByteDance API কী",
         },
@@ -414,7 +440,7 @@ const bn: PartialLocaleType = {
       },
       Alibaba: {
         ApiKey: {
-          Title: "ইন্টারফেস কী",
+          Title: "Alibaba API Key",
           SubTitle: "স্বনির্ধারিত আলিবাবা ক্লাউড API কী ব্যবহার করুন",
           Placeholder: "Alibaba Cloud API কী",
         },
@@ -427,6 +453,105 @@ const bn: PartialLocaleType = {
         Title: "স্বনির্ধারিত মডেল নাম",
         SubTitle:
           "স্বনির্ধারিত মডেল বিকল্পগুলি যুক্ত করুন, ইংরেজি কমা দ্বারা আলাদা করুন",
+      },
+    
+      "Tencent": {
+        "ApiKey": {
+          "Title": "Tencent API Key",
+          "SubTitle": "নিজস্ব API Key ব্যবহার করুন",
+          "Placeholder": "Tencent API Key",
+        },
+        "SecretKey": {
+          "Title": "Tencent Secret Key",
+          "SubTitle": "নিজস্ব পরিচয়পত্র ব্যবহার করুন — Secret Key",
+          "Placeholder": "Tencent Secret Key",
+        },
+        "Endpoint": {
+          "Title": "ইন্টারফেসের ঠিকানা",
+          "SubTitle": "এই মানটি .env-এ নির্ধারণ করুন",
+        },
+      },
+      "Moonshot": {
+        "ApiKey": {
+          "Title": "Moonshot API Key",
+          "SubTitle": "নিজস্ব API Key ব্যবহার করুন",
+          "Placeholder": "Moonshot API Key",
+        },
+        "Endpoint": {
+          "Title": "ইন্টারফেসের ঠিকানা",
+          "SubTitle": "উদাহরণ: ",
+        },
+      },
+      "DeepSeek": {
+        "ApiKey": {
+          "Title": "DeepSeek API Key",
+          "SubTitle": "নিজস্ব API Key ব্যবহার করুন",
+          "Placeholder": "DeepSeek API Key",
+        },
+        "Endpoint": {
+          "Title": "ইন্টারফেসের ঠিকানা",
+          "SubTitle": "উদাহরণ: ",
+        },
+      },
+      "XAI": {
+        "ApiKey": {
+          "Title": "XAI API Key",
+          "SubTitle": "নিজস্ব API Key ব্যবহার করুন",
+          "Placeholder": "XAI API Key",
+        },
+        "Endpoint": {
+          "Title": "ইন্টারফেসের ঠিকানা",
+          "SubTitle": "উদাহরণ: ",
+        },
+      },
+      "ChatGLM": {
+        "ApiKey": {
+          "Title": "ChatGLM API Key",
+          "SubTitle": "নিজস্ব API Key ব্যবহার করুন",
+          "Placeholder": "ChatGLM API Key",
+        },
+        "Endpoint": {
+          "Title": "ইন্টারফেসের ঠিকানা",
+          "SubTitle": "উদাহরণ: ",
+        },
+      },
+      "SiliconFlow": {
+        "ApiKey": {
+          "Title": "SiliconFlow API Key",
+          "SubTitle": "নিজস্ব API Key ব্যবহার করুন",
+          "Placeholder": "SiliconFlow API Key",
+        },
+        "Endpoint": {
+          "Title": "ইন্টারফেসের ঠিকানা",
+          "SubTitle": "উদাহরণ: ",
+        },
+      },
+      "Stability": {
+        "ApiKey": {
+          "Title": "Stability API Key",
+          "SubTitle": "নিজস্ব API Key ব্যবহার করুন",
+          "Placeholder": "Stability API Key",
+        },
+        "Endpoint": {
+          "Title": "ইন্টারফেসের ঠিকানা",
+          "SubTitle": "উদাহরণ: ",
+        },
+      },
+      "Iflytek": {
+        "ApiKey": {
+          "Title": "Iflytek API Key",
+          "SubTitle": "নিজস্ব API Key ব্যবহার করুন",
+          "Placeholder": "Iflytek API Key",
+        },
+        "ApiSecret": {
+          "Title": "Iflytek API Secret",
+          "SubTitle": "নিজস্ব পরিচয়পত্র ব্যবহার করুন — API Secret",
+          "Placeholder": "Iflytek API Secret",
+        },
+        "Endpoint": {
+          "Title": "ইন্টারফেসের ঠিকানা",
+          "SubTitle": "উদাহরণ: ",
+        },
       },
     },
 
@@ -454,6 +579,96 @@ const bn: PartialLocaleType = {
     FrequencyPenalty: {
       Title: "ফ্রিকোয়েন্সি পেনাল্টি (frequency_penalty)",
       SubTitle: "মান বাড়ালে পুনরাবৃত্তি শব্দ কমানোর সম্ভাবনা বেশি",
+    },
+  
+    "ShowPassword": "পাসওয়ার্ড দেখান",
+    "LocalizationInfo": {
+      "Edition": "NextChat নিজস্ব সংস্করণ",
+      "Timeout": "সংযোগ পরীক্ষার ৩০ সেকেন্ড সময়সীমা পেরিয়েছে। নেটওয়ার্ক ও API ঠিকানা পরীক্ষা করুন।",
+      "Success": "সংযোগ সফল",
+      "NoResponse": "প্রদানকারী বৈধ উত্তর দেয়নি। মডেল ও ইন্টারফেসের সেটিংস পরীক্ষা করুন।",
+      "Upstream": "মূল প্রকল্পের ভিত্তি সংস্করণ",
+      "Details": "বিস্তারিত সংস্করণ তথ্য",
+      "Security": "নিরাপত্তা রক্ষণাবেক্ষণ পরিচিতি",
+      "Commit": "বিল্ড commit",
+      "Official": "অফিসিয়াল রেফারেন্স সংস্করণ",
+      "Unavailable": "এখনও পাওয়া যায়নি",
+      "Note": "নির্বাচিত সংশোধন অন্তর্ভুক্ত, সম্পূর্ণ অফিসিয়াল v2.16.1 নয়। অফিসিয়াল সংস্করণ তথ্য কেবল রেফারেন্সের জন্য।",
+    },
+    "ProviderSetup": {
+      "ModelIdPlaceholder": "মডেল ID@প্রদানকারী",
+      "Provider": "প্রদানকারী",
+      "ProviderHelp": "ডিফল্ট মডেল ব্যবহার করতে প্রদানকারী বেছে API Key লিখুন",
+      "ProviderKeyPlaceholder": "এই প্রদানকারীর API Key লিখুন",
+      "CurrentModel": "বর্তমান কথোপকথনের মডেল",
+      "DefaultModel": "ডিফল্ট মডেল",
+      "ModelHelp": "উন্নত সেটিংসে ইন্টারফেস ও নিজস্ব মডেল পরিবর্তন করুন",
+      "TestModel": "বর্তমান মডেল পরীক্ষা করুন",
+      "TestHelp": "একটি ছোট অনুরোধ পাঠায়, API খরচ হতে পারে; ইতিহাসে সংরক্ষণ করে না",
+      "TestConnection": "সংযোগ পরীক্ষা",
+      "Testing": "পরীক্ষা চলছে…",
+      "Advanced": "উন্নত সেটিংস",
+      "OfficialURL": "অফিসিয়াল ঠিকানা",
+      "DefaultRoute": "ডিফল্টভাবে এই সাইটের পথ ব্যবহার করে",
+    },
+    "TTS": {
+      "Enable": {
+        "Title": "TTS চালু করুন",
+        "SubTitle": "পাঠ্য থেকে কথন চালু করুন",
+      },
+      "Autoplay": {
+        "Title": "স্বয়ংক্রিয় চালনা চালু করুন",
+        "SubTitle": "কথন তৈরি করে স্বয়ংক্রিয় চালায়; আগে TTS চালু করুন",
+      },
+      "Model": "মডেল (model)",
+      "Engine": "TTS ইঞ্জিন",
+      "Voice": {
+        "Title": "কণ্ঠ",
+        "SubTitle": "তৈরি করা অডিওর কণ্ঠ",
+      },
+      "Speed": {
+        "Title": "গতি",
+        "SubTitle": "তৈরি করা অডিওর গতি",
+      },
+    },
+    "Realtime": {
+      "Enable": {
+        "Title": "তাৎক্ষণিক কথোপকথন",
+        "SubTitle": "তাৎক্ষণিক কথোপকথন চালু করুন",
+      },
+      "Provider": {
+        "Title": "মডেল প্রদানকারী",
+        "SubTitle": "প্রদানকারী বদলান",
+      },
+      "Model": {
+        "Title": "মডেল (model)",
+        "SubTitle": "একটি মডেল বাছুন",
+      },
+      "ApiKey": {
+        "Title": "API Key",
+        "SubTitle": "API Key",
+        "Placeholder": "API Key",
+      },
+      "Azure": {
+        "Endpoint": {
+          "Title": "ইন্টারফেসের ঠিকানা",
+          "SubTitle": "ইন্টারফেসের ঠিকানা",
+        },
+        "Deployment": {
+          "Title": "স্থাপনার নাম",
+          "SubTitle": "স্থাপনার নাম",
+        },
+      },
+      "Temperature": {
+        "Title": "যাদুকরিতা (temperature)",
+        "SubTitle": "মান বাড়ালে উত্তর বেশি এলোমেলো হবে",
+      },
+    },
+    "SafetyLabels": {
+      "BLOCK_NONE": "কোনোটিই নয়",
+      "BLOCK_ONLY_HIGH": "শুধু উচ্চ",
+      "BLOCK_MEDIUM_AND_ABOVE": "মাঝারি ও তার বেশি",
+      "BLOCK_LOW_AND_ABOVE": "নিম্ন ও তার বেশি",
     },
   },
   Store: {
@@ -486,6 +701,52 @@ const bn: PartialLocaleType = {
   },
   Plugin: {
     Name: "প্লাগইন",
+  
+    "Accessibility": {
+      "Create": "নতুন তৈরি করুন: প্লাগইন",
+      "Edit": "সম্পাদনা করুন: প্লাগইন",
+      "Save": "সংরক্ষণ: প্লাগইন",
+      "SchemaUrl": "প্লাগইন Schema URL",
+      "LoadSchema": "URL থেকে লোড করুন: প্লাগইন Schema",
+      "Schema": "প্লাগইন Schema",
+    },
+    "Page": {
+      "Title": "প্লাগইনসমূহ",
+      "SubTitle": (count: number) => "প্লাগইনসমূহ: " + count,
+      "Search": "বার্তা অনুসন্ধান করুন — প্লাগইনসমূহ",
+      "Create": "নতুন তৈরি করুন",
+      "Find": "GitHub-এ প্লাগইন খুঁজুন: ",
+    },
+    "Item": {
+      "Info": (count: number) => "পদ্ধতিসমূহ: " + count,
+      "View": "দেখুন",
+      "Edit": "সম্পাদনা করুন",
+      "Delete": "মুছে ফেলুন",
+      "DeleteConfirm": "মুছে ফেলার জন্য নিশ্চিত করুন?",
+    },
+    "Auth": {
+      "None": "প্রমাণীকরণ নেই",
+      "Basic": "Basic",
+      "Bearer": "Bearer",
+      "Custom": "নিজস্ব",
+      "CustomHeader": "প্যারামিটারের নাম",
+      "Token": "Token",
+      "Proxy": "প্রক্সি ব্যবহার করুন",
+      "ProxyDescription": "CORS সীমাবদ্ধতা এড়াতে প্রক্সি ব্যবহার করুন",
+      "Location": "অবস্থান",
+      "LocationHeader": "Header",
+      "LocationQuery": "Query",
+      "LocationBody": "Body",
+    },
+    "EditModal": {
+      "Title": (readonly: boolean) => "সম্পাদনা করুন: প্লাগইন" + (readonly ? " (শুধু পড়ার জন্য)" : ""),
+      "Download": "ডাউনলোড",
+      "Auth": "প্রমাণীকরণের ধরন",
+      "Content": "OpenAPI Schema",
+      "Load": "URL থেকে লোড করুন",
+      "Method": "পদ্ধতিসমূহ",
+      "Error": "অবৈধ OpenAPI Schema",
+    },
   },
   FineTuned: {
     Sysmessage: "আপনি একজন সহকারী",
@@ -546,6 +807,15 @@ const bn: PartialLocaleType = {
         SubTitle: "এই মাস্কের সরাসরি লিঙ্ক তৈরি করুন",
         Action: "লিঙ্ক কপি করুন",
       },
+    
+      "Artifacts": {
+        "Title": "Artifacts চালু করুন",
+        "SubTitle": "Artifacts দিয়ে HTML পৃষ্ঠা দেখান",
+      },
+      "CodeFold": {
+        "Title": "কোড ভাঁজ চালু করুন",
+        "SubTitle": "দীর্ঘ কোড ব্লক স্বয়ংক্রিয়ভাবে ভাঁজ করুন",
+      },
     },
   },
   NewChat: {
@@ -575,6 +845,28 @@ const bn: PartialLocaleType = {
     Import: "আমদানি করুন",
     Sync: "সিঙ্ক",
     Config: "কনফিগারেশন",
+  
+    "Save": "সংরক্ষণ",
+    "Loading": "লোড হচ্ছে…",
+    "Seed": "এলোমেলো বীজ",
+    "User": "ব্যবহারকারী",
+    "Assistant": "সহকারী",
+    "System": "সিস্টেম",
+    "Text": "পাঠ্য",
+    "Image": "ছবি",
+    "Standard": "সাধারণ",
+    "Vivid": "উজ্জ্বল",
+    "Natural": "প্রাকৃতিক",
+    "ErrorTitle": "একটি ত্রুটি হয়েছে",
+    "ReportError": "এই ত্রুটি জানান",
+    "ClearData": "সব তথ্য মুছুন",
+    "AssistantTagline": "আপনার নিজস্ব AI সহকারী তৈরি করুন।",
+    "EmptyPrompt": "নতুন নির্দেশনা",
+    "EmptyPromptContent": "নির্দেশনার বিষয়বস্তু লিখুন",
+    "AllFiles": "সব ফাইল",
+  
+    "Refresh": "আবার লোড করুন",
+    "HidePassword": "পাসওয়ার্ড লুকান",
   },
   Exporter: {
     Description: {
@@ -584,6 +876,114 @@ const bn: PartialLocaleType = {
     Messages: "বার্তা",
     Topic: "থিম",
     Time: "সময়",
+  },
+
+  "Discovery": {
+    "Name": "আবিষ্কার",
+  },
+  "Mcp": {
+    "Name": "MCP",
+    "UI": {
+      "Market": "MCP বাজার",
+      "PresetLoadFailed": "পূর্বনির্ধারিত সার্ভার লোড ব্যর্থ",
+      "InitFailed": "প্রাথমিক অবস্থা লোড ব্যর্থ",
+      "ConfigSaved": "সার্ভারের কনফিগারেশন সংরক্ষিত",
+      "ConfigSaveFailed": "কনফিগারেশন সংরক্ষণ ব্যর্থ",
+      "ToolsFailed": "সরঞ্জাম লোড ব্যর্থ",
+      "Stopped": "বন্ধ",
+      "StopFailed": "সার্ভার বন্ধ করা ব্যর্থ",
+      "StartFailed": "সার্ভার চালু করা ব্যর্থ; লগ পরীক্ষা করুন",
+      "RestartingClients": "সব ক্লায়েন্ট পুনরায় চালু হচ্ছে",
+      "RestartFailed": "ক্লায়েন্ট পুনরায় চালু করা ব্যর্থ",
+      "Initializing": "আরম্ভ হচ্ছে",
+      "NoServers": "কোনো সার্ভার নেই",
+      "OpenRepo": "কোড ভান্ডার খুলুন",
+      "Start": "চালু করুন",
+      "Tools": "সরঞ্জাম",
+      "Add": "যোগ করুন",
+      "RestartAll": "সব পুনরায় চালু করুন",
+      "Search": "MCP সার্ভার খুঁজুন",
+      "ConfigureServer": "সার্ভার কনফিগার করুন",
+      "ServerDetails": "সার্ভারের বিস্তারিত",
+      "NoTools": "কোনো সরঞ্জাম নেই",
+      "LoadingPresets": "পূর্বনির্ধারিত সার্ভারের তালিকা লোড হচ্ছে…",
+      "ConfiguredServers": "কনফিগার করা সার্ভার",
+      "UpdatingConfig": "কনফিগারেশন হালনাগাদ হচ্ছে…",
+      "CreatingClient": "MCP ক্লায়েন্ট তৈরি হচ্ছে…",
+      "Stopping": "সার্ভার বন্ধ হচ্ছে…",
+      "Starting": "সার্ভার চালু হচ্ছে…",
+      "RestartingServers": "সব সার্ভার পুনরায় চালু হচ্ছে…",
+      "ExecutionFailed": "MCP নির্বাহ ব্যর্থ",
+    },
+  },
+  "SdPanel": {
+    "Prompt": "ছবির নির্দেশনা",
+    "NegativePrompt": "নেতিবাচক নির্দেশনা",
+    "PleaseInput": (name: string) => name + " — একটি মান লিখুন",
+    "AspectRatio": "আকৃতির অনুপাত",
+    "ImageStyle": "ছবির ধরন",
+    "OutFormat": "আউটপুট বিন্যাস",
+    "AIModel": "মডেল (model)",
+    "ModelVersion": "মডেল সংস্করণ",
+    "Submit": "তৈরি করুন",
+    "ParamIsRequired": (name: string) => name + ": আবশ্যক",
+    "Styles": {
+      "D3Model": "ত্রিমাত্রিক মডেল",
+      "AnalogFilm": "অ্যানালগ ফিল্ম",
+      "Anime": "জাপানি অ্যানিমেশন",
+      "Cinematic": "সিনেমাটিক",
+      "ComicBook": "কমিকস",
+      "DigitalArt": "ডিজিটাল শিল্প",
+      "Enhance": "উন্নত",
+      "FantasyArt": "কল্পশিল্প",
+      "Isometric": "সমমিতিক",
+      "LineArt": "রেখাচিত্র",
+      "LowPoly": "কম বহুভুজ",
+      "ModelingCompound": "মডেলিং মাটি",
+      "NeonPunk": "নিয়ন পাঙ্ক",
+      "Origami": "কাগজ ভাঁজ",
+      "Photographic": "ফটোগ্রাফিক",
+      "PixelArt": "পিক্সেল শিল্প",
+      "TileTexture": "টালির বুনট",
+    },
+  },
+  "Sd": {
+    "SubTitle": (count: number) => "ছবিসমূহ: " + count,
+    "Actions": {
+      "Params": "প্যারামিটার দেখুন",
+      "Copy": "অনুলিপি করুন: ছবির নির্দেশনা",
+      "Delete": "মুছে ফেলুন",
+      "Retry": "পুনরায় চেষ্টা করুন",
+      "ReturnHome": "মূল পাতায় ফিরুন",
+      "History": "ইতিহাস",
+    },
+    "EmptyRecord": "এখনও কোনো ছবি নেই",
+    "Status": {
+      "Name": "অবস্থা",
+      "Success": "সফল",
+      "Error": "ত্রুটি",
+      "Wait": "অপেক্ষমাণ",
+      "Running": "চলছে",
+    },
+    "Danger": {
+      "Delete": "মুছে ফেলার জন্য নিশ্চিত করুন?",
+    },
+    "GenerateParams": "তৈরির প্যারামিটার",
+    "Detail": "বিস্তারিত",
+  },
+  "ApiError": {
+    "Timeout": "অনুরোধের সময়সীমা পেরিয়েছে। আবার চেষ্টা করুন বা উন্নত সেটিংসে ঠিকানা দেখুন।",
+    "Quota": "প্রদানকারীর কোটা অপর্যাপ্ত। ব্যালেন্স, পেমেন্ট ও ব্যবহারসীমা দেখুন।",
+    "AccessCode": "সাইটের প্রবেশ কোড অবৈধ। কোডটি পরীক্ষা করুন।",
+    "InvalidKey": "API Key অবৈধ বা মেয়াদোত্তীর্ণ। নির্বাচিত প্রদানকারীর Key দেখুন।",
+    "Permission": "প্রবেশাধিকার প্রত্যাখ্যাত। মডেলের অনুমতি ও আঞ্চলিক সীমা দেখুন।",
+    "Model": "মডেল বা ইন্টারফেস পাওয়া যায়নি। উন্নত সেটিংসে মডেল ID ও ঠিকানা দেখুন।",
+    "RateLimit": "অনেক অনুরোধ বা ব্যবহারসীমা পূর্ণ। পরে চেষ্টা করুন এবং কোটা দেখুন।",
+    "Parameters": "অনুরোধের প্যারামিটার অসামঞ্জস্যপূর্ণ। উন্নত সেটিংসে মডেল ID ও প্যারামিটার দেখুন।",
+    "Unavailable": "প্রদানকারী সাময়িকভাবে অনুপলব্ধ। পরে চেষ্টা করুন।",
+    "Empty": "বৈধ বিষয়বস্তু পাওয়া যায়নি। মডেলের অবস্থা দেখে আবার চেষ্টা করুন।",
+    "Network": "নেটওয়ার্ক সংযোগ ব্যর্থ। নেটওয়ার্ক, ঠিকানা ও তৃতীয় পক্ষের CORS সেটিংস দেখুন।",
+    "Generic": "অনুরোধ ব্যর্থ। প্রদানকারীর API Key, মডেল ও ইন্টারফেস সেটিংস দেখুন।",
   },
 };
 

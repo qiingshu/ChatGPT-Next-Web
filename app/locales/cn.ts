@@ -362,7 +362,7 @@ const cn = {
       },
       OpenAI: {
         ApiKey: {
-          Title: "API Key",
+          Title: "OpenAI API Key",
           SubTitle: "使用自定义 OpenAI Key 绕过密码访问限制",
           Placeholder: "OpenAI API Key",
         },
@@ -374,7 +374,7 @@ const cn = {
       },
       Azure: {
         ApiKey: {
-          Title: "接口密钥",
+          Title: "Azure API Key",
           SubTitle: "使用自定义 Azure Key 绕过密码访问限制",
           Placeholder: "Azure API Key",
         },
@@ -391,7 +391,7 @@ const cn = {
       },
       Anthropic: {
         ApiKey: {
-          Title: "接口密钥",
+          Title: "Anthropic API Key",
           SubTitle: "使用自定义 Anthropic Key 绕过密码访问限制",
           Placeholder: "Anthropic API Key",
         },
@@ -408,7 +408,7 @@ const cn = {
       },
       Google: {
         ApiKey: {
-          Title: "API 密钥",
+          Title: "Google API Key",
           SubTitle: "从 Google AI 获取您的 API 密钥",
           Placeholder: "Google AI API KEY",
         },
@@ -429,7 +429,7 @@ const cn = {
       },
       Baidu: {
         ApiKey: {
-          Title: "API Key",
+          Title: "Baidu API Key",
           SubTitle: "使用自定义 Baidu API Key",
           Placeholder: "Baidu API Key",
         },
@@ -445,7 +445,7 @@ const cn = {
       },
       Tencent: {
         ApiKey: {
-          Title: "API Key",
+          Title: "Tencent API Key",
           SubTitle: "使用自定义腾讯云API Key",
           Placeholder: "Tencent API Key",
         },
@@ -461,7 +461,7 @@ const cn = {
       },
       ByteDance: {
         ApiKey: {
-          Title: "接口密钥",
+          Title: "ByteDance API Key",
           SubTitle: "使用自定义 ByteDance API Key",
           Placeholder: "ByteDance API Key",
         },
@@ -472,7 +472,7 @@ const cn = {
       },
       Alibaba: {
         ApiKey: {
-          Title: "接口密钥",
+          Title: "Alibaba API Key",
           SubTitle: "使用自定义阿里云API Key",
           Placeholder: "Alibaba Cloud API Key",
         },
@@ -483,7 +483,7 @@ const cn = {
       },
       Moonshot: {
         ApiKey: {
-          Title: "接口密钥",
+          Title: "Moonshot API Key",
           SubTitle: "使用自定义月之暗面API Key",
           Placeholder: "Moonshot API Key",
         },
@@ -494,7 +494,7 @@ const cn = {
       },
       DeepSeek: {
         ApiKey: {
-          Title: "接口密钥",
+          Title: "DeepSeek API Key",
           SubTitle: "使用自定义DeepSeek API Key",
           Placeholder: "DeepSeek API Key",
         },
@@ -505,7 +505,7 @@ const cn = {
       },
       XAI: {
         ApiKey: {
-          Title: "接口密钥",
+          Title: "XAI API Key",
           SubTitle: "使用自定义XAI API Key",
           Placeholder: "XAI API Key",
         },
@@ -516,7 +516,7 @@ const cn = {
       },
       ChatGLM: {
         ApiKey: {
-          Title: "接口密钥",
+          Title: "ChatGLM API Key",
           SubTitle: "使用自定义 ChatGLM API Key",
           Placeholder: "ChatGLM API Key",
         },
@@ -527,7 +527,7 @@ const cn = {
       },
       SiliconFlow: {
         ApiKey: {
-          Title: "接口密钥",
+          Title: "SiliconFlow API Key",
           SubTitle: "使用自定义硅基流动 API Key",
           Placeholder: "硅基流动 API Key",
         },
@@ -538,7 +538,7 @@ const cn = {
       },
       Stability: {
         ApiKey: {
-          Title: "接口密钥",
+          Title: "Stability API Key",
           SubTitle: "使用自定义 Stability API Key",
           Placeholder: "Stability API Key",
         },
@@ -549,7 +549,7 @@ const cn = {
       },
       Iflytek: {
         ApiKey: {
-          Title: "ApiKey",
+          Title: "Iflytek API Key",
           SubTitle: "从讯飞星火控制台获取的 APIKey",
           Placeholder: "APIKey",
         },
@@ -647,6 +647,13 @@ const cn = {
         SubTitle: "值越大，回复越随机",
       },
     },
+  
+    "SafetyLabels": {
+      "BLOCK_NONE": "不拦截",
+      "BLOCK_ONLY_HIGH": "仅拦截高风险",
+      "BLOCK_MEDIUM_AND_ABOVE": "拦截中等及以上风险",
+      "BLOCK_LOW_AND_ABOVE": "拦截低风险及以上",
+    },
   },
   Store: {
     DefaultTopic: "新的聊天",
@@ -680,6 +687,39 @@ const cn = {
   },
   Mcp: {
     Name: "MCP",
+  
+    "UI": {
+      "Market": "MCP 市场",
+      "PresetLoadFailed": "加载预设服务器失败",
+      "InitFailed": "加载初始状态失败",
+      "ConfigSaved": "服务器配置已保存",
+      "ConfigSaveFailed": "保存配置失败",
+      "ToolsFailed": "加载工具失败",
+      "Stopped": "已停止",
+      "StopFailed": "停止服务器失败",
+      "StartFailed": "启动服务器失败，请检查日志",
+      "RestartingClients": "正在重启全部客户端",
+      "RestartFailed": "重启客户端失败",
+      "Initializing": "初始化中",
+      "NoServers": "暂无可用服务器",
+      "OpenRepo": "打开代码仓库",
+      "Start": "启动",
+      "Tools": "工具",
+      "Add": "添加",
+      "RestartAll": "全部重启",
+      "Search": "搜索 MCP 服务器",
+      "ConfigureServer": "配置服务器",
+      "ServerDetails": "服务器详情",
+      "NoTools": "暂无可用工具",
+      "LoadingPresets": "正在加载预设服务器列表…",
+      "ConfiguredServers": "已配置服务器",
+      "UpdatingConfig": "正在更新配置…",
+      "CreatingClient": "正在创建 MCP 客户端…",
+      "Stopping": "正在停止服务器…",
+      "Starting": "正在启动服务器…",
+      "RestartingServers": "正在重启全部服务器…",
+      "ExecutionFailed": "MCP 执行失败",
+    },
   },
   FineTuned: {
     Sysmessage: "你是一个助手",
@@ -821,6 +861,28 @@ const cn = {
     Import: "导入",
     Sync: "同步",
     Config: "配置",
+  
+    "Save": "保存",
+    "Loading": "加载中…",
+    "Seed": "随机种子",
+    "User": "用户",
+    "Assistant": "助手",
+    "System": "系统",
+    "Text": "文本",
+    "Image": "图片",
+    "Standard": "标准",
+    "Vivid": "鲜艳",
+    "Natural": "自然",
+    "ErrorTitle": "出现错误",
+    "ReportError": "报告此错误",
+    "ClearData": "清除全部数据",
+    "AssistantTagline": "构建你自己的 AI 助手。",
+    "EmptyPrompt": "新提示词",
+    "EmptyPromptContent": "请输入提示词内容",
+    "AllFiles": "所有文件",
+  
+    "Refresh": "重新加载",
+    "HidePassword": "隐藏密码",
   },
   Exporter: {
     Description: {
@@ -885,6 +947,21 @@ const cn = {
     },
     GenerateParams: "生成参数",
     Detail: "详情",
+  },
+
+  "ApiError": {
+    "Timeout": "请求超时，请稍后重试，或在高级设置中检查接口地址。",
+    "Quota": "服务商额度不足，请检查账户余额、付费状态或用量限制。",
+    "AccessCode": "访问码无效，请检查本站访问码。",
+    "InvalidKey": "API Key 无效或已过期，请检查当前服务商的 Key。",
+    "Permission": "访问被拒绝，请检查 API Key 的模型权限及服务商地区限制。",
+    "Model": "模型不可用或接口不存在，请在高级设置中检查模型 ID 和接口地址。",
+    "RateLimit": "请求过于频繁或已达用量上限，请稍后重试并检查服务商额度。",
+    "Parameters": "请求参数不兼容，请检查高级设置中的模型 ID 和参数。",
+    "Unavailable": "服务商暂时不可用，请稍后重试。",
+    "Empty": "服务商未返回有效内容，请检查模型状态后重试。",
+    "Network": "网络连接失败，请检查网络、接口地址及第三方接口的跨域设置。",
+    "Generic": "请求失败，请检查当前服务商的 API Key、模型和接口设置。",
   },
 };
 

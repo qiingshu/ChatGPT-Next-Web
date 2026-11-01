@@ -222,7 +222,7 @@ export function MessageExporter() {
             >
               {formats.map((f) => (
                 <option key={f} value={f}>
-                  {f}
+                  {f === "text" ? Locale.UI.Text : f === "image" ? Locale.UI.Image : "JSON"}
                 </option>
               ))}
             </Select>
@@ -460,11 +460,11 @@ export function ImagePreviewer(props: {
             defaultPath: `${props.topic}.png`,
             filters: [
               {
-                name: "PNG Files",
+                name: "PNG",
                 extensions: ["png"],
               },
               {
-                name: "All Files",
+                name: Locale.UI.AllFiles,
                 extensions: ["*"],
               },
             ],

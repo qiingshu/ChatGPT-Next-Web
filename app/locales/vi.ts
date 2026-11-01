@@ -1,10 +1,10 @@
 import { SubmitKey } from "../store/config";
-import type { PartialLocaleType } from "./index";
+import type { LocaleType } from "./index";
 import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 const isApp = !!getClientConfig()?.isApp;
 
-const vi: PartialLocaleType = {
+const vi: LocaleType = {
   WIP: "Sắp ra mắt...",
   Error: {
     Unauthorized: isApp
@@ -55,6 +55,10 @@ const vi: PartialLocaleType = {
       Edit: "Chỉnh sửa",
       RefreshTitle: "Làm mới tiêu đề",
       RefreshToast: "Đã gửi yêu cầu làm mới tiêu đề",
+    
+      "FullScreen": "Toàn màn hình",
+      "Speech": "Đọc",
+      "StopSpeech": "Dừng lại",
     },
     Commands: {
       new: "Tạo cuộc trò chuyện mới",
@@ -63,6 +67,8 @@ const vi: PartialLocaleType = {
       prev: "Cuộc trò chuyện trước đó",
       clear: "Xóa ngữ cảnh",
       del: "Xóa cuộc trò chuyện",
+    
+      "fork": "Sao chép cuộc trò chuyện",
     },
     InputActions: {
       Stop: "Dừng phản hồi",
@@ -93,6 +99,18 @@ const vi: PartialLocaleType = {
       SaveAs: "Lưu dưới dạng mặt nạ",
     },
     IsContext: "Lời nhắc đã đặt sẵn",
+  
+    "StartSpeak": "Bắt đầu nói",
+    "StopSpeak": "Dừng lại",
+    "ShortcutKey": {
+      "Title": "Phím tắt",
+      "newChat": "Mở cuộc trò chuyện mới",
+      "focusInput": "Đặt con trỏ vào ô nhập",
+      "copyLastMessage": "Sao chép phản hồi cuối",
+      "copyLastCode": "Sao chép khối mã cuối",
+      "showShortcutKey": "Hiện phím tắt",
+      "clearContext": "Xóa cuộc trò chuyện",
+    },
   },
   Export: {
     Title: "Chia sẻ ghi chép trò chuyện",
@@ -116,6 +134,11 @@ const vi: PartialLocaleType = {
     Image: {
       Toast: "Đang tạo ảnh chụp màn hình",
       Modal: "Nhấn giữ hoặc nhấp chuột phải để lưu hình ảnh",
+    },
+  
+    "Artifacts": {
+      "Title": "Chia sẻ Artifacts",
+      "Error": "Chia sẻ Artifacts — Lỗi",
     },
   },
   Select: {
@@ -157,7 +180,7 @@ const vi: PartialLocaleType = {
       },
     },
     Lang: {
-      Name: "Language", // CHÚ Ý: nếu bạn muốn thêm một bản dịch mới, vui lòng không dịch giá trị này, để nó là `Language`
+      Name: "Ngôn ngữ", // CHÚ Ý: nếu bạn muốn thêm một bản dịch mới, vui lòng không dịch giá trị này, để nó là `Language`
       All: "Tất cả ngôn ngữ",
     },
     Avatar: "Hình đại diện",
@@ -188,6 +211,9 @@ const vi: PartialLocaleType = {
       IsChecking: "Đang kiểm tra cập nhật...",
       FoundUpdate: (x: string) => `Tìm thấy phiên bản mới: ${x}`,
       GoToUpdate: "Đi đến cập nhật",
+    
+      "Success": "Cập nhật thành công",
+      "Failed": "Cập nhật thất bại",
     },
     SendKey: "Phím gửi",
     Theme: "Giao diện",
@@ -316,7 +342,7 @@ const vi: PartialLocaleType = {
       },
       OpenAI: {
         ApiKey: {
-          Title: "API Key",
+          Title: "OpenAI API Key",
           SubTitle:
             "Sử dụng khóa OpenAI tùy chỉnh để vượt qua hạn chế truy cập mật khẩu",
           Placeholder: "Khóa API OpenAI",
@@ -329,7 +355,7 @@ const vi: PartialLocaleType = {
       },
       Azure: {
         ApiKey: {
-          Title: "Khóa giao diện",
+          Title: "Azure API Key",
           SubTitle:
             "Sử dụng khóa Azure tùy chỉnh để vượt qua hạn chế truy cập mật khẩu",
           Placeholder: "Khóa API Azure",
@@ -347,7 +373,7 @@ const vi: PartialLocaleType = {
       },
       Anthropic: {
         ApiKey: {
-          Title: "Khóa giao diện",
+          Title: "Anthropic API Key",
           SubTitle:
             "Sử dụng khóa Anthropic tùy chỉnh để vượt qua hạn chế truy cập mật khẩu",
           Placeholder: "Khóa API Anthropic",
@@ -365,7 +391,7 @@ const vi: PartialLocaleType = {
       },
       Google: {
         ApiKey: {
-          Title: "Khóa API",
+          Title: "Google API Key",
           SubTitle: "Lấy khóa API từ Google AI",
           Placeholder: "Nhập khóa API Google AI Studio của bạn",
         },
@@ -386,7 +412,7 @@ const vi: PartialLocaleType = {
       },
       Baidu: {
         ApiKey: {
-          Title: "API Key",
+          Title: "Baidu API Key",
           SubTitle: "Sử dụng khóa Baidu API tùy chỉnh",
           Placeholder: "Khóa API Baidu",
         },
@@ -402,7 +428,7 @@ const vi: PartialLocaleType = {
       },
       ByteDance: {
         ApiKey: {
-          Title: "Khóa giao diện",
+          Title: "ByteDance API Key",
           SubTitle: "Sử dụng khóa ByteDance API tùy chỉnh",
           Placeholder: "Khóa API ByteDance",
         },
@@ -413,7 +439,7 @@ const vi: PartialLocaleType = {
       },
       Alibaba: {
         ApiKey: {
-          Title: "Khóa giao diện",
+          Title: "Alibaba API Key",
           SubTitle: "Sử dụng khóa Alibaba Cloud API tùy chỉnh",
           Placeholder: "Khóa API Alibaba Cloud",
         },
@@ -426,6 +452,105 @@ const vi: PartialLocaleType = {
         Title: "Tên mô hình tùy chỉnh",
         SubTitle:
           "Thêm tùy chọn mô hình tùy chỉnh, sử dụng dấu phẩy để phân cách",
+      },
+    
+      "Tencent": {
+        "ApiKey": {
+          "Title": "Tencent API Key",
+          "SubTitle": "Dùng API Key tùy chỉnh",
+          "Placeholder": "Tencent API Key",
+        },
+        "SecretKey": {
+          "Title": "Tencent Secret Key",
+          "SubTitle": "Dùng thông tin xác thực tùy chỉnh — Secret Key",
+          "Placeholder": "Tencent Secret Key",
+        },
+        "Endpoint": {
+          "Title": "Địa chỉ giao diện",
+          "SubTitle": "Cấu hình giá trị này trong .env",
+        },
+      },
+      "Moonshot": {
+        "ApiKey": {
+          "Title": "Moonshot API Key",
+          "SubTitle": "Dùng API Key tùy chỉnh",
+          "Placeholder": "Moonshot API Key",
+        },
+        "Endpoint": {
+          "Title": "Địa chỉ giao diện",
+          "SubTitle": "Ví dụ: ",
+        },
+      },
+      "DeepSeek": {
+        "ApiKey": {
+          "Title": "DeepSeek API Key",
+          "SubTitle": "Dùng API Key tùy chỉnh",
+          "Placeholder": "DeepSeek API Key",
+        },
+        "Endpoint": {
+          "Title": "Địa chỉ giao diện",
+          "SubTitle": "Ví dụ: ",
+        },
+      },
+      "XAI": {
+        "ApiKey": {
+          "Title": "XAI API Key",
+          "SubTitle": "Dùng API Key tùy chỉnh",
+          "Placeholder": "XAI API Key",
+        },
+        "Endpoint": {
+          "Title": "Địa chỉ giao diện",
+          "SubTitle": "Ví dụ: ",
+        },
+      },
+      "ChatGLM": {
+        "ApiKey": {
+          "Title": "ChatGLM API Key",
+          "SubTitle": "Dùng API Key tùy chỉnh",
+          "Placeholder": "ChatGLM API Key",
+        },
+        "Endpoint": {
+          "Title": "Địa chỉ giao diện",
+          "SubTitle": "Ví dụ: ",
+        },
+      },
+      "SiliconFlow": {
+        "ApiKey": {
+          "Title": "SiliconFlow API Key",
+          "SubTitle": "Dùng API Key tùy chỉnh",
+          "Placeholder": "SiliconFlow API Key",
+        },
+        "Endpoint": {
+          "Title": "Địa chỉ giao diện",
+          "SubTitle": "Ví dụ: ",
+        },
+      },
+      "Stability": {
+        "ApiKey": {
+          "Title": "Stability API Key",
+          "SubTitle": "Dùng API Key tùy chỉnh",
+          "Placeholder": "Stability API Key",
+        },
+        "Endpoint": {
+          "Title": "Địa chỉ giao diện",
+          "SubTitle": "Ví dụ: ",
+        },
+      },
+      "Iflytek": {
+        "ApiKey": {
+          "Title": "Iflytek API Key",
+          "SubTitle": "Dùng API Key tùy chỉnh",
+          "Placeholder": "Iflytek API Key",
+        },
+        "ApiSecret": {
+          "Title": "Iflytek API Secret",
+          "SubTitle": "Dùng thông tin xác thực tùy chỉnh — API Secret",
+          "Placeholder": "Iflytek API Secret",
+        },
+        "Endpoint": {
+          "Title": "Địa chỉ giao diện",
+          "SubTitle": "Ví dụ: ",
+        },
       },
     },
 
@@ -454,6 +579,96 @@ const vi: PartialLocaleType = {
     FrequencyPenalty: {
       Title: "Hình phạt tần suất (frequency_penalty)",
       SubTitle: "Giá trị càng lớn, khả năng giảm từ ngữ lặp lại càng cao",
+    },
+  
+    "ShowPassword": "Hiện mật khẩu",
+    "LocalizationInfo": {
+      "Edition": "NextChat bản tùy chỉnh",
+      "Timeout": "Kiểm tra kết nối quá thời gian 30 giây. Hãy kiểm tra mạng và địa chỉ API.",
+      "Success": "Kết nối thành công",
+      "NoResponse": "Nhà cung cấp không trả về phản hồi hợp lệ. Hãy kiểm tra mô hình và giao diện.",
+      "Upstream": "Phiên bản gốc nền tảng",
+      "Details": "Thông tin phiên bản chi tiết",
+      "Security": "Mã bảo trì bảo mật",
+      "Commit": "Commit bản dựng",
+      "Official": "Phiên bản chính thức tham khảo",
+      "Unavailable": "Chưa có",
+      "Note": "Bao gồm các bản sửa được chọn lọc, không phải toàn bộ bản chính thức v2.16.1. Thông tin chính thức chỉ để tham khảo.",
+    },
+    "ProviderSetup": {
+      "ModelIdPlaceholder": "ID mô hình@nhà cung cấp",
+      "Provider": "Nhà cung cấp",
+      "ProviderHelp": "Chọn nhà cung cấp và nhập API Key để dùng mô hình mặc định",
+      "ProviderKeyPlaceholder": "Nhập API Key của nhà cung cấp này",
+      "CurrentModel": "Mô hình trò chuyện hiện tại",
+      "DefaultModel": "Mô hình mặc định",
+      "ModelHelp": "Điều chỉnh giao diện và mô hình tùy chỉnh trong cài đặt nâng cao",
+      "TestModel": "Kiểm tra mô hình hiện tại",
+      "TestHelp": "Gửi yêu cầu ngắn có thể phát sinh phí API; không ghi lịch sử trò chuyện",
+      "TestConnection": "Kiểm tra kết nối",
+      "Testing": "Đang kiểm tra…",
+      "Advanced": "Cài đặt nâng cao",
+      "OfficialURL": "Địa chỉ chính thức",
+      "DefaultRoute": "Mặc định dùng tuyến của trang này",
+    },
+    "TTS": {
+      "Enable": {
+        "Title": "Bật TTS",
+        "SubTitle": "Bật chuyển văn bản thành giọng nói",
+      },
+      "Autoplay": {
+        "Title": "Bật tự động phát",
+        "SubTitle": "Tự tạo và phát giọng nói; cần bật TTS trước",
+      },
+      "Model": "Mô hình (model)",
+      "Engine": "Bộ máy TTS",
+      "Voice": {
+        "Title": "Giọng nói",
+        "SubTitle": "Giọng dùng để tạo âm thanh",
+      },
+      "Speed": {
+        "Title": "Tốc độ",
+        "SubTitle": "Tốc độ âm thanh được tạo",
+      },
+    },
+    "Realtime": {
+      "Enable": {
+        "Title": "Trò chuyện thời gian thực",
+        "SubTitle": "Bật trò chuyện thời gian thực",
+      },
+      "Provider": {
+        "Title": "Nhà cung cấp mô hình",
+        "SubTitle": "Chuyển nhà cung cấp",
+      },
+      "Model": {
+        "Title": "Mô hình (model)",
+        "SubTitle": "Chọn mô hình",
+      },
+      "ApiKey": {
+        "Title": "API Key",
+        "SubTitle": "API Key",
+        "Placeholder": "API Key",
+      },
+      "Azure": {
+        "Endpoint": {
+          "Title": "Địa chỉ giao diện",
+          "SubTitle": "Địa chỉ giao diện",
+        },
+        "Deployment": {
+          "Title": "Tên triển khai",
+          "SubTitle": "Tên triển khai",
+        },
+      },
+      "Temperature": {
+        "Title": "Độ ngẫu nhiên (temperature)",
+        "SubTitle": "Giá trị càng lớn, câu trả lời càng ngẫu nhiên",
+      },
+    },
+    "SafetyLabels": {
+      "BLOCK_NONE": "Không chặn",
+      "BLOCK_ONLY_HIGH": "Chỉ mức cao",
+      "BLOCK_MEDIUM_AND_ABOVE": "Từ mức trung bình",
+      "BLOCK_LOW_AND_ABOVE": "Từ mức thấp",
     },
   },
   Store: {
@@ -485,7 +700,53 @@ const vi: PartialLocaleType = {
     Revert: "Khôi phục ngữ cảnh",
   },
   Plugin: {
-    Name: "Plugin",
+    Name: "Tiện ích",
+  
+    "Accessibility": {
+      "Create": "Tạo mới: Tiện ích",
+      "Edit": "Chỉnh sửa: Tiện ích",
+      "Save": "Lưu: Tiện ích",
+      "SchemaUrl": "Tiện ích Schema URL",
+      "LoadSchema": "Tải từ URL: Tiện ích Schema",
+      "Schema": "Tiện ích Schema",
+    },
+    "Page": {
+      "Title": "Tiện ích",
+      "SubTitle": (count: number) => "Tiện ích: " + count,
+      "Search": "Tìm kiếm tin nhắn — Tiện ích",
+      "Create": "Tạo mới",
+      "Find": "Tìm tiện ích trên GitHub: ",
+    },
+    "Item": {
+      "Info": (count: number) => "Phương thức: " + count,
+      "View": "Xem",
+      "Edit": "Chỉnh sửa",
+      "Delete": "Xóa",
+      "DeleteConfirm": "Xác nhận xóa?",
+    },
+    "Auth": {
+      "None": "Không xác thực",
+      "Basic": "Basic",
+      "Bearer": "Bearer",
+      "Custom": "Tùy chỉnh",
+      "CustomHeader": "Tên tham số",
+      "Token": "Token",
+      "Proxy": "Dùng proxy",
+      "ProxyDescription": "Dùng proxy để tránh giới hạn CORS",
+      "Location": "Vị trí",
+      "LocationHeader": "Header",
+      "LocationQuery": "Query",
+      "LocationBody": "Body",
+    },
+    "EditModal": {
+      "Title": (readonly: boolean) => "Chỉnh sửa: Tiện ích" + (readonly ? " (Chỉ đọc)" : ""),
+      "Download": "Tải xuống",
+      "Auth": "Kiểu xác thực",
+      "Content": "OpenAPI Schema",
+      "Load": "Tải từ URL",
+      "Method": "Phương thức",
+      "Error": "OpenAPI Schema không hợp lệ",
+    },
   },
   FineTuned: {
     Sysmessage: "Bạn là một trợ lý",
@@ -547,6 +808,15 @@ const vi: PartialLocaleType = {
         SubTitle: "Tạo liên kết trực tiếp đến mặt nạ này",
         Action: "Sao chép liên kết",
       },
+    
+      "Artifacts": {
+        "Title": "Bật Artifacts",
+        "SubTitle": "Hiển thị trang HTML bằng Artifacts",
+      },
+      "CodeFold": {
+        "Title": "Bật thu gọn mã",
+        "SubTitle": "Tự động thu gọn khối mã dài",
+      },
     },
   },
   NewChat: {
@@ -576,6 +846,28 @@ const vi: PartialLocaleType = {
     Import: "Nhập",
     Sync: "Đồng bộ",
     Config: "Cấu hình",
+  
+    "Save": "Lưu",
+    "Loading": "Đang tải…",
+    "Seed": "Hạt giống ngẫu nhiên",
+    "User": "Người dùng",
+    "Assistant": "Trợ lý",
+    "System": "Hệ thống",
+    "Text": "Văn bản",
+    "Image": "Hình ảnh",
+    "Standard": "Tiêu chuẩn",
+    "Vivid": "Sống động",
+    "Natural": "Tự nhiên",
+    "ErrorTitle": "Đã xảy ra lỗi",
+    "ReportError": "Báo cáo lỗi này",
+    "ClearData": "Xóa tất cả dữ liệu",
+    "AssistantTagline": "Xây dựng trợ lý AI của riêng bạn.",
+    "EmptyPrompt": "Lời nhắc mới",
+    "EmptyPromptContent": "Nhập nội dung lời nhắc",
+    "AllFiles": "Tất cả tệp",
+  
+    "Refresh": "Tải lại",
+    "HidePassword": "Ẩn mật khẩu",
   },
   Exporter: {
     Description: {
@@ -585,6 +877,114 @@ const vi: PartialLocaleType = {
     Messages: "Tin nhắn",
     Topic: "Chủ đề",
     Time: "Thời gian",
+  },
+
+  "Discovery": {
+    "Name": "Khám phá",
+  },
+  "Mcp": {
+    "Name": "MCP",
+    "UI": {
+      "Market": "Chợ MCP",
+      "PresetLoadFailed": "Không tải được máy chủ thiết lập sẵn",
+      "InitFailed": "Không tải được trạng thái ban đầu",
+      "ConfigSaved": "Đã lưu cấu hình máy chủ",
+      "ConfigSaveFailed": "Không lưu được cấu hình",
+      "ToolsFailed": "Không tải được công cụ",
+      "Stopped": "Đã dừng",
+      "StopFailed": "Không dừng được máy chủ",
+      "StartFailed": "Không khởi động được máy chủ; hãy kiểm tra nhật ký",
+      "RestartingClients": "Đang khởi động lại mọi máy khách",
+      "RestartFailed": "Không khởi động lại được máy khách",
+      "Initializing": "Đang khởi tạo",
+      "NoServers": "Không có máy chủ khả dụng",
+      "OpenRepo": "Mở kho mã",
+      "Start": "Khởi động",
+      "Tools": "Công cụ",
+      "Add": "Thêm",
+      "RestartAll": "Khởi động lại tất cả",
+      "Search": "Tìm máy chủ MCP",
+      "ConfigureServer": "Cấu hình máy chủ",
+      "ServerDetails": "Chi tiết máy chủ",
+      "NoTools": "Không có công cụ khả dụng",
+      "LoadingPresets": "Đang tải danh sách máy chủ thiết lập sẵn…",
+      "ConfiguredServers": "Máy chủ đã cấu hình",
+      "UpdatingConfig": "Đang cập nhật cấu hình…",
+      "CreatingClient": "Đang tạo máy khách MCP…",
+      "Stopping": "Đang dừng máy chủ…",
+      "Starting": "Đang khởi động máy chủ…",
+      "RestartingServers": "Đang khởi động lại mọi máy chủ…",
+      "ExecutionFailed": "Thực thi MCP thất bại",
+    },
+  },
+  "SdPanel": {
+    "Prompt": "Lời nhắc hình ảnh",
+    "NegativePrompt": "Lời nhắc phủ định",
+    "PleaseInput": (name: string) => name + " — Nhập giá trị",
+    "AspectRatio": "Tỷ lệ khung hình",
+    "ImageStyle": "Phong cách hình ảnh",
+    "OutFormat": "Định dạng đầu ra",
+    "AIModel": "Mô hình (model)",
+    "ModelVersion": "Phiên bản mô hình",
+    "Submit": "Tạo",
+    "ParamIsRequired": (name: string) => name + ": Bắt buộc",
+    "Styles": {
+      "D3Model": "Mô hình 3D",
+      "AnalogFilm": "Phim nhựa",
+      "Anime": "Hoạt hình Nhật",
+      "Cinematic": "Điện ảnh",
+      "ComicBook": "Truyện tranh",
+      "DigitalArt": "Nghệ thuật số",
+      "Enhance": "Tăng cường",
+      "FantasyArt": "Nghệ thuật kỳ ảo",
+      "Isometric": "Đẳng cự",
+      "LineArt": "Nét vẽ",
+      "LowPoly": "Đa giác thấp",
+      "ModelingCompound": "Đất nặn",
+      "NeonPunk": "Punk neon",
+      "Origami": "Gấp giấy",
+      "Photographic": "Nhiếp ảnh",
+      "PixelArt": "Nghệ thuật điểm ảnh",
+      "TileTexture": "Họa tiết lát",
+    },
+  },
+  "Sd": {
+    "SubTitle": (count: number) => "Hình ảnh: " + count,
+    "Actions": {
+      "Params": "Xem tham số",
+      "Copy": "Sao chép: Lời nhắc hình ảnh",
+      "Delete": "Xóa",
+      "Retry": "Thử lại",
+      "ReturnHome": "Về trang chủ",
+      "History": "Lịch sử",
+    },
+    "EmptyRecord": "Chưa có hình ảnh",
+    "Status": {
+      "Name": "Trạng thái",
+      "Success": "Thành công",
+      "Error": "Lỗi",
+      "Wait": "Đang chờ",
+      "Running": "Đang chạy",
+    },
+    "Danger": {
+      "Delete": "Xác nhận xóa?",
+    },
+    "GenerateParams": "Tham số tạo ảnh",
+    "Detail": "Chi tiết",
+  },
+  "ApiError": {
+    "Timeout": "Yêu cầu quá thời gian. Thử lại hoặc kiểm tra địa chỉ trong cài đặt nâng cao.",
+    "Quota": "Hạn mức nhà cung cấp không đủ. Kiểm tra số dư, thanh toán và giới hạn sử dụng.",
+    "AccessCode": "Mã truy cập trang không hợp lệ. Hãy kiểm tra mã.",
+    "InvalidKey": "API Key không hợp lệ hoặc đã hết hạn. Kiểm tra Key của nhà cung cấp đã chọn.",
+    "Permission": "Truy cập bị từ chối. Kiểm tra quyền mô hình và giới hạn khu vực.",
+    "Model": "Không tìm thấy mô hình hoặc giao diện. Kiểm tra ID và địa chỉ trong cài đặt nâng cao.",
+    "RateLimit": "Quá nhiều yêu cầu hoặc đã đạt giới hạn. Thử lại sau và kiểm tra hạn mức.",
+    "Parameters": "Tham số không tương thích. Kiểm tra ID mô hình và tham số trong cài đặt nâng cao.",
+    "Unavailable": "Nhà cung cấp tạm thời không khả dụng. Hãy thử lại sau.",
+    "Empty": "Không có nội dung hợp lệ. Kiểm tra trạng thái mô hình rồi thử lại.",
+    "Network": "Kết nối mạng thất bại. Kiểm tra mạng, địa chỉ và cài đặt CORS của bên thứ ba.",
+    "Generic": "Yêu cầu thất bại. Kiểm tra API Key, mô hình và giao diện của nhà cung cấp.",
   },
 };
 

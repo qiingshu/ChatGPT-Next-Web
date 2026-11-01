@@ -1,3 +1,4 @@
+import Locale from "../app/locales";
 import { describe, expect, test } from "@jest/globals";
 import { DEFAULT_MODELS, ServiceProvider, VISION_MODEL_REGEXES } from "../app/constant";
 import { PROVIDER_PRESETS, getProviderPreset } from "../app/utils/provider-presets";
@@ -24,20 +25,20 @@ describe("official provider presets", () => {
   });
 });
 
-describe("safe Chinese API errors", () => {
+describe("safe localized API errors", () => {
   test.each([
-    ["HTTP 401: invalid_api_key", undefined, "API Key 无效"],
-    ["API key not valid", 400, "API Key 无效"],
-    ["HTTP 402", undefined, "额度不足"],
-    ["HTTP 429: insufficient_quota", undefined, "额度不足"],
-    ["HTTP 429: rate_limit_exceeded", undefined, "请求过于频繁"],
-    ["HTTP 404: model_not_found", undefined, "模型不可用"],
-    ["HTTP 403", undefined, "访问被拒绝"],
-    ["HTTP 400: invalid_request", undefined, "请求参数不兼容"],
-    ["HTTP 503", undefined, "服务商暂时不可用"],
-    ["AbortError: aborted", undefined, "请求超时"],
-    ["NetworkError: Failed to fetch", undefined, "网络连接失败"],
-    ["empty response from server", undefined, "未返回有效内容"],
+    ["HTTP 401: invalid_api_key", undefined, Locale.ApiError.InvalidKey],
+    ["API key not valid", 400, Locale.ApiError.InvalidKey],
+    ["HTTP 402", undefined, Locale.ApiError.Quota],
+    ["HTTP 429: insufficient_quota", undefined, Locale.ApiError.Quota],
+    ["HTTP 429: rate_limit_exceeded", undefined, Locale.ApiError.RateLimit],
+    ["HTTP 404: model_not_found", undefined, Locale.ApiError.Model],
+    ["HTTP 403", undefined, Locale.ApiError.Permission],
+    ["HTTP 400: invalid_request", undefined, Locale.ApiError.Parameters],
+    ["HTTP 503", undefined, Locale.ApiError.Unavailable],
+    ["AbortError: aborted", undefined, Locale.ApiError.Timeout],
+    ["NetworkError: Failed to fetch", undefined, Locale.ApiError.Network],
+    ["empty response from server", undefined, Locale.ApiError.Empty],
   ])("%s", (message, status, expected) => {
     const result = formatApiError(new Error(message), status);
     expect(result).toContain(expected);
@@ -47,6 +48,6 @@ describe("safe Chinese API errors", () => {
     const marker = "PRIVATE_FIXTURE_DO_NOT_ECHO";
     expect(formatApiError(new Error(marker))).not.toContain(marker);
     expect(formatApiError(new Error("HTTP 401 " + marker))).not.toContain(marker);
-    expect(formatApiError(null)).toContain("请求失败");
+    expect(formatApiError(null)).toContain(Locale.ApiError.Generic);
   });
 });

@@ -123,7 +123,7 @@ export function SideBar(props: { className?: string }) {
       <SideBarTail
         primaryAction={
           <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
-            <IconButton icon={<GithubIcon />} shadow />
+            <IconButton aria={Locale.Mcp.UI.OpenRepo} icon={<GithubIcon />} shadow />
           </a>
         }
         secondaryAction={

@@ -241,7 +241,7 @@ export function Sd() {
                                             label = Locale.SdPanel.AspectRatio;
                                             break;
                                           case "seed":
-                                            label = "Seed";
+                                            label = Locale.UI.Seed;
                                             value = value || 0;
                                             break;
                                           case "output_format":

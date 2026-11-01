@@ -1,10 +1,10 @@
 import { SubmitKey } from "../store/config";
-import type { PartialLocaleType } from "./index";
+import type { LocaleType } from "./index";
 import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 const isApp = !!getClientConfig()?.isApp;
 
-const fr: PartialLocaleType = {
+const fr: LocaleType = {
   WIP: "Prochainement...",
   Error: {
     Unauthorized: isApp
@@ -56,6 +56,10 @@ const fr: PartialLocaleType = {
       Edit: "Modifier",
       RefreshTitle: "Actualiser le titre",
       RefreshToast: "Demande d'actualisation du titre envoyée",
+    
+      "FullScreen": "Plein écran",
+      "Speech": "Lire",
+      "StopSpeech": "Arrêter",
     },
     Commands: {
       new: "Nouvelle discussion",
@@ -64,6 +68,8 @@ const fr: PartialLocaleType = {
       prev: "Discussion précédente",
       clear: "Effacer le contexte",
       del: "Supprimer la discussion",
+    
+      "fork": "Copier la conversation",
     },
     InputActions: {
       Stop: "Arrêter la réponse",
@@ -94,6 +100,18 @@ const fr: PartialLocaleType = {
       SaveAs: "Enregistrer comme masque",
     },
     IsContext: "Prompt prédéfini",
+  
+    "StartSpeak": "Commencer à parler",
+    "StopSpeak": "Arrêter",
+    "ShortcutKey": {
+      "Title": "Raccourcis clavier",
+      "newChat": "Ouvrir une conversation",
+      "focusInput": "Activer le champ de saisie",
+      "copyLastMessage": "Copier la dernière réponse",
+      "copyLastCode": "Copier le dernier bloc de code",
+      "showShortcutKey": "Afficher les raccourcis",
+      "clearContext": "Effacer la discussion",
+    },
   },
   Export: {
     Title: "Partager l'historique des discussions",
@@ -118,6 +136,11 @@ const fr: PartialLocaleType = {
       Toast: "Génération de la capture d'écran",
       Modal:
         "Appuyez longuement ou faites un clic droit pour enregistrer l'image",
+    },
+  
+    "Artifacts": {
+      "Title": "Partager les Artifacts",
+      "Error": "Partager les Artifacts — Erreur",
     },
   },
   Select: {
@@ -162,7 +185,7 @@ const fr: PartialLocaleType = {
       },
     },
     Lang: {
-      Name: "Language", // ATTENTION: if you wanna add a new translation, please do not translate this value, leave it as `Language`
+      Name: "Langue", // ATTENTION: if you wanna add a new translation, please do not translate this value, leave it as `Language`
       All: "Toutes les langues",
     },
     Avatar: "Avatar",
@@ -194,6 +217,9 @@ const fr: PartialLocaleType = {
       IsChecking: "Vérification des mises à jour en cours...",
       FoundUpdate: (x: string) => `Nouvelle version trouvée : ${x}`,
       GoToUpdate: "Aller à la mise à jour",
+    
+      "Success": "Mise à jour réussie",
+      "Failed": "Échec de la mise à jour",
     },
     SendKey: "Touche d'envoi",
     Theme: "Thème",
@@ -328,7 +354,7 @@ const fr: PartialLocaleType = {
       },
       OpenAI: {
         ApiKey: {
-          Title: "Clé API",
+          Title: "OpenAI API Key",
           SubTitle:
             "Utiliser une clé OpenAI personnalisée pour contourner les restrictions d'accès par mot de passe",
           Placeholder: "Clé API OpenAI",
@@ -341,7 +367,7 @@ const fr: PartialLocaleType = {
       },
       Azure: {
         ApiKey: {
-          Title: "Clé d'interface",
+          Title: "Azure API Key",
           SubTitle:
             "Utiliser une clé Azure personnalisée pour contourner les restrictions d'accès par mot de passe",
           Placeholder: "Clé API Azure",
@@ -359,7 +385,7 @@ const fr: PartialLocaleType = {
       },
       Anthropic: {
         ApiKey: {
-          Title: "Clé d'interface",
+          Title: "Anthropic API Key",
           SubTitle:
             "Utiliser une clé Anthropic personnalisée pour contourner les restrictions d'accès par mot de passe",
           Placeholder: "Clé API Anthropic",
@@ -377,7 +403,7 @@ const fr: PartialLocaleType = {
       },
       Google: {
         ApiKey: {
-          Title: "Clé API",
+          Title: "Google API Key",
           SubTitle: "Obtenez votre clé API Google AI",
           Placeholder: "Entrez votre clé API Google AI Studio",
         },
@@ -398,7 +424,7 @@ const fr: PartialLocaleType = {
       },
       Baidu: {
         ApiKey: {
-          Title: "Clé API",
+          Title: "Baidu API Key",
           SubTitle: "Utiliser une clé API Baidu personnalisée",
           Placeholder: "Clé API Baidu",
         },
@@ -415,7 +441,7 @@ const fr: PartialLocaleType = {
       },
       ByteDance: {
         ApiKey: {
-          Title: "Clé d'interface",
+          Title: "ByteDance API Key",
           SubTitle: "Utiliser une clé API ByteDance personnalisée",
           Placeholder: "Clé API ByteDance",
         },
@@ -426,7 +452,7 @@ const fr: PartialLocaleType = {
       },
       Alibaba: {
         ApiKey: {
-          Title: "Clé d'interface",
+          Title: "Alibaba API Key",
           SubTitle: "Utiliser une clé API Alibaba Cloud personnalisée",
           Placeholder: "Clé API Alibaba Cloud",
         },
@@ -439,6 +465,105 @@ const fr: PartialLocaleType = {
         Title: "Nom du modèle personnalisé",
         SubTitle:
           "Ajouter des options de modèles personnalisés, séparées par des virgules",
+      },
+    
+      "Tencent": {
+        "ApiKey": {
+          "Title": "Tencent API Key",
+          "SubTitle": "Utiliser une API Key personnalisée",
+          "Placeholder": "Tencent API Key",
+        },
+        "SecretKey": {
+          "Title": "Tencent Secret Key",
+          "SubTitle": "Utiliser des identifiants personnalisés — Secret Key",
+          "Placeholder": "Tencent Secret Key",
+        },
+        "Endpoint": {
+          "Title": "Adresse de l’interface",
+          "SubTitle": "Configurer cette valeur dans .env",
+        },
+      },
+      "Moonshot": {
+        "ApiKey": {
+          "Title": "Moonshot API Key",
+          "SubTitle": "Utiliser une API Key personnalisée",
+          "Placeholder": "Moonshot API Key",
+        },
+        "Endpoint": {
+          "Title": "Adresse de l’interface",
+          "SubTitle": "Exemple: ",
+        },
+      },
+      "DeepSeek": {
+        "ApiKey": {
+          "Title": "DeepSeek API Key",
+          "SubTitle": "Utiliser une API Key personnalisée",
+          "Placeholder": "DeepSeek API Key",
+        },
+        "Endpoint": {
+          "Title": "Adresse de l’interface",
+          "SubTitle": "Exemple: ",
+        },
+      },
+      "XAI": {
+        "ApiKey": {
+          "Title": "XAI API Key",
+          "SubTitle": "Utiliser une API Key personnalisée",
+          "Placeholder": "XAI API Key",
+        },
+        "Endpoint": {
+          "Title": "Adresse de l’interface",
+          "SubTitle": "Exemple: ",
+        },
+      },
+      "ChatGLM": {
+        "ApiKey": {
+          "Title": "ChatGLM API Key",
+          "SubTitle": "Utiliser une API Key personnalisée",
+          "Placeholder": "ChatGLM API Key",
+        },
+        "Endpoint": {
+          "Title": "Adresse de l’interface",
+          "SubTitle": "Exemple: ",
+        },
+      },
+      "SiliconFlow": {
+        "ApiKey": {
+          "Title": "SiliconFlow API Key",
+          "SubTitle": "Utiliser une API Key personnalisée",
+          "Placeholder": "SiliconFlow API Key",
+        },
+        "Endpoint": {
+          "Title": "Adresse de l’interface",
+          "SubTitle": "Exemple: ",
+        },
+      },
+      "Stability": {
+        "ApiKey": {
+          "Title": "Stability API Key",
+          "SubTitle": "Utiliser une API Key personnalisée",
+          "Placeholder": "Stability API Key",
+        },
+        "Endpoint": {
+          "Title": "Adresse de l’interface",
+          "SubTitle": "Exemple: ",
+        },
+      },
+      "Iflytek": {
+        "ApiKey": {
+          "Title": "Iflytek API Key",
+          "SubTitle": "Utiliser une API Key personnalisée",
+          "Placeholder": "Iflytek API Key",
+        },
+        "ApiSecret": {
+          "Title": "Iflytek API Secret",
+          "SubTitle": "Utiliser des identifiants personnalisés — API Secret",
+          "Placeholder": "Iflytek API Secret",
+        },
+        "Endpoint": {
+          "Title": "Adresse de l’interface",
+          "SubTitle": "Exemple: ",
+        },
       },
     },
 
@@ -470,6 +595,96 @@ const fr: PartialLocaleType = {
       SubTitle:
         "Plus la valeur est élevée, plus il est probable de réduire les répétitions",
     },
+  
+    "ShowPassword": "Afficher le mot de passe",
+    "LocalizationInfo": {
+      "Edition": "NextChat – édition personnalisée",
+      "Timeout": "Délai de connexion dépassé après 30 secondes. Vérifiez le réseau et l’adresse de l’API.",
+      "Success": "Connexion réussie",
+      "NoResponse": "Le fournisseur n’a renvoyé aucune réponse valide. Vérifiez le modèle et l’interface.",
+      "Upstream": "Version amont de base",
+      "Details": "Informations détaillées sur la version",
+      "Security": "Identifiant de maintenance de sécurité",
+      "Commit": "Commit de compilation",
+      "Official": "Version officielle de référence",
+      "Unavailable": "Indisponible",
+      "Note": "Inclut des rétroportages sélectionnés, pas la version officielle v2.16.1 complète. La version officielle est indiquée à titre de référence.",
+    },
+    "ProviderSetup": {
+      "ModelIdPlaceholder": "ID de modèle@fournisseur",
+      "Provider": "Fournisseur",
+      "ProviderHelp": "Choisissez un fournisseur et saisissez son API Key pour utiliser le modèle par défaut",
+      "ProviderKeyPlaceholder": "Saisissez l’API Key de ce fournisseur",
+      "CurrentModel": "Modèle de conversation actuel",
+      "DefaultModel": "Modèle par défaut",
+      "ModelHelp": "Réglez l’interface et les modèles personnalisés dans les paramètres avancés",
+      "TestModel": "Tester le modèle actuel",
+      "TestHelp": "Envoie une courte requête pouvant entraîner des frais API ; sans enregistrer l’historique",
+      "TestConnection": "Tester la connexion",
+      "Testing": "Test en cours…",
+      "Advanced": "Paramètres avancés",
+      "OfficialURL": "Adresse officielle",
+      "DefaultRoute": "Utilise par défaut la route de ce site",
+    },
+    "TTS": {
+      "Enable": {
+        "Title": "Activer TTS",
+        "SubTitle": "Activer la synthèse vocale",
+      },
+      "Autoplay": {
+        "Title": "Activer la lecture automatique",
+        "SubTitle": "Générer et lire automatiquement la voix ; activer TTS d’abord",
+      },
+      "Model": "Modèle",
+      "Engine": "Moteur TTS",
+      "Voice": {
+        "Title": "Voix",
+        "SubTitle": "Voix utilisée pour le son généré",
+      },
+      "Speed": {
+        "Title": "Vitesse",
+        "SubTitle": "Vitesse du son généré",
+      },
+    },
+    "Realtime": {
+      "Enable": {
+        "Title": "Conversation en temps réel",
+        "SubTitle": "Activer la conversation en temps réel",
+      },
+      "Provider": {
+        "Title": "Fournisseur du modèle",
+        "SubTitle": "Changer de fournisseur",
+      },
+      "Model": {
+        "Title": "Modèle",
+        "SubTitle": "Choisir un modèle",
+      },
+      "ApiKey": {
+        "Title": "API Key",
+        "SubTitle": "API Key",
+        "Placeholder": "API Key",
+      },
+      "Azure": {
+        "Endpoint": {
+          "Title": "Adresse de l’interface",
+          "SubTitle": "Adresse de l’interface",
+        },
+        "Deployment": {
+          "Title": "Nom du déploiement",
+          "SubTitle": "Nom du déploiement",
+        },
+      },
+      "Temperature": {
+        "Title": "Aléatoire (temperature)",
+        "SubTitle": "Plus la valeur est élevée, plus les réponses sont aléatoires",
+      },
+    },
+    "SafetyLabels": {
+      "BLOCK_NONE": "Aucun",
+      "BLOCK_ONLY_HIGH": "Élevé uniquement",
+      "BLOCK_MEDIUM_AND_ABOVE": "Moyen et supérieur",
+      "BLOCK_LOW_AND_ABOVE": "Faible et supérieur",
+    },
   },
   Store: {
     DefaultTopic: "Nouvelle discussion",
@@ -500,7 +715,53 @@ const fr: PartialLocaleType = {
     Revert: "Restaurer le contexte",
   },
   Plugin: {
-    Name: "Plugin",
+    Name: "Extension",
+  
+    "Accessibility": {
+      "Create": "Créer: Extension",
+      "Edit": "Modifier: Extension",
+      "Save": "Enregistrer: Extension",
+      "SchemaUrl": "Extension Schema URL",
+      "LoadSchema": "Charger depuis une URL: Extension Schema",
+      "Schema": "Extension Schema",
+    },
+    "Page": {
+      "Title": "Extensions",
+      "SubTitle": (count: number) => "Extensions: " + count,
+      "Search": "Rechercher des messages — Extensions",
+      "Create": "Créer",
+      "Find": "Trouver des extensions sur GitHub: ",
+    },
+    "Item": {
+      "Info": (count: number) => "Méthodes: " + count,
+      "View": "Voir",
+      "Edit": "Modifier",
+      "Delete": "Supprimer",
+      "DeleteConfirm": "Confirmer la suppression ?",
+    },
+    "Auth": {
+      "None": "Aucune authentification",
+      "Basic": "Basic",
+      "Bearer": "Bearer",
+      "Custom": "Personnalisé",
+      "CustomHeader": "Nom du paramètre",
+      "Token": "Token",
+      "Proxy": "Utiliser un proxy",
+      "ProxyDescription": "Utiliser un proxy pour éviter les restrictions CORS",
+      "Location": "Emplacement",
+      "LocationHeader": "Header",
+      "LocationQuery": "Query",
+      "LocationBody": "Body",
+    },
+    "EditModal": {
+      "Title": (readonly: boolean) => "Modifier: Extension" + (readonly ? " (Lecture seule)" : ""),
+      "Download": "Télécharger",
+      "Auth": "Type d’authentification",
+      "Content": "OpenAPI Schema",
+      "Load": "Charger depuis une URL",
+      "Method": "Méthodes",
+      "Error": "OpenAPI Schema non valide",
+    },
   },
   FineTuned: {
     Sysmessage: "Vous êtes un assistant",
@@ -562,6 +823,15 @@ const fr: PartialLocaleType = {
         SubTitle: "Générer un lien direct pour ce masque",
         Action: "Copier le lien",
       },
+    
+      "Artifacts": {
+        "Title": "Activer les Artifacts",
+        "SubTitle": "Afficher des pages HTML avec les Artifacts",
+      },
+      "CodeFold": {
+        "Title": "Activer le repli du code",
+        "SubTitle": "Replier automatiquement les longs blocs de code",
+      },
     },
   },
   NewChat: {
@@ -591,6 +861,28 @@ const fr: PartialLocaleType = {
     Import: "Importer",
     Sync: "Synchroniser",
     Config: "Configurer",
+  
+    "Save": "Enregistrer",
+    "Loading": "Chargement…",
+    "Seed": "Graine aléatoire",
+    "User": "Utilisateur",
+    "Assistant": "Assistant",
+    "System": "Système",
+    "Text": "Texte",
+    "Image": "Image",
+    "Standard": "Standard",
+    "Vivid": "Vif",
+    "Natural": "Naturel",
+    "ErrorTitle": "Une erreur est survenue",
+    "ReportError": "Signaler cette erreur",
+    "ClearData": "Effacer toutes les données",
+    "AssistantTagline": "Créez votre propre assistant IA.",
+    "EmptyPrompt": "Nouvelle invite",
+    "EmptyPromptContent": "Saisissez le contenu de l’invite",
+    "AllFiles": "Tous les fichiers",
+  
+    "Refresh": "Recharger",
+    "HidePassword": "Masquer le mot de passe",
   },
   Exporter: {
     Description: {
@@ -601,6 +893,114 @@ const fr: PartialLocaleType = {
     Messages: "Messages",
     Topic: "Sujet",
     Time: "Temps",
+  },
+
+  "Discovery": {
+    "Name": "Découvrir",
+  },
+  "Mcp": {
+    "Name": "MCP",
+    "UI": {
+      "Market": "Catalogue MCP",
+      "PresetLoadFailed": "Échec du chargement des serveurs prédéfinis",
+      "InitFailed": "Échec du chargement de l’état initial",
+      "ConfigSaved": "Configuration du serveur enregistrée",
+      "ConfigSaveFailed": "Échec de l’enregistrement de la configuration",
+      "ToolsFailed": "Échec du chargement des outils",
+      "Stopped": "Arrêté",
+      "StopFailed": "Échec de l’arrêt du serveur",
+      "StartFailed": "Échec du démarrage ; consultez les journaux",
+      "RestartingClients": "Redémarrage de tous les clients",
+      "RestartFailed": "Échec du redémarrage des clients",
+      "Initializing": "Initialisation",
+      "NoServers": "Aucun serveur disponible",
+      "OpenRepo": "Ouvrir le dépôt",
+      "Start": "Démarrer",
+      "Tools": "Outils",
+      "Add": "Ajouter",
+      "RestartAll": "Tout redémarrer",
+      "Search": "Rechercher des serveurs MCP",
+      "ConfigureServer": "Configurer le serveur",
+      "ServerDetails": "Détails du serveur",
+      "NoTools": "Aucun outil disponible",
+      "LoadingPresets": "Chargement des serveurs prédéfinis…",
+      "ConfiguredServers": "Serveurs configurés",
+      "UpdatingConfig": "Mise à jour de la configuration…",
+      "CreatingClient": "Création du client MCP…",
+      "Stopping": "Arrêt du serveur…",
+      "Starting": "Démarrage du serveur…",
+      "RestartingServers": "Redémarrage de tous les serveurs…",
+      "ExecutionFailed": "Échec de l’exécution MCP",
+    },
+  },
+  "SdPanel": {
+    "Prompt": "Description de l’image",
+    "NegativePrompt": "Description négative",
+    "PleaseInput": (name: string) => name + " — Saisir une valeur",
+    "AspectRatio": "Rapport d’aspect",
+    "ImageStyle": "Style d’image",
+    "OutFormat": "Format de sortie",
+    "AIModel": "Modèle",
+    "ModelVersion": "Version du modèle",
+    "Submit": "Générer",
+    "ParamIsRequired": (name: string) => name + ": Obligatoire",
+    "Styles": {
+      "D3Model": "Modèle 3D",
+      "AnalogFilm": "Pellicule argentique",
+      "Anime": "Animation japonaise",
+      "Cinematic": "Cinématographique",
+      "ComicBook": "Bande dessinée",
+      "DigitalArt": "Art numérique",
+      "Enhance": "Amélioré",
+      "FantasyArt": "Art fantastique",
+      "Isometric": "Isométrique",
+      "LineArt": "Dessin au trait",
+      "LowPoly": "Faible nombre de polygones",
+      "ModelingCompound": "Pâte à modeler",
+      "NeonPunk": "Punk néon",
+      "Origami": "Pliage papier",
+      "Photographic": "Photographique",
+      "PixelArt": "Art pixel",
+      "TileTexture": "Texture répétée",
+    },
+  },
+  "Sd": {
+    "SubTitle": (count: number) => "Images: " + count,
+    "Actions": {
+      "Params": "Voir les paramètres",
+      "Copy": "Copier: Description de l’image",
+      "Delete": "Supprimer",
+      "Retry": "Réessayer",
+      "ReturnHome": "Retour à l’accueil",
+      "History": "Historique",
+    },
+    "EmptyRecord": "Aucune image pour le moment",
+    "Status": {
+      "Name": "État",
+      "Success": "Réussite",
+      "Error": "Erreur",
+      "Wait": "En attente",
+      "Running": "En cours",
+    },
+    "Danger": {
+      "Delete": "Confirmer la suppression ?",
+    },
+    "GenerateParams": "Paramètres de génération",
+    "Detail": "Détails",
+  },
+  "ApiError": {
+    "Timeout": "Délai dépassé. Réessayez ou vérifiez l’interface dans les paramètres avancés.",
+    "Quota": "Quota du fournisseur insuffisant. Vérifiez le solde, la facturation et les limites.",
+    "AccessCode": "Code d’accès au site non valide. Vérifiez votre code.",
+    "InvalidKey": "API Key non valide ou expirée. Vérifiez le Key du fournisseur choisi.",
+    "Permission": "Accès refusé. Vérifiez les autorisations du modèle et les restrictions régionales.",
+    "Model": "Modèle ou interface introuvable. Vérifiez l’ID du modèle et l’adresse dans les paramètres avancés.",
+    "RateLimit": "Trop de requêtes ou limite atteinte. Réessayez plus tard et vérifiez le quota.",
+    "Parameters": "Paramètres incompatibles. Vérifiez l’ID du modèle et les paramètres avancés.",
+    "Unavailable": "Fournisseur temporairement indisponible. Réessayez plus tard.",
+    "Empty": "Aucun contenu valide reçu. Vérifiez la disponibilité du modèle et réessayez.",
+    "Network": "Échec de connexion réseau. Vérifiez le réseau, l’interface et les réglages CORS du tiers.",
+    "Generic": "Échec de la requête. Vérifiez l’API Key, le modèle et l’interface du fournisseur.",
   },
 };
 

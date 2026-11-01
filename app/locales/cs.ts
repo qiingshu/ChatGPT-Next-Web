@@ -1,10 +1,10 @@
 import { SubmitKey } from "../store/config";
-import type { PartialLocaleType } from "./index";
+import type { LocaleType } from "./index";
 import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 const isApp = !!getClientConfig()?.isApp;
 
-const cs: PartialLocaleType = {
+const cs: LocaleType = {
   WIP: "V přípravě...",
   Error: {
     Unauthorized: isApp
@@ -55,6 +55,10 @@ const cs: PartialLocaleType = {
       Edit: "Upravit",
       RefreshTitle: "Obnovit název",
       RefreshToast: "Požadavek na obnovení názvu byl odeslán",
+    
+      "FullScreen": "Celá obrazovka",
+      "Speech": "Přečíst",
+      "StopSpeech": "Zastavit",
     },
     Commands: {
       new: "Nová konverzace",
@@ -63,6 +67,8 @@ const cs: PartialLocaleType = {
       prev: "Předchozí konverzace",
       clear: "Vymazat kontext",
       del: "Smazat konverzaci",
+    
+      "fork": "Kopírovat konverzaci",
     },
     InputActions: {
       Stop: "Zastavit odpověď",
@@ -93,6 +99,18 @@ const cs: PartialLocaleType = {
       SaveAs: "Uložit jako masku",
     },
     IsContext: "Přednastavené prompty",
+  
+    "StartSpeak": "Začít mluvit",
+    "StopSpeak": "Zastavit",
+    "ShortcutKey": {
+      "Title": "Klávesové zkratky",
+      "newChat": "Otevřít novou konverzaci",
+      "focusInput": "Přejít do vstupního pole",
+      "copyLastMessage": "Kopírovat poslední odpověď",
+      "copyLastCode": "Kopírovat poslední blok kódu",
+      "showShortcutKey": "Zobrazit zkratky",
+      "clearContext": "Vymazat konverzaci",
+    },
   },
   Export: {
     Title: "Sdílet konverzace",
@@ -116,6 +134,11 @@ const cs: PartialLocaleType = {
     Image: {
       Toast: "Generování screenshotu",
       Modal: "Dlouhým stiskem nebo pravým tlačítkem myši uložte obrázek",
+    },
+  
+    "Artifacts": {
+      "Title": "Sdílet Artifacts",
+      "Error": "Sdílet Artifacts — Chyba",
     },
   },
   Select: {
@@ -157,7 +180,7 @@ const cs: PartialLocaleType = {
       },
     },
     Lang: {
-      Name: "Language", // POZOR: pokud chcete přidat nový překlad, prosím, nechte tuto hodnotu jako `Language`
+      Name: "Jazyk", // POZOR: pokud chcete přidat nový překlad, prosím, nechte tuto hodnotu jako `Language`
       All: "Všechny jazyky",
     },
     Avatar: "Profilový obrázek",
@@ -188,6 +211,9 @@ const cs: PartialLocaleType = {
       IsChecking: "Kontrola aktualizací...",
       FoundUpdate: (x: string) => `Nalezena nová verze: ${x}`,
       GoToUpdate: "Přejít na aktualizaci",
+    
+      "Success": "Aktualizace dokončena",
+      "Failed": "Aktualizace se nezdařila",
     },
     SendKey: "Klávesa pro odeslání",
     Theme: "Téma",
@@ -317,7 +343,7 @@ const cs: PartialLocaleType = {
       },
       OpenAI: {
         ApiKey: {
-          Title: "API Key",
+          Title: "OpenAI API Key",
           SubTitle:
             "Použijte vlastní OpenAI Key k obejití přístupového omezení",
           Placeholder: "OpenAI API Key",
@@ -330,7 +356,7 @@ const cs: PartialLocaleType = {
       },
       Azure: {
         ApiKey: {
-          Title: "Rozhraní klíč",
+          Title: "Azure API Key",
           SubTitle: "Použijte vlastní Azure Key k obejití přístupového omezení",
           Placeholder: "Azure API Key",
         },
@@ -347,7 +373,7 @@ const cs: PartialLocaleType = {
       },
       Anthropic: {
         ApiKey: {
-          Title: "Rozhraní klíč",
+          Title: "Anthropic API Key",
           SubTitle:
             "Použijte vlastní Anthropic Key k obejití přístupového omezení",
           Placeholder: "Anthropic API Key",
@@ -365,7 +391,7 @@ const cs: PartialLocaleType = {
       },
       Google: {
         ApiKey: {
-          Title: "API klíč",
+          Title: "Google API Key",
           SubTitle: "Získejte svůj API klíč od Google AI",
           Placeholder: "Zadejte svůj Google AI Studio API klíč",
         },
@@ -386,7 +412,7 @@ const cs: PartialLocaleType = {
       },
       Baidu: {
         ApiKey: {
-          Title: "API Key",
+          Title: "Baidu API Key",
           SubTitle: "Použijte vlastní Baidu API Key",
           Placeholder: "Baidu API Key",
         },
@@ -403,7 +429,7 @@ const cs: PartialLocaleType = {
       },
       ByteDance: {
         ApiKey: {
-          Title: "Rozhraní klíč",
+          Title: "ByteDance API Key",
           SubTitle: "Použijte vlastní ByteDance API Key",
           Placeholder: "ByteDance API Key",
         },
@@ -414,9 +440,9 @@ const cs: PartialLocaleType = {
       },
       Alibaba: {
         ApiKey: {
-          Title: "Rozhraní klíč",
+          Title: "Alibaba API Key",
           SubTitle: "Použijte vlastní Alibaba Cloud API Key",
-          Placeholder: "Alibaba Cloud API Key",
+          Placeholder: "Alibaba API Key",
         },
         Endpoint: {
           Title: "Adresa rozhraní",
@@ -426,6 +452,105 @@ const cs: PartialLocaleType = {
       CustomModel: {
         Title: "Vlastní názvy modelů",
         SubTitle: "Přidejte možnosti vlastních modelů, oddělené čárkami",
+      },
+    
+      "Tencent": {
+        "ApiKey": {
+          "Title": "Tencent API Key",
+          "SubTitle": "Použít vlastní API Key",
+          "Placeholder": "Tencent API Key",
+        },
+        "SecretKey": {
+          "Title": "Tencent Secret Key",
+          "SubTitle": "Použít vlastní přihlašovací údaje — Secret Key",
+          "Placeholder": "Tencent Secret Key",
+        },
+        "Endpoint": {
+          "Title": "Adresa rozhraní",
+          "SubTitle": "Nastavte tuto hodnotu v .env",
+        },
+      },
+      "Moonshot": {
+        "ApiKey": {
+          "Title": "Moonshot API Key",
+          "SubTitle": "Použít vlastní API Key",
+          "Placeholder": "Moonshot API Key",
+        },
+        "Endpoint": {
+          "Title": "Adresa rozhraní",
+          "SubTitle": "Příklad: ",
+        },
+      },
+      "DeepSeek": {
+        "ApiKey": {
+          "Title": "DeepSeek API Key",
+          "SubTitle": "Použít vlastní API Key",
+          "Placeholder": "DeepSeek API Key",
+        },
+        "Endpoint": {
+          "Title": "Adresa rozhraní",
+          "SubTitle": "Příklad: ",
+        },
+      },
+      "XAI": {
+        "ApiKey": {
+          "Title": "XAI API Key",
+          "SubTitle": "Použít vlastní API Key",
+          "Placeholder": "XAI API Key",
+        },
+        "Endpoint": {
+          "Title": "Adresa rozhraní",
+          "SubTitle": "Příklad: ",
+        },
+      },
+      "ChatGLM": {
+        "ApiKey": {
+          "Title": "ChatGLM API Key",
+          "SubTitle": "Použít vlastní API Key",
+          "Placeholder": "ChatGLM API Key",
+        },
+        "Endpoint": {
+          "Title": "Adresa rozhraní",
+          "SubTitle": "Příklad: ",
+        },
+      },
+      "SiliconFlow": {
+        "ApiKey": {
+          "Title": "SiliconFlow API Key",
+          "SubTitle": "Použít vlastní API Key",
+          "Placeholder": "SiliconFlow API Key",
+        },
+        "Endpoint": {
+          "Title": "Adresa rozhraní",
+          "SubTitle": "Příklad: ",
+        },
+      },
+      "Stability": {
+        "ApiKey": {
+          "Title": "Stability API Key",
+          "SubTitle": "Použít vlastní API Key",
+          "Placeholder": "Stability API Key",
+        },
+        "Endpoint": {
+          "Title": "Adresa rozhraní",
+          "SubTitle": "Příklad: ",
+        },
+      },
+      "Iflytek": {
+        "ApiKey": {
+          "Title": "Iflytek API Key",
+          "SubTitle": "Použít vlastní API Key",
+          "Placeholder": "Iflytek API Key",
+        },
+        "ApiSecret": {
+          "Title": "Iflytek API Secret",
+          "SubTitle": "Použít vlastní přihlašovací údaje — API Secret",
+          "Placeholder": "Iflytek API Secret",
+        },
+        "Endpoint": {
+          "Title": "Adresa rozhraní",
+          "SubTitle": "Příklad: ",
+        },
       },
     },
 
@@ -455,6 +580,96 @@ const cs: PartialLocaleType = {
       Title: "Penalizace frekvence (frequency_penalty)",
       SubTitle:
         "Čím vyšší hodnota, tím větší pravděpodobnost snížení opakování slov",
+    },
+  
+    "ShowPassword": "Zobrazit heslo",
+    "LocalizationInfo": {
+      "Edition": "NextChat – vlastní vydání",
+      "Timeout": "Test připojení vypršel po 30 sekundách. Zkontrolujte síť a adresu API.",
+      "Success": "Připojení úspěšné",
+      "NoResponse": "Poskytovatel nevrátil platnou odpověď. Zkontrolujte model a rozhraní.",
+      "Upstream": "Základní verze původního projektu",
+      "Details": "Podrobné informace o verzi",
+      "Security": "Identifikátor bezpečnostní údržby",
+      "Commit": "Commit sestavení",
+      "Official": "Oficiální referenční verze",
+      "Unavailable": "Zatím nedostupné",
+      "Note": "Obsahuje vybrané opravy, nikoli celé oficiální vydání v2.16.1. Oficiální verze je uvedena pouze pro informaci.",
+    },
+    "ProviderSetup": {
+      "ModelIdPlaceholder": "ID modelu@poskytovatel",
+      "Provider": "Poskytovatel",
+      "ProviderHelp": "Vyberte poskytovatele a zadejte jeho API Key pro použití výchozího modelu",
+      "ProviderKeyPlaceholder": "Zadejte API Key tohoto poskytovatele",
+      "CurrentModel": "Aktuální model konverzace",
+      "DefaultModel": "Výchozí model",
+      "ModelHelp": "Upravte rozhraní a vlastní modely v pokročilém nastavení",
+      "TestModel": "Otestovat aktuální model",
+      "TestHelp": "Odešle krátký požadavek, který může být zpoplatněn; neukládá historii konverzace",
+      "TestConnection": "Otestovat připojení",
+      "Testing": "Testování…",
+      "Advanced": "Pokročilé nastavení",
+      "OfficialURL": "Oficiální adresa",
+      "DefaultRoute": "Ve výchozím stavu používá trasu tohoto webu",
+    },
+    "TTS": {
+      "Enable": {
+        "Title": "Povolit TTS",
+        "SubTitle": "Povolit převod textu na řeč",
+      },
+      "Autoplay": {
+        "Title": "Povolit automatické přehrávání",
+        "SubTitle": "Automaticky vytvořit a přehrát řeč; nejprve povolte TTS",
+      },
+      "Model": "Model (model)",
+      "Engine": "Modul TTS",
+      "Voice": {
+        "Title": "Hlas",
+        "SubTitle": "Hlas použitý pro vytvořený zvuk",
+      },
+      "Speed": {
+        "Title": "Rychlost",
+        "SubTitle": "Rychlost vytvořeného zvuku",
+      },
+    },
+    "Realtime": {
+      "Enable": {
+        "Title": "Konverzace v reálném čase",
+        "SubTitle": "Povolit konverzaci v reálném čase",
+      },
+      "Provider": {
+        "Title": "Poskytovatel modelu",
+        "SubTitle": "Změnit poskytovatele",
+      },
+      "Model": {
+        "Title": "Model (model)",
+        "SubTitle": "Vyberte model",
+      },
+      "ApiKey": {
+        "Title": "API Key",
+        "SubTitle": "API Key",
+        "Placeholder": "API Key",
+      },
+      "Azure": {
+        "Endpoint": {
+          "Title": "Adresa rozhraní",
+          "SubTitle": "Adresa rozhraní",
+        },
+        "Deployment": {
+          "Title": "Název nasazení",
+          "SubTitle": "Název nasazení",
+        },
+      },
+      "Temperature": {
+        "Title": "Náhodnost (temperature)",
+        "SubTitle": "Čím vyšší hodnota, tím náhodnější odpovědi",
+      },
+    },
+    "SafetyLabels": {
+      "BLOCK_NONE": "Žádné",
+      "BLOCK_ONLY_HIGH": "Pouze vysoké",
+      "BLOCK_MEDIUM_AND_ABOVE": "Střední a vyšší",
+      "BLOCK_LOW_AND_ABOVE": "Nízké a vyšší",
     },
   },
   Store: {
@@ -486,7 +701,53 @@ const cs: PartialLocaleType = {
     Revert: "Obnovit kontext",
   },
   Plugin: {
-    Name: "Plugin",
+    Name: "Doplněk",
+  
+    "Accessibility": {
+      "Create": "Nový: Doplněk",
+      "Edit": "Upravit: Doplněk",
+      "Save": "Uložit: Doplněk",
+      "SchemaUrl": "Doplněk Schema URL",
+      "LoadSchema": "Načíst z URL: Doplněk Schema",
+      "Schema": "Doplněk Schema",
+    },
+    "Page": {
+      "Title": "Doplňky",
+      "SubTitle": (count: number) => "Doplňky: " + count,
+      "Search": "Hledat zprávy — Doplňky",
+      "Create": "Nový",
+      "Find": "Najít doplňky na GitHub: ",
+    },
+    "Item": {
+      "Info": (count: number) => "Metody: " + count,
+      "View": "Zobrazit",
+      "Edit": "Upravit",
+      "Delete": "Smazat",
+      "DeleteConfirm": "Opravdu chcete smazat?",
+    },
+    "Auth": {
+      "None": "Bez ověření",
+      "Basic": "Basic",
+      "Bearer": "Bearer",
+      "Custom": "Vlastní",
+      "CustomHeader": "Název parametru",
+      "Token": "Token",
+      "Proxy": "Použít proxy",
+      "ProxyDescription": "Použít proxy k obejití omezení CORS",
+      "Location": "Umístění",
+      "LocationHeader": "Header",
+      "LocationQuery": "Query",
+      "LocationBody": "Body",
+    },
+    "EditModal": {
+      "Title": (readonly: boolean) => "Upravit: Doplněk" + (readonly ? " (Pouze pro čtení)" : ""),
+      "Download": "Stáhnout",
+      "Auth": "Typ ověření",
+      "Content": "OpenAPI Schema",
+      "Load": "Načíst z URL",
+      "Method": "Metody",
+      "Error": "Neplatné OpenAPI Schema",
+    },
   },
   FineTuned: {
     Sysmessage: "Jste asistent",
@@ -547,6 +808,15 @@ const cs: PartialLocaleType = {
         SubTitle: "Generovat přímý odkaz na tuto masku",
         Action: "Kopírovat odkaz",
       },
+    
+      "Artifacts": {
+        "Title": "Povolit Artifacts",
+        "SubTitle": "Zobrazovat stránky HTML pomocí Artifacts",
+      },
+      "CodeFold": {
+        "Title": "Povolit skládání kódu",
+        "SubTitle": "Automaticky sbalit dlouhé bloky kódu",
+      },
     },
   },
   NewChat: {
@@ -576,6 +846,28 @@ const cs: PartialLocaleType = {
     Import: "Importovat",
     Sync: "Synchronizovat",
     Config: "Konfigurovat",
+  
+    "Save": "Uložit",
+    "Loading": "Načítání…",
+    "Seed": "Náhodné semínko",
+    "User": "Uživatel",
+    "Assistant": "Asistent",
+    "System": "Systém",
+    "Text": "Text",
+    "Image": "Obrázek",
+    "Standard": "Standardní",
+    "Vivid": "Živý",
+    "Natural": "Přirozený",
+    "ErrorTitle": "Došlo k chybě",
+    "ReportError": "Nahlásit tuto chybu",
+    "ClearData": "Vymazat všechna data",
+    "AssistantTagline": "Vytvořte si vlastního AI asistenta.",
+    "EmptyPrompt": "Nový pokyn",
+    "EmptyPromptContent": "Zadejte obsah pokynu",
+    "AllFiles": "Všechny soubory",
+  
+    "Refresh": "Znovu načíst",
+    "HidePassword": "Skrýt heslo",
   },
   Exporter: {
     Description: {
@@ -585,6 +877,114 @@ const cs: PartialLocaleType = {
     Messages: "Zprávy",
     Topic: "Téma",
     Time: "Čas",
+  },
+
+  "Discovery": {
+    "Name": "Objevovat",
+  },
+  "Mcp": {
+    "Name": "MCP",
+    "UI": {
+      "Market": "Katalog MCP",
+      "PresetLoadFailed": "Nelze načíst přednastavené servery",
+      "InitFailed": "Nelze načíst počáteční stav",
+      "ConfigSaved": "Konfigurace serveru uložena",
+      "ConfigSaveFailed": "Nelze uložit konfiguraci",
+      "ToolsFailed": "Nelze načíst nástroje",
+      "Stopped": "Zastaveno",
+      "StopFailed": "Nelze zastavit server",
+      "StartFailed": "Nelze spustit server; zkontrolujte protokoly",
+      "RestartingClients": "Restartují se všichni klienti",
+      "RestartFailed": "Nelze restartovat klienty",
+      "Initializing": "Inicializace",
+      "NoServers": "Žádné dostupné servery",
+      "OpenRepo": "Otevřít úložiště",
+      "Start": "Spustit",
+      "Tools": "Nástroje",
+      "Add": "Přidat",
+      "RestartAll": "Restartovat vše",
+      "Search": "Hledat servery MCP",
+      "ConfigureServer": "Nastavit server",
+      "ServerDetails": "Podrobnosti serveru",
+      "NoTools": "Žádné dostupné nástroje",
+      "LoadingPresets": "Načítání přednastavených serverů…",
+      "ConfiguredServers": "Nastavené servery",
+      "UpdatingConfig": "Aktualizace konfigurace…",
+      "CreatingClient": "Vytváření klienta MCP…",
+      "Stopping": "Zastavování serveru…",
+      "Starting": "Spouštění serveru…",
+      "RestartingServers": "Restartování všech serverů…",
+      "ExecutionFailed": "Spuštění MCP selhalo",
+    },
+  },
+  "SdPanel": {
+    "Prompt": "Popis obrázku",
+    "NegativePrompt": "Negativní popis",
+    "PleaseInput": (name: string) => name + " — Zadejte hodnotu",
+    "AspectRatio": "Poměr stran",
+    "ImageStyle": "Styl obrázku",
+    "OutFormat": "Výstupní formát",
+    "AIModel": "Model (model)",
+    "ModelVersion": "Verze modelu",
+    "Submit": "Vytvořit",
+    "ParamIsRequired": (name: string) => name + ": Povinné",
+    "Styles": {
+      "D3Model": "3D model",
+      "AnalogFilm": "Analogový film",
+      "Anime": "Japonská animace",
+      "Cinematic": "Filmový",
+      "ComicBook": "Komiks",
+      "DigitalArt": "Digitální umění",
+      "Enhance": "Vylepšený",
+      "FantasyArt": "Fantazijní umění",
+      "Isometric": "Izometrický",
+      "LineArt": "Čárová kresba",
+      "LowPoly": "Málo polygonů",
+      "ModelingCompound": "Modelovací hmota",
+      "NeonPunk": "Neonový punk",
+      "Origami": "Skládání papíru",
+      "Photographic": "Fotografický",
+      "PixelArt": "Pixelové umění",
+      "TileTexture": "Dlaždicová textura",
+    },
+  },
+  "Sd": {
+    "SubTitle": (count: number) => "Obrázky: " + count,
+    "Actions": {
+      "Params": "Zobrazit parametry",
+      "Copy": "Kopírovat: Popis obrázku",
+      "Delete": "Smazat",
+      "Retry": "Zkusit znovu",
+      "ReturnHome": "Zpět na úvod",
+      "History": "Historie",
+    },
+    "EmptyRecord": "Zatím žádné obrázky",
+    "Status": {
+      "Name": "Stav",
+      "Success": "Úspěch",
+      "Error": "Chyba",
+      "Wait": "Čekání",
+      "Running": "Spuštěno",
+    },
+    "Danger": {
+      "Delete": "Opravdu chcete smazat?",
+    },
+    "GenerateParams": "Parametry generování",
+    "Detail": "Podrobnosti",
+  },
+  "ApiError": {
+    "Timeout": "Požadavek vypršel. Opakujte jej nebo zkontrolujte adresu v pokročilém nastavení.",
+    "Quota": "Nedostatečná kvóta poskytovatele. Zkontrolujte zůstatek, platby a limity.",
+    "AccessCode": "Neplatný přístupový kód webu. Zkontrolujte kód.",
+    "InvalidKey": "API Key je neplatný nebo vypršel. Zkontrolujte Key zvoleného poskytovatele.",
+    "Permission": "Přístup odepřen. Zkontrolujte oprávnění modelu a regionální omezení.",
+    "Model": "Model nebo rozhraní nenalezeno. Zkontrolujte ID a adresu v pokročilém nastavení.",
+    "RateLimit": "Příliš mnoho požadavků nebo dosažený limit. Zkuste to později a zkontrolujte kvótu.",
+    "Parameters": "Nekompatibilní parametry. Zkontrolujte ID modelu a pokročilé nastavení.",
+    "Unavailable": "Poskytovatel je dočasně nedostupný. Zkuste to později.",
+    "Empty": "Nebyl vrácen platný obsah. Zkontrolujte stav modelu a opakujte požadavek.",
+    "Network": "Selhalo síťové připojení. Zkontrolujte síť, adresu a nastavení CORS třetí strany.",
+    "Generic": "Požadavek selhal. Zkontrolujte API Key, model a rozhraní poskytovatele.",
   },
 };
 

@@ -170,8 +170,8 @@ function UserPromptModal(props: { onClose?: () => void }) {
               const promptId = promptStore.add({
                 id: nanoid(),
                 createdAt: Date.now(),
-                title: "Empty Prompt",
-                content: "Empty Prompt Content",
+                title: Locale.UI.EmptyPrompt,
+                content: Locale.UI.EmptyPromptContent,
               });
               setEditingPromptId(promptId);
             }}
@@ -202,26 +202,26 @@ function UserPromptModal(props: { onClose?: () => void }) {
 
                 <div className={styles["user-prompt-buttons"]}>
                   {v.isUser && (
-                    <IconButton
+                    <IconButton aria={Locale.Chat.Actions.Delete}
                       icon={<ClearIcon />}
                       className={styles["user-prompt-button"]}
                       onClick={() => promptStore.remove(v.id!)}
                     />
                   )}
                   {v.isUser ? (
-                    <IconButton
+                    <IconButton aria={Locale.UI.Edit}
                       icon={<EditIcon />}
                       className={styles["user-prompt-button"]}
                       onClick={() => setEditingPromptId(v.id)}
                     />
                   ) : (
-                    <IconButton
+                    <IconButton aria={Locale.Chat.Actions.PinToastAction}
                       icon={<EyeIcon />}
                       className={styles["user-prompt-button"]}
                       onClick={() => setEditingPromptId(v.id)}
                     />
                   )}
-                  <IconButton
+                  <IconButton aria={Locale.Chat.Actions.Copy}
                     icon={<CopyIcon />}
                     className={styles["user-prompt-button"]}
                     onClick={() => copyToClipboard(v.content)}
@@ -622,7 +622,7 @@ export function Settings() {
         },
         onFinish: (message, response) => finish(
           response.ok && message.trim()
-            ? `${Locale.Settings.LocalizationInfo.Success}：${modelConfig.model}`
+            ? `${Locale.Settings.LocalizationInfo.Success}: ${modelConfig.model}`
             : formatApiError(message || "empty response", response.status),
         ),
         onError: (error) => finish(formatApiError(error)),
@@ -1625,17 +1625,17 @@ export function Settings() {
               <div className={styles["version-info"]} data-testid="build-version">
                 <div className={styles["custom-version"]}>2026.10.31</div>
                 <div className={styles["upstream-version"]}>
-                  {Locale.Settings.LocalizationInfo.Upstream}：{clientConfig?.upstreamBaseVersion ?? currentVersion}
+                  {Locale.Settings.LocalizationInfo.Upstream}: {clientConfig?.upstreamBaseVersion ?? currentVersion}
                 </div>
                 <details className={styles["version-details"]}>
                   <summary>{Locale.Settings.LocalizationInfo.Details}</summary>
                   <div className={styles["version-metadata"]}>
-                    <div>{Locale.Settings.LocalizationInfo.Security}：{clientConfig?.customVersion ?? "unknown"}</div>
+                    <div>{Locale.Settings.LocalizationInfo.Security}: {clientConfig?.customVersion ?? "unknown"}</div>
                     <div>
-                      {Locale.Settings.LocalizationInfo.Commit}：
+                      {Locale.Settings.LocalizationInfo.Commit}: 
                       <code className={styles["build-commit"]}>{clientConfig?.commitHash ?? "unknown"}</code>
                     </div>
-                    <div>{Locale.Settings.LocalizationInfo.Official}：{checkingUpdate ? Locale.Settings.Update.IsChecking : remoteId || Locale.Settings.LocalizationInfo.Unavailable}</div>
+                    <div>{Locale.Settings.LocalizationInfo.Official}: {checkingUpdate ? Locale.Settings.Update.IsChecking : remoteId || Locale.Settings.LocalizationInfo.Unavailable}</div>
                     <div>{Locale.Settings.LocalizationInfo.Note}</div>
                   </div>
                 </details>
@@ -1914,8 +1914,8 @@ export function Settings() {
                       />
                     </ListItem>
                     <ListItem
-                      title={`${Locale.Settings.ProviderSetup.CurrentModel}：${useChatStore.getState().currentSession().mask.modelConfig.model}`}
-                      subTitle={`${Locale.Settings.ProviderSetup.DefaultModel}：${preset.model}；${Locale.Settings.ProviderSetup.ModelHelp}`}
+                      title={`${Locale.Settings.ProviderSetup.CurrentModel}: ${useChatStore.getState().currentSession().mask.modelConfig.model}`}
+                      subTitle={`${Locale.Settings.ProviderSetup.DefaultModel}: ${preset.model}; ${Locale.Settings.ProviderSetup.ModelHelp}`}
                     />
                   </>
                 )}
@@ -1941,7 +1941,7 @@ export function Settings() {
                 <>
                   {useCustomConfigComponent}
                   {preset ? (
-                    <ListItem title={`${preset.label} API URL`} subTitle={`${Locale.Settings.ProviderSetup.OfficialURL}：${preset.officialUrl}；${Locale.Settings.ProviderSetup.DefaultRoute}`} vertical>
+                    <ListItem title={`${preset.label} API URL`} subTitle={`${Locale.Settings.ProviderSetup.OfficialURL}: ${preset.officialUrl}; ${Locale.Settings.ProviderSetup.DefaultRoute}`} vertical>
                       <input
                         aria-label={`${preset.label} API URL`}
                         type="text"
@@ -1992,7 +1992,7 @@ export function Settings() {
                   <ListItem title={Locale.Settings.Access.Google.GoogleSafetySettings.Title}>
                     <Select aria-label={Locale.Settings.Access.Google.GoogleSafetySettings.Title} value={accessStore.googleSafetySettings}
                       onChange={(e) => accessStore.update((access) => (access.googleSafetySettings = e.currentTarget.value as GoogleSafetySettingsThreshold))}>
-                      {Object.entries(GoogleSafetySettingsThreshold).map(([k, v]) => <option key={k} value={v}>{k}</option>)}
+                      {Object.entries(GoogleSafetySettingsThreshold).map(([k, v]) => <option key={k} value={v}>{Locale.Settings.SafetyLabels[v]}</option>)}
                     </Select>
                   </ListItem>
                 </>

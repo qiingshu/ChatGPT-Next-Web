@@ -280,7 +280,7 @@ export function PasswordInput(
   return (
     <div className={"password-input-container"}>
       <IconButton
-        aria={props.aria}
+        aria={visible ? Locale.UI.HidePassword : props.aria || Locale.Settings.ShowPassword}
         icon={visible ? <EyeIcon /> : <EyeOffIcon />}
         onClick={changeVisibility}
         className={"password-eye"}
@@ -577,7 +577,7 @@ export function FullScreen(props: any) {
   return (
     <div ref={ref} style={{ position: "relative" }} {...rest}>
       <div style={{ position: "absolute", right, top }}>
-        <IconButton
+        <IconButton aria={Locale.Chat.Actions.FullScreen}
           icon={fullScreen ? <MinIcon /> : <MaxIcon />}
           onClick={toggleFullscreen}
           bordered

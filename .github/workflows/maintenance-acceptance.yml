@@ -1,7 +1,7 @@
 name: Maintenance provider acceptance
 on:
   push:
-    branches: [maintenance/nextchat-upgrade]
+    branches: [maintenance/nextchat-upgrade, fix/settings-localization-20261101, main]
     paths:
       - "app/**"
       - "test/**"
@@ -11,11 +11,11 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: maintenance-provider-acceptance
+  group: maintenance-provider-acceptance-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   acceptance:
-    if: github.ref == 'refs/heads/maintenance/nextchat-upgrade'
+    if: github.ref == 'refs/heads/maintenance/nextchat-upgrade' || github.ref == 'refs/heads/fix/settings-localization-20261101' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     env:
@@ -32,6 +32,8 @@ jobs:
         run: |
           npm install --global yarn@1.22.19
           yarn install --frozen-lockfile
+      - name: Audit all 20 language catalogs and visible strings
+        run: node maintenance/tests/localization-audit.cjs
       - name: Typecheck and unit tests
         run: |
           yarn typecheck
@@ -45,6 +47,13 @@ jobs:
       - name: Security and browser acceptance (model traffic synthetic)
         env:
           PLAYWRIGHT_MODULE: ${{ runner.temp }}/nextchat-browser/node_modules/playwright
+        run: node maintenance/tests/provider-onboarding.cjs
+      - name: Verify released production UI with isolated synthetic fixtures
+        if: github.ref == 'refs/heads/main'
+        env:
+          PLAYWRIGHT_MODULE: ${{ runner.temp }}/nextchat-browser/node_modules/playwright
+          NEXTCHAT_BASE_URL: https://chat.imqing.cc
+          NEXTCHAT_EVIDENCE_DIR: maintenance/acceptance-results/production
         run: node maintenance/tests/provider-onboarding.cjs
       - name: Upload acceptance evidence
         if: always()

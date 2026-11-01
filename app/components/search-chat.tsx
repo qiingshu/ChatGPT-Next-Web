@@ -101,7 +101,7 @@ export function SearchChatPage() {
 
           <div className="window-actions">
             <div className="window-action-button">
-              <IconButton
+              <IconButton aria={Locale.UI.Close}
                 icon={<CloseIcon />}
                 bordered
                 onClick={() => navigate(-1)}

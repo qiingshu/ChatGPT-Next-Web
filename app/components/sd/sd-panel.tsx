@@ -79,7 +79,7 @@ export const params = [
     ],
   },
   {
-    name: "Seed",
+    name: Locale.UI.Seed,
     value: "seed",
     type: "number",
     default: 0,

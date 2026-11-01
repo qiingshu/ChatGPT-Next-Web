@@ -378,7 +378,7 @@ const en: LocaleType = {
       },
       Azure: {
         ApiKey: {
-          Title: "Azure Api Key",
+          Title: "Azure API Key",
           SubTitle: "Check your api key from Azure console",
           Placeholder: "Azure Api Key",
         },
@@ -553,7 +553,7 @@ const en: LocaleType = {
       },
       Google: {
         ApiKey: {
-          Title: "API Key",
+          Title: "Google API Key",
           SubTitle: "Obtain your API Key from Google AI",
           Placeholder: "Google AI API Key",
         },
@@ -655,6 +655,13 @@ const en: LocaleType = {
         SubTitle: "Higher values result in more random responses",
       },
     },
+  
+    "SafetyLabels": {
+      "BLOCK_NONE": "None",
+      "BLOCK_ONLY_HIGH": "High only",
+      "BLOCK_MEDIUM_AND_ABOVE": "Medium and above",
+      "BLOCK_LOW_AND_ABOVE": "Low and above",
+    },
   },
   Store: {
     DefaultTopic: "New Conversation",
@@ -689,6 +696,39 @@ const en: LocaleType = {
   },
   Mcp: {
     Name: "MCP",
+  
+    "UI": {
+      "Market": "MCP market",
+      "PresetLoadFailed": "Failed to load preset servers",
+      "InitFailed": "Failed to load initial state",
+      "ConfigSaved": "Server configuration saved",
+      "ConfigSaveFailed": "Failed to save configuration",
+      "ToolsFailed": "Failed to load tools",
+      "Stopped": "Stopped",
+      "StopFailed": "Failed to stop server",
+      "StartFailed": "Failed to start server; check the logs",
+      "RestartingClients": "Restarting all clients",
+      "RestartFailed": "Failed to restart clients",
+      "Initializing": "Initializing",
+      "NoServers": "No servers available",
+      "OpenRepo": "Open repository",
+      "Start": "Start",
+      "Tools": "Tools",
+      "Add": "Add",
+      "RestartAll": "Restart all",
+      "Search": "Search MCP servers",
+      "ConfigureServer": "Configure server",
+      "ServerDetails": "Server details",
+      "NoTools": "No tools available",
+      "LoadingPresets": "Loading preset server list…",
+      "ConfiguredServers": "Configured servers",
+      "UpdatingConfig": "Updating configuration…",
+      "CreatingClient": "Creating MCP client…",
+      "Stopping": "Stopping server…",
+      "Starting": "Starting server…",
+      "RestartingServers": "Restarting all servers…",
+      "ExecutionFailed": "MCP execution failed",
+    },
   },
   FineTuned: {
     Sysmessage: "You are an assistant that",
@@ -827,6 +867,28 @@ const en: LocaleType = {
     Import: "Import",
     Sync: "Sync",
     Config: "Config",
+  
+    "Save": "Save",
+    "Loading": "Loading…",
+    "Seed": "Seed",
+    "User": "User",
+    "Assistant": "Assistant",
+    "System": "System",
+    "Text": "Text",
+    "Image": "Image",
+    "Standard": "Standard",
+    "Vivid": "Vivid",
+    "Natural": "Natural",
+    "ErrorTitle": "Something went wrong",
+    "ReportError": "Report this error",
+    "ClearData": "Clear all data",
+    "AssistantTagline": "Build your own AI assistant.",
+    "EmptyPrompt": "New prompt",
+    "EmptyPromptContent": "Enter prompt content",
+    "AllFiles": "All files",
+  
+    "Refresh": "Reload",
+    "HidePassword": "Hide password",
   },
   Exporter: {
     Description: {
@@ -895,6 +957,21 @@ const en: LocaleType = {
     },
     GenerateParams: "Generate Params",
     Detail: "Detail",
+  },
+
+  "ApiError": {
+    "Timeout": "Request timed out. Retry or check the endpoint in Advanced Settings.",
+    "Quota": "Provider quota is insufficient. Check balance, billing and usage limits.",
+    "AccessCode": "Invalid site access code. Check your access code.",
+    "InvalidKey": "Invalid or expired API Key. Check the selected provider’s Key.",
+    "Permission": "Access denied. Check model permissions and the provider’s region restrictions.",
+    "Model": "Model unavailable or endpoint not found. Check the model ID and endpoint in Advanced Settings.",
+    "RateLimit": "Too many requests or usage limit reached. Retry later and check the provider quota.",
+    "Parameters": "Incompatible request parameters. Check the model ID and parameters in Advanced Settings.",
+    "Unavailable": "Provider temporarily unavailable. Please retry later.",
+    "Empty": "No valid content returned. Check model availability and retry.",
+    "Network": "Network connection failed. Check the network, endpoint and third-party CORS settings.",
+    "Generic": "Request failed. Check the provider’s API Key, model and endpoint.",
   },
 };
 

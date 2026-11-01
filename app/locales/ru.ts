@@ -1,10 +1,10 @@
 import { SubmitKey } from "../store/config";
-import { PartialLocaleType } from "../locales/index";
+import { LocaleType } from "../locales/index";
 import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 const isApp = !!getClientConfig()?.isApp;
 
-const ru: PartialLocaleType = {
+const ru: LocaleType = {
   WIP: "Скоро...",
   Error: {
     Unauthorized: isApp
@@ -55,6 +55,10 @@ const ru: PartialLocaleType = {
       Edit: "Редактировать",
       RefreshTitle: "Обновить заголовок",
       RefreshToast: "Запрос на обновление заголовка отправлен",
+    
+      "FullScreen": "Полный экран",
+      "Speech": "Прочитать",
+      "StopSpeech": "Остановить",
     },
     Commands: {
       new: "Новый чат",
@@ -63,6 +67,8 @@ const ru: PartialLocaleType = {
       prev: "Предыдущий чат",
       clear: "Очистить контекст",
       del: "Удалить чат",
+    
+      "fork": "Копировать чат",
     },
     InputActions: {
       Stop: "Остановить ответ",
@@ -93,6 +99,18 @@ const ru: PartialLocaleType = {
       SaveAs: "Сохранить как маску",
     },
     IsContext: "Предустановленные подсказки",
+  
+    "StartSpeak": "Начать говорить",
+    "StopSpeak": "Остановить",
+    "ShortcutKey": {
+      "Title": "Горячие клавиши",
+      "newChat": "Открыть новый чат",
+      "focusInput": "Перейти к полю ввода",
+      "copyLastMessage": "Копировать последний ответ",
+      "copyLastCode": "Копировать последний блок кода",
+      "showShortcutKey": "Показать горячие клавиши",
+      "clearContext": "Очистить чат",
+    },
   },
   Export: {
     Title: "Поделиться историей чата",
@@ -116,6 +134,11 @@ const ru: PartialLocaleType = {
     Image: {
       Toast: "Создание скриншота",
       Modal: "Длительное нажатие или правый клик для сохранения изображения",
+    },
+  
+    "Artifacts": {
+      "Title": "Поделиться Artifacts",
+      "Error": "Поделиться Artifacts — Ошибка",
     },
   },
   Select: {
@@ -157,7 +180,7 @@ const ru: PartialLocaleType = {
       },
     },
     Lang: {
-      Name: "Language", // ATTENTION: если вы хотите добавить новый перевод, не переводите это значение, оставьте его как `Language`
+      Name: "Язык", // ATTENTION: если вы хотите добавить новый перевод, не переводите это значение, оставьте его как `Language`
       All: "Все языки",
     },
     Avatar: "Аватар",
@@ -189,6 +212,9 @@ const ru: PartialLocaleType = {
       IsChecking: "Проверка обновлений...",
       FoundUpdate: (x: string) => `Найдено новое обновление: ${x}`,
       GoToUpdate: "Перейти к обновлению",
+    
+      "Success": "Обновление завершено",
+      "Failed": "Ошибка обновления",
     },
     SendKey: "Кнопка отправки",
     Theme: "Тема",
@@ -319,7 +345,7 @@ const ru: PartialLocaleType = {
       },
       OpenAI: {
         ApiKey: {
-          Title: "API-ключ",
+          Title: "OpenAI API Key",
           SubTitle:
             "Использовать пользовательский OpenAI-ключ для обхода ограничений пароля",
           Placeholder: "OpenAI API-ключ",
@@ -332,7 +358,7 @@ const ru: PartialLocaleType = {
       },
       Azure: {
         ApiKey: {
-          Title: "Ключ интерфейса",
+          Title: "Azure API Key",
           SubTitle:
             "Использовать пользовательский Azure-ключ для обхода ограничений пароля",
           Placeholder: "Azure API-ключ",
@@ -350,7 +376,7 @@ const ru: PartialLocaleType = {
       },
       Anthropic: {
         ApiKey: {
-          Title: "Ключ интерфейса",
+          Title: "Anthropic API Key",
           SubTitle:
             "Использовать пользовательский Anthropic-ключ для обхода ограничений пароля",
           Placeholder: "Anthropic API-ключ",
@@ -368,7 +394,7 @@ const ru: PartialLocaleType = {
       },
       Google: {
         ApiKey: {
-          Title: "API-ключ",
+          Title: "Google API Key",
           SubTitle: "Получите ваш API-ключ Google AI",
           Placeholder: "Введите ваш API-ключ Google AI Studio",
         },
@@ -389,7 +415,7 @@ const ru: PartialLocaleType = {
       },
       Baidu: {
         ApiKey: {
-          Title: "API-ключ",
+          Title: "Baidu API Key",
           SubTitle: "Использовать пользовательский Baidu API-ключ",
           Placeholder: "Baidu API-ключ",
         },
@@ -406,7 +432,7 @@ const ru: PartialLocaleType = {
       },
       ByteDance: {
         ApiKey: {
-          Title: "Ключ интерфейса",
+          Title: "ByteDance API Key",
           SubTitle: "Использовать пользовательский ByteDance API-ключ",
           Placeholder: "ByteDance API-ключ",
         },
@@ -417,7 +443,7 @@ const ru: PartialLocaleType = {
       },
       Alibaba: {
         ApiKey: {
-          Title: "Ключ интерфейса",
+          Title: "Alibaba API Key",
           SubTitle: "Использовать пользовательский Alibaba Cloud API-ключ",
           Placeholder: "Alibaba Cloud API-ключ",
         },
@@ -430,6 +456,105 @@ const ru: PartialLocaleType = {
         Title: "Название пользовательской модели",
         SubTitle:
           "Добавьте варианты пользовательских моделей, разделяя запятыми",
+      },
+    
+      "Tencent": {
+        "ApiKey": {
+          "Title": "Tencent API Key",
+          "SubTitle": "Использовать свой API Key",
+          "Placeholder": "Tencent API Key",
+        },
+        "SecretKey": {
+          "Title": "Tencent Secret Key",
+          "SubTitle": "Использовать свои учётные данные — Secret Key",
+          "Placeholder": "Tencent Secret Key",
+        },
+        "Endpoint": {
+          "Title": "Адрес интерфейса",
+          "SubTitle": "Задайте это значение в .env",
+        },
+      },
+      "Moonshot": {
+        "ApiKey": {
+          "Title": "Moonshot API Key",
+          "SubTitle": "Использовать свой API Key",
+          "Placeholder": "Moonshot API Key",
+        },
+        "Endpoint": {
+          "Title": "Адрес интерфейса",
+          "SubTitle": "Пример: ",
+        },
+      },
+      "DeepSeek": {
+        "ApiKey": {
+          "Title": "DeepSeek API Key",
+          "SubTitle": "Использовать свой API Key",
+          "Placeholder": "DeepSeek API Key",
+        },
+        "Endpoint": {
+          "Title": "Адрес интерфейса",
+          "SubTitle": "Пример: ",
+        },
+      },
+      "XAI": {
+        "ApiKey": {
+          "Title": "XAI API Key",
+          "SubTitle": "Использовать свой API Key",
+          "Placeholder": "XAI API Key",
+        },
+        "Endpoint": {
+          "Title": "Адрес интерфейса",
+          "SubTitle": "Пример: ",
+        },
+      },
+      "ChatGLM": {
+        "ApiKey": {
+          "Title": "ChatGLM API Key",
+          "SubTitle": "Использовать свой API Key",
+          "Placeholder": "ChatGLM API Key",
+        },
+        "Endpoint": {
+          "Title": "Адрес интерфейса",
+          "SubTitle": "Пример: ",
+        },
+      },
+      "SiliconFlow": {
+        "ApiKey": {
+          "Title": "SiliconFlow API Key",
+          "SubTitle": "Использовать свой API Key",
+          "Placeholder": "SiliconFlow API Key",
+        },
+        "Endpoint": {
+          "Title": "Адрес интерфейса",
+          "SubTitle": "Пример: ",
+        },
+      },
+      "Stability": {
+        "ApiKey": {
+          "Title": "Stability API Key",
+          "SubTitle": "Использовать свой API Key",
+          "Placeholder": "Stability API Key",
+        },
+        "Endpoint": {
+          "Title": "Адрес интерфейса",
+          "SubTitle": "Пример: ",
+        },
+      },
+      "Iflytek": {
+        "ApiKey": {
+          "Title": "Iflytek API Key",
+          "SubTitle": "Использовать свой API Key",
+          "Placeholder": "Iflytek API Key",
+        },
+        "ApiSecret": {
+          "Title": "Iflytek API Secret",
+          "SubTitle": "Использовать свои учётные данные — API Secret",
+          "Placeholder": "Iflytek API Secret",
+        },
+        "Endpoint": {
+          "Title": "Адрес интерфейса",
+          "SubTitle": "Пример: ",
+        },
       },
     },
 
@@ -459,6 +584,96 @@ const ru: PartialLocaleType = {
       Title: "Наказание за частоту (frequency_penalty)",
       SubTitle:
         "Чем больше значение, тем выше вероятность уменьшения повторяющихся слов",
+    },
+  
+    "ShowPassword": "Показать пароль",
+    "LocalizationInfo": {
+      "Edition": "NextChat — пользовательская версия",
+      "Timeout": "Тест соединения превысил 30 секунд. Проверьте сеть и адрес API.",
+      "Success": "Соединение установлено",
+      "NoResponse": "Провайдер не вернул корректный ответ. Проверьте модель и интерфейс.",
+      "Upstream": "Базовая версия исходного проекта",
+      "Details": "Подробные сведения о версии",
+      "Security": "Идентификатор обслуживания безопасности",
+      "Commit": "Commit сборки",
+      "Official": "Официальная версия для справки",
+      "Unavailable": "Пока недоступно",
+      "Note": "Включает отдельные перенесённые исправления, а не полный официальный выпуск v2.16.1. Официальная версия указана для справки.",
+    },
+    "ProviderSetup": {
+      "ModelIdPlaceholder": "ID модели@провайдер",
+      "Provider": "Провайдер",
+      "ProviderHelp": "Выберите провайдера и введите его API Key для использования модели по умолчанию",
+      "ProviderKeyPlaceholder": "Введите API Key этого провайдера",
+      "CurrentModel": "Текущая модель чата",
+      "DefaultModel": "Модель по умолчанию",
+      "ModelHelp": "Настройте интерфейс и свои модели в расширенных настройках",
+      "TestModel": "Проверить текущую модель",
+      "TestHelp": "Отправляет короткий запрос, который может тарифицироваться; не записывает историю",
+      "TestConnection": "Проверить соединение",
+      "Testing": "Проверка…",
+      "Advanced": "Расширенные настройки",
+      "OfficialURL": "Официальный адрес",
+      "DefaultRoute": "По умолчанию использует маршрут этого сайта",
+    },
+    "TTS": {
+      "Enable": {
+        "Title": "Включить TTS",
+        "SubTitle": "Включить синтез речи",
+      },
+      "Autoplay": {
+        "Title": "Включить автовоспроизведение",
+        "SubTitle": "Автоматически создавать и воспроизводить речь; сначала включите TTS",
+      },
+      "Model": "Модель",
+      "Engine": "Движок TTS",
+      "Voice": {
+        "Title": "Голос",
+        "SubTitle": "Голос для создаваемого аудио",
+      },
+      "Speed": {
+        "Title": "Скорость",
+        "SubTitle": "Скорость создаваемого аудио",
+      },
+    },
+    "Realtime": {
+      "Enable": {
+        "Title": "Чат в реальном времени",
+        "SubTitle": "Включить чат в реальном времени",
+      },
+      "Provider": {
+        "Title": "Провайдер модели",
+        "SubTitle": "Сменить провайдера",
+      },
+      "Model": {
+        "Title": "Модель",
+        "SubTitle": "Выберите модель",
+      },
+      "ApiKey": {
+        "Title": "API Key",
+        "SubTitle": "API Key",
+        "Placeholder": "API Key",
+      },
+      "Azure": {
+        "Endpoint": {
+          "Title": "Адрес интерфейса",
+          "SubTitle": "Адрес интерфейса",
+        },
+        "Deployment": {
+          "Title": "Имя развёртывания",
+          "SubTitle": "Имя развёртывания",
+        },
+      },
+      "Temperature": {
+        "Title": "Случайность (temperature)",
+        "SubTitle": "Чем больше значение, тем более случайные ответы",
+      },
+    },
+    "SafetyLabels": {
+      "BLOCK_NONE": "Не блокировать",
+      "BLOCK_ONLY_HIGH": "Только высокий",
+      "BLOCK_MEDIUM_AND_ABOVE": "Средний и выше",
+      "BLOCK_LOW_AND_ABOVE": "Низкий и выше",
     },
   },
   Store: {
@@ -490,7 +705,53 @@ const ru: PartialLocaleType = {
     Revert: "Восстановить контекст",
   },
   Plugin: {
-    Name: "Плагины",
+    Name: "Плагин",
+  
+    "Accessibility": {
+      "Create": "Создать: Плагин",
+      "Edit": "Редактировать: Плагин",
+      "Save": "Сохранить: Плагин",
+      "SchemaUrl": "Плагин Schema URL",
+      "LoadSchema": "Загрузить по URL: Плагин Schema",
+      "Schema": "Плагин Schema",
+    },
+    "Page": {
+      "Title": "Плагины",
+      "SubTitle": (count: number) => "Плагины: " + count,
+      "Search": "Поиск сообщений — Плагины",
+      "Create": "Создать",
+      "Find": "Найти плагины на GitHub: ",
+    },
+    "Item": {
+      "Info": (count: number) => "Методы: " + count,
+      "View": "Просмотреть",
+      "Edit": "Редактировать",
+      "Delete": "Удалить",
+      "DeleteConfirm": "Подтвердить удаление?",
+    },
+    "Auth": {
+      "None": "Без аутентификации",
+      "Basic": "Basic",
+      "Bearer": "Bearer",
+      "Custom": "Свой вариант",
+      "CustomHeader": "Имя параметра",
+      "Token": "Token",
+      "Proxy": "Использовать прокси",
+      "ProxyDescription": "Использовать прокси для обхода ограничений CORS",
+      "Location": "Расположение",
+      "LocationHeader": "Header",
+      "LocationQuery": "Query",
+      "LocationBody": "Body",
+    },
+    "EditModal": {
+      "Title": (readonly: boolean) => "Редактировать: Плагин" + (readonly ? " (Только чтение)" : ""),
+      "Download": "Скачать",
+      "Auth": "Тип аутентификации",
+      "Content": "OpenAPI Schema",
+      "Load": "Загрузить по URL",
+      "Method": "Методы",
+      "Error": "Некорректная OpenAPI Schema",
+    },
   },
   FineTuned: {
     Sysmessage: "Вы - помощник",
@@ -554,6 +815,15 @@ const ru: PartialLocaleType = {
         SubTitle: "Создать прямую ссылку на эту маску",
         Action: "Скопировать ссылку",
       },
+    
+      "Artifacts": {
+        "Title": "Включить Artifacts",
+        "SubTitle": "Отображать страницы HTML с помощью Artifacts",
+      },
+      "CodeFold": {
+        "Title": "Включить сворачивание кода",
+        "SubTitle": "Автоматически сворачивать длинные блоки кода",
+      },
     },
   },
   NewChat: {
@@ -583,6 +853,28 @@ const ru: PartialLocaleType = {
     Import: "Импортировать",
     Sync: "Синхронизировать",
     Config: "Настройки",
+  
+    "Save": "Сохранить",
+    "Loading": "Загрузка…",
+    "Seed": "Начальное число",
+    "User": "Пользователь",
+    "Assistant": "Ассистент",
+    "System": "Система",
+    "Text": "Текст",
+    "Image": "Изображение",
+    "Standard": "Стандартное",
+    "Vivid": "Яркое",
+    "Natural": "Естественное",
+    "ErrorTitle": "Произошла ошибка",
+    "ReportError": "Сообщить об ошибке",
+    "ClearData": "Удалить все данные",
+    "AssistantTagline": "Создайте собственного ИИ-ассистента.",
+    "EmptyPrompt": "Новая инструкция",
+    "EmptyPromptContent": "Введите текст инструкции",
+    "AllFiles": "Все файлы",
+  
+    "Refresh": "Перезагрузить",
+    "HidePassword": "Скрыть пароль",
   },
   Exporter: {
     Description: {
@@ -592,6 +884,114 @@ const ru: PartialLocaleType = {
     Messages: "Сообщения",
     Topic: "Тема",
     Time: "Время",
+  },
+
+  "Discovery": {
+    "Name": "Обзор",
+  },
+  "Mcp": {
+    "Name": "MCP",
+    "UI": {
+      "Market": "Каталог MCP",
+      "PresetLoadFailed": "Не удалось загрузить предустановленные серверы",
+      "InitFailed": "Не удалось загрузить начальное состояние",
+      "ConfigSaved": "Конфигурация сервера сохранена",
+      "ConfigSaveFailed": "Не удалось сохранить конфигурацию",
+      "ToolsFailed": "Не удалось загрузить инструменты",
+      "Stopped": "Остановлен",
+      "StopFailed": "Не удалось остановить сервер",
+      "StartFailed": "Не удалось запустить сервер; проверьте журналы",
+      "RestartingClients": "Перезапуск всех клиентов",
+      "RestartFailed": "Не удалось перезапустить клиенты",
+      "Initializing": "Инициализация",
+      "NoServers": "Нет доступных серверов",
+      "OpenRepo": "Открыть репозиторий",
+      "Start": "Запустить",
+      "Tools": "Инструменты",
+      "Add": "Добавить",
+      "RestartAll": "Перезапустить всё",
+      "Search": "Поиск серверов MCP",
+      "ConfigureServer": "Настроить сервер",
+      "ServerDetails": "Сведения о сервере",
+      "NoTools": "Нет доступных инструментов",
+      "LoadingPresets": "Загрузка предустановленных серверов…",
+      "ConfiguredServers": "Настроенные серверы",
+      "UpdatingConfig": "Обновление конфигурации…",
+      "CreatingClient": "Создание клиента MCP…",
+      "Stopping": "Остановка сервера…",
+      "Starting": "Запуск сервера…",
+      "RestartingServers": "Перезапуск всех серверов…",
+      "ExecutionFailed": "Ошибка выполнения MCP",
+    },
+  },
+  "SdPanel": {
+    "Prompt": "Описание изображения",
+    "NegativePrompt": "Негативное описание",
+    "PleaseInput": (name: string) => name + " — Введите значение",
+    "AspectRatio": "Соотношение сторон",
+    "ImageStyle": "Стиль изображения",
+    "OutFormat": "Формат вывода",
+    "AIModel": "Модель",
+    "ModelVersion": "Версия модели",
+    "Submit": "Создать",
+    "ParamIsRequired": (name: string) => name + ": Обязательно",
+    "Styles": {
+      "D3Model": "3D-модель",
+      "AnalogFilm": "Аналоговая плёнка",
+      "Anime": "Аниме",
+      "Cinematic": "Кинематографический",
+      "ComicBook": "Комикс",
+      "DigitalArt": "Цифровое искусство",
+      "Enhance": "Улучшенный",
+      "FantasyArt": "Фэнтези",
+      "Isometric": "Изометрия",
+      "LineArt": "Линейный рисунок",
+      "LowPoly": "Мало полигонов",
+      "ModelingCompound": "Пластилин",
+      "NeonPunk": "Неоновый панк",
+      "Origami": "Оригами",
+      "Photographic": "Фотография",
+      "PixelArt": "Пиксельная графика",
+      "TileTexture": "Плиточная текстура",
+    },
+  },
+  "Sd": {
+    "SubTitle": (count: number) => "Изображения: " + count,
+    "Actions": {
+      "Params": "Посмотреть параметры",
+      "Copy": "Копировать: Описание изображения",
+      "Delete": "Удалить",
+      "Retry": "Повторить",
+      "ReturnHome": "На главную",
+      "History": "История",
+    },
+    "EmptyRecord": "Изображений пока нет",
+    "Status": {
+      "Name": "Состояние",
+      "Success": "Успешно",
+      "Error": "Ошибка",
+      "Wait": "Ожидание",
+      "Running": "Выполняется",
+    },
+    "Danger": {
+      "Delete": "Подтвердить удаление?",
+    },
+    "GenerateParams": "Параметры генерации",
+    "Detail": "Подробности",
+  },
+  "ApiError": {
+    "Timeout": "Время ожидания истекло. Повторите запрос или проверьте адрес в расширенных настройках.",
+    "Quota": "Недостаточная квота провайдера. Проверьте баланс, оплату и лимиты.",
+    "AccessCode": "Неверный код доступа к сайту. Проверьте код.",
+    "InvalidKey": "API Key недействителен или просрочен. Проверьте Key выбранного провайдера.",
+    "Permission": "Доступ запрещён. Проверьте права модели и региональные ограничения.",
+    "Model": "Модель или интерфейс не найдены. Проверьте ID и адрес в расширенных настройках.",
+    "RateLimit": "Слишком много запросов или достигнут лимит. Повторите позже и проверьте квоту.",
+    "Parameters": "Несовместимые параметры. Проверьте ID модели и расширенные настройки.",
+    "Unavailable": "Провайдер временно недоступен. Повторите позже.",
+    "Empty": "Нет корректного содержимого. Проверьте состояние модели и повторите запрос.",
+    "Network": "Ошибка сети. Проверьте сеть, адрес и настройки CORS стороннего сервиса.",
+    "Generic": "Запрос не выполнен. Проверьте API Key, модель и интерфейс провайдера.",
   },
 };
 

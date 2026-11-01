@@ -128,11 +128,11 @@ export function PluginPage() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <IconButton icon={<GithubIcon />} bordered />
+                <IconButton aria={Locale.Mcp.UI.OpenRepo} icon={<GithubIcon />} bordered />
               </a>
             </div>
             <div className="window-action-button">
-              <IconButton
+              <IconButton aria={Locale.UI.Close}
                 icon={<CloseIcon />}
                 bordered
                 onClick={() => navigate(-1)}
@@ -181,7 +181,7 @@ export function PluginPage() {
                   rel="noopener noreferrer"
                   style={{ marginLeft: 16 }}
                 >
-                  <IconButton icon={<GithubIcon />} bordered />
+                  <IconButton aria={Locale.Mcp.UI.OpenRepo} icon={<GithubIcon />} bordered />
                 </a>
               </div>
             )}
