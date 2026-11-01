@@ -6,7 +6,8 @@ export function formatApiError(error: unknown, status?: number): string {
   const text = typeof error === "string" ? error : [value?.name, value?.message, value?.code, value?.type].filter(Boolean).join(" ");
   // Adapter errors can pass through this formatter more than once.
   // Only our known localized messages are accepted verbatim; upstream text is never displayed.
-  if (Object.values(Locale.ApiError).includes(text)) return text;
+  const knownMessage = typeof error === "string" ? error : value?.message;
+  if (typeof knownMessage === "string" && Object.values(Locale.ApiError).includes(knownMessage)) return knownMessage;
   const http = status ?? Number(text.match(/HTTP\s+(\d{3})/i)?.[1]);
   if (/超时|timeout|timed out|AbortError|aborted/i.test(text) || http === 408 || http === 504)
     return Locale.ApiError.Timeout;

@@ -52,7 +52,7 @@ const technical = /^(?:NextChat(?: Artifacts)?|ChatGPT|Stability AI|Stable Diffu
 function ordinary(text) {
   const value = text.replace(/\s+/g, " ").trim();
   return value && /[A-Za-z\u3400-\u9fff\u0400-\u04ff\u0600-\u06ff]/.test(value) &&
-    !technical.test(value) && !/^(?:https?:\/\/|github\\.com\/|\/api\/)/.test(value);
+    !technical.test(value) && !value.startsWith("github.com/") && !/^(?:https?:\/\/|\/api\/)/.test(value);
 }
 const attrs = new Set(["title", "text", "placeholder", "aria", "aria-label", "alt", "label", "subTitle"]);
 function string(node) {
