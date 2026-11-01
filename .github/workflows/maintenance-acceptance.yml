@@ -39,7 +39,11 @@ jobs:
           yarn typecheck
           yarn test:ci --runInBand
       - name: Build on GitHub hosted runner
-        run: yarn build
+        run: |
+          if ! yarn build; then
+            yarn next build --debug-prerender
+            exit 1
+          fi
       - name: Install isolated browser tooling on GitHub hosted runner
         run: |
           npm install --prefix "$RUNNER_TEMP/nextchat-browser" --no-package-lock --ignore-scripts playwright@1.56.1
