@@ -1,4 +1,3 @@
-import { SubmitKey } from "../store/config";
 import type { LocaleType } from "./index";
 import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
@@ -88,7 +87,7 @@ const bn: LocaleType = {
     Typing: "লিখছে…",
     Input: (submitKey: string) => {
       var inputHints = `${submitKey} পাঠান`;
-      if (submitKey === String(SubmitKey.Enter)) {
+      if (submitKey === "Enter") {
         inputHints += "，Shift + Enter নতুন লাইন";
       }
       return inputHints + "，/ পূর্ণতা সক্রিয় করুন，: কমান্ড সক্রিয় করুন";
@@ -346,7 +345,7 @@ const bn: LocaleType = {
           Title: "OpenAI API Key",
           SubTitle:
             "পাসওয়ার্ড অ্যাক্সেস সীমাবদ্ধতা এড়াতে স্বনির্ধারিত OpenAI কী ব্যবহার করুন",
-          Placeholder: "OpenAI API কী",
+          Placeholder: "OpenAI API Key",
         },
 
         Endpoint: {
@@ -359,7 +358,7 @@ const bn: LocaleType = {
           Title: "Azure API Key",
           SubTitle:
             "পাসওয়ার্ড অ্যাক্সেস সীমাবদ্ধতা এড়াতে স্বনির্ধারিত Azure কী ব্যবহার করুন",
-          Placeholder: "Azure API কী",
+          Placeholder: "Azure API Key",
         },
 
         Endpoint: {
@@ -377,7 +376,7 @@ const bn: LocaleType = {
           Title: "Anthropic API Key",
           SubTitle:
             "পাসওয়ার্ড অ্যাক্সেস সীমাবদ্ধতা এড়াতে স্বনির্ধারিত Anthropic কী ব্যবহার করুন",
-          Placeholder: "Anthropic API কী",
+          Placeholder: "Anthropic API Key",
         },
 
         Endpoint: {
@@ -393,8 +392,8 @@ const bn: LocaleType = {
       Google: {
         ApiKey: {
           Title: "Google API Key",
-          SubTitle: "Google AI থেকে আপনার API কী পান",
-          Placeholder: "আপনার Google AI Studio API কী প্রবেশ করুন",
+          SubTitle: "Google AI থেকে আপনার API Key পান",
+          Placeholder: "আপনার Google AI Studio API Key প্রবেশ করুন",
         },
 
         Endpoint: {
@@ -414,8 +413,8 @@ const bn: LocaleType = {
       Baidu: {
         ApiKey: {
           Title: "Baidu API Key",
-          SubTitle: "স্বনির্ধারিত Baidu API কী ব্যবহার করুন",
-          Placeholder: "Baidu API কী",
+          SubTitle: "স্বনির্ধারিত Baidu API Key ব্যবহার করুন",
+          Placeholder: "Baidu API Key",
         },
         SecretKey: {
           Title: "সিক্রেট কী",
@@ -430,8 +429,8 @@ const bn: LocaleType = {
       ByteDance: {
         ApiKey: {
           Title: "ByteDance API Key",
-          SubTitle: "স্বনির্ধারিত ByteDance API কী ব্যবহার করুন",
-          Placeholder: "ByteDance API কী",
+          SubTitle: "স্বনির্ধারিত ByteDance API Key ব্যবহার করুন",
+          Placeholder: "ByteDance API Key",
         },
         Endpoint: {
           Title: "ইন্টারফেস ঠিকানা",
@@ -441,8 +440,8 @@ const bn: LocaleType = {
       Alibaba: {
         ApiKey: {
           Title: "Alibaba API Key",
-          SubTitle: "স্বনির্ধারিত আলিবাবা ক্লাউড API কী ব্যবহার করুন",
-          Placeholder: "Alibaba Cloud API কী",
+          SubTitle: "স্বনির্ধারিত আলিবাবা ক্লাউড API Key ব্যবহার করুন",
+          Placeholder: "Alibaba Cloud API Key",
         },
         Endpoint: {
           Title: "ইন্টারফেস ঠিকানা",

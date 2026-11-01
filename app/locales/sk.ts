@@ -1,5 +1,4 @@
 import { getClientConfig } from "../config/client";
-import { SubmitKey } from "../store/config";
 import type { LocaleType } from "./index";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 // if you are adding a new translation, please use LocaleType instead of LocaleType
@@ -90,7 +89,7 @@ const sk: LocaleType = {
     Typing: "Písanie…",
     Input: (submitKey: string) => {
       var inputHints = `${submitKey} na odoslanie`;
-      if (submitKey === String(SubmitKey.Enter)) {
+      if (submitKey === "Enter") {
         inputHints += ", Shift + Enter na zalomenie";
       }
       return inputHints + ", / na vyhľadávanie výziev, : na použitie príkazov";
@@ -343,7 +342,7 @@ const sk: LocaleType = {
       OpenAI: {
         ApiKey: {
           Title: "OpenAI API Key",
-          SubTitle: "Použiť vlastný API kľúč OpenAI",
+          SubTitle: "Použiť vlastný API Key OpenAI",
           Placeholder: "OpenAI API Key",
         },
 
@@ -356,8 +355,8 @@ const sk: LocaleType = {
       Azure: {
         ApiKey: {
           Title: "Azure API Key",
-          SubTitle: "Skontrolujte svoj API kľúč v Azure konzole",
-          Placeholder: "API kľúč Azure",
+          SubTitle: "Skontrolujte svoj API Key v Azure konzole",
+          Placeholder: "API Key Azure",
         },
 
         Endpoint: {
@@ -373,8 +372,8 @@ const sk: LocaleType = {
       Anthropic: {
         ApiKey: {
           Title: "Anthropic API Key",
-          SubTitle: "Skontrolujte svoj API kľúč v Anthropic konzole",
-          Placeholder: "API kľúč Anthropic",
+          SubTitle: "Skontrolujte svoj API Key v Anthropic konzole",
+          Placeholder: "API Key Anthropic",
         },
 
         Endpoint: {
@@ -395,8 +394,8 @@ const sk: LocaleType = {
         ApiKey: {
           Title: "Google API Key",
           SubTitle:
-            "Obísť obmedzenia prístupu heslom pomocou vlastného API kľúča Google AI Studio",
-          Placeholder: "API kľúč Google AI Studio",
+            "Obísť obmedzenia prístupu heslom pomocou vlastného API Keya Google AI Studio",
+          Placeholder: "API Key Google AI Studio",
         },
 
         Endpoint: {

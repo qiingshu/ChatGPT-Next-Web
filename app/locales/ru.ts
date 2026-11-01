@@ -1,4 +1,3 @@
-import { SubmitKey } from "../store/config";
 import { LocaleType } from "../locales/index";
 import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
@@ -88,7 +87,7 @@ const ru: LocaleType = {
     Typing: "Печатает…",
     Input: (submitKey: string) => {
       var inputHints = `${submitKey} Отправить`;
-      if (submitKey === String(SubmitKey.Enter)) {
+      if (submitKey === "Enter") {
         inputHints += "，Shift + Enter для новой строки";
       }
       return inputHints + "，/ для автозаполнения，: для команд";
@@ -348,7 +347,7 @@ const ru: LocaleType = {
           Title: "OpenAI API Key",
           SubTitle:
             "Использовать пользовательский OpenAI-ключ для обхода ограничений пароля",
-          Placeholder: "OpenAI API-ключ",
+          Placeholder: "OpenAI API Key",
         },
 
         Endpoint: {
@@ -361,7 +360,7 @@ const ru: LocaleType = {
           Title: "Azure API Key",
           SubTitle:
             "Использовать пользовательский Azure-ключ для обхода ограничений пароля",
-          Placeholder: "Azure API-ключ",
+          Placeholder: "Azure API Key",
         },
 
         Endpoint: {
@@ -379,7 +378,7 @@ const ru: LocaleType = {
           Title: "Anthropic API Key",
           SubTitle:
             "Использовать пользовательский Anthropic-ключ для обхода ограничений пароля",
-          Placeholder: "Anthropic API-ключ",
+          Placeholder: "Anthropic API Key",
         },
 
         Endpoint: {
@@ -395,8 +394,8 @@ const ru: LocaleType = {
       Google: {
         ApiKey: {
           Title: "Google API Key",
-          SubTitle: "Получите ваш API-ключ Google AI",
-          Placeholder: "Введите ваш API-ключ Google AI Studio",
+          SubTitle: "Получите ваш API Key Google AI",
+          Placeholder: "Введите ваш API Key Google AI Studio",
         },
 
         Endpoint: {
@@ -416,8 +415,8 @@ const ru: LocaleType = {
       Baidu: {
         ApiKey: {
           Title: "Baidu API Key",
-          SubTitle: "Использовать пользовательский Baidu API-ключ",
-          Placeholder: "Baidu API-ключ",
+          SubTitle: "Использовать пользовательский Baidu API Key",
+          Placeholder: "Baidu API Key",
         },
         SecretKey: {
           Title: "Секретный ключ",
@@ -433,8 +432,8 @@ const ru: LocaleType = {
       ByteDance: {
         ApiKey: {
           Title: "ByteDance API Key",
-          SubTitle: "Использовать пользовательский ByteDance API-ключ",
-          Placeholder: "ByteDance API-ключ",
+          SubTitle: "Использовать пользовательский ByteDance API Key",
+          Placeholder: "ByteDance API Key",
         },
         Endpoint: {
           Title: "Адрес интерфейса",
@@ -444,8 +443,8 @@ const ru: LocaleType = {
       Alibaba: {
         ApiKey: {
           Title: "Alibaba API Key",
-          SubTitle: "Использовать пользовательский Alibaba Cloud API-ключ",
-          Placeholder: "Alibaba Cloud API-ключ",
+          SubTitle: "Использовать пользовательский Alibaba Cloud API Key",
+          Placeholder: "Alibaba Cloud API Key",
         },
         Endpoint: {
           Title: "Адрес интерфейса",

@@ -1,4 +1,3 @@
-import { SubmitKey } from "../store/config";
 import type { LocaleType } from "./index";
 import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
@@ -88,7 +87,7 @@ const ar: LocaleType = {
     Typing: "يكتب…",
     Input: (submitKey: string) => {
       var inputHints = `${submitKey} إرسال`;
-      if (submitKey === String(SubmitKey.Enter)) {
+      if (submitKey === "Enter") {
         inputHints += "، Shift + Enter لإدراج سطر جديد";
       }
       return inputHints + "، / لتفعيل الإكمال التلقائي، : لتفعيل الأوامر";
@@ -386,7 +385,7 @@ const ar: LocaleType = {
       Google: {
         ApiKey: {
           Title: "Google API Key",
-          SubTitle: "احصل على مفتاح API الخاص بك من Google AI",
+          SubTitle: "احصل على API Key الخاص بك من Google AI",
           Placeholder: "أدخل مفتاح Google AI Studio API",
         },
 

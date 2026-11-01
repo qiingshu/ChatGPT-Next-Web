@@ -1,4 +1,3 @@
-import { SubmitKey } from "../store/config";
 import type { LocaleType } from "./index";
 import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
@@ -88,7 +87,7 @@ const ko: LocaleType = {
     Typing: "입력 중…",
     Input: (submitKey: string) => {
       var inputHints = `${submitKey} 전송`;
-      if (submitKey === String(SubmitKey.Enter)) {
+      if (submitKey === "Enter") {
         inputHints += "，Shift + Enter 줄 바꿈";
       }
       return inputHints + "，/ 자동 완성，: 명령어 입력";
@@ -342,7 +341,7 @@ const ko: LocaleType = {
         ApiKey: {
           Title: "OpenAI API Key",
           SubTitle: "커스텀 OpenAI 키를 사용하여 비밀번호 접근 제한 우회",
-          Placeholder: "OpenAI API 키",
+          Placeholder: "OpenAI API Key",
         },
 
         Endpoint: {
@@ -354,7 +353,7 @@ const ko: LocaleType = {
         ApiKey: {
           Title: "Azure API Key",
           SubTitle: "커스텀 Azure 키를 사용하여 비밀번호 접근 제한 우회",
-          Placeholder: "Azure API 키",
+          Placeholder: "Azure API Key",
         },
 
         Endpoint: {
@@ -371,7 +370,7 @@ const ko: LocaleType = {
         ApiKey: {
           Title: "Anthropic API Key",
           SubTitle: "커스텀 Anthropic 키를 사용하여 비밀번호 접근 제한 우회",
-          Placeholder: "Anthropic API 키",
+          Placeholder: "Anthropic API Key",
         },
 
         Endpoint: {
@@ -387,8 +386,8 @@ const ko: LocaleType = {
       Google: {
         ApiKey: {
           Title: "Google API Key",
-          SubTitle: "Google AI에서 API 키를 가져오세요.",
-          Placeholder: "Google AI Studio API 키 입력",
+          SubTitle: "Google AI에서 API Key를 가져오세요.",
+          Placeholder: "Google AI Studio API Key 입력",
         },
 
         Endpoint: {
@@ -408,8 +407,8 @@ const ko: LocaleType = {
       Baidu: {
         ApiKey: {
           Title: "Baidu API Key",
-          SubTitle: "커스텀 Baidu API 키 사용",
-          Placeholder: "Baidu API 키",
+          SubTitle: "커스텀 Baidu API Key 사용",
+          Placeholder: "Baidu API Key",
         },
         SecretKey: {
           Title: "Secret 키",
@@ -424,8 +423,8 @@ const ko: LocaleType = {
       ByteDance: {
         ApiKey: {
           Title: "ByteDance API Key",
-          SubTitle: "커스텀 ByteDance API 키 사용",
-          Placeholder: "ByteDance API 키",
+          SubTitle: "커스텀 ByteDance API Key 사용",
+          Placeholder: "ByteDance API Key",
         },
         Endpoint: {
           Title: "엔드포인트 주소",
@@ -435,8 +434,8 @@ const ko: LocaleType = {
       Alibaba: {
         ApiKey: {
           Title: "Alibaba API Key",
-          SubTitle: "커스텀 Alibaba Cloud API 키 사용",
-          Placeholder: "Alibaba Cloud API 키",
+          SubTitle: "커스텀 Alibaba Cloud API Key 사용",
+          Placeholder: "Alibaba Cloud API Key",
         },
         Endpoint: {
           Title: "엔드포인트 주소",

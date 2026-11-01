@@ -1,4 +1,3 @@
-import { SubmitKey } from "../store/config";
 import { LocaleType } from "../locales/index";
 import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
@@ -89,7 +88,7 @@ const pt: LocaleType = {
     Typing: "Digitando…",
     Input: (submitKey: string) => {
       var inputHints = `${submitKey} para enviar`;
-      if (submitKey === String(SubmitKey.Enter)) {
+      if (submitKey === "Enter") {
         inputHints += ", Shift + Enter para quebrar linha";
       }
       return inputHints + ", / para buscar prompts, : para usar comandos";
@@ -343,7 +342,7 @@ const pt: LocaleType = {
       OpenAI: {
         ApiKey: {
           Title: "OpenAI API Key",
-          SubTitle: "Usar Chave API OpenAI personalizada",
+          SubTitle: "Usar API Key OpenAI personalizada",
           Placeholder: "OpenAI API Key",
         },
 
@@ -356,8 +355,8 @@ const pt: LocaleType = {
       Azure: {
         ApiKey: {
           Title: "Azure API Key",
-          SubTitle: "Verifique sua chave API do console Azure",
-          Placeholder: "Chave API Azure",
+          SubTitle: "Verifique sua API Key do console Azure",
+          Placeholder: "API Key Azure",
         },
 
         Endpoint: {
@@ -373,8 +372,8 @@ const pt: LocaleType = {
       Anthropic: {
         ApiKey: {
           Title: "Anthropic API Key",
-          SubTitle: "Verifique sua chave API do console Anthropic",
-          Placeholder: "Chave API Anthropic",
+          SubTitle: "Verifique sua API Key do console Anthropic",
+          Placeholder: "API Key Anthropic",
         },
 
         Endpoint: {

@@ -1,4 +1,3 @@
-import { SubmitKey } from "../store/config";
 import type { LocaleType } from "./index";
 import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
@@ -88,7 +87,7 @@ const vi: LocaleType = {
     Typing: "Đang nhập…",
     Input: (submitKey: string) => {
       var inputHints = `${submitKey} gửi`;
-      if (submitKey === String(SubmitKey.Enter)) {
+      if (submitKey === "Enter") {
         inputHints += "，Shift + Enter xuống dòng";
       }
       return inputHints + "，/ kích hoạt hoàn chỉnh, : kích hoạt lệnh";
@@ -345,7 +344,7 @@ const vi: LocaleType = {
           Title: "OpenAI API Key",
           SubTitle:
             "Sử dụng khóa OpenAI tùy chỉnh để vượt qua hạn chế truy cập mật khẩu",
-          Placeholder: "Khóa API OpenAI",
+          Placeholder: "API Key OpenAI",
         },
 
         Endpoint: {
@@ -358,7 +357,7 @@ const vi: LocaleType = {
           Title: "Azure API Key",
           SubTitle:
             "Sử dụng khóa Azure tùy chỉnh để vượt qua hạn chế truy cập mật khẩu",
-          Placeholder: "Khóa API Azure",
+          Placeholder: "API Key Azure",
         },
 
         Endpoint: {
@@ -376,7 +375,7 @@ const vi: LocaleType = {
           Title: "Anthropic API Key",
           SubTitle:
             "Sử dụng khóa Anthropic tùy chỉnh để vượt qua hạn chế truy cập mật khẩu",
-          Placeholder: "Khóa API Anthropic",
+          Placeholder: "API Key Anthropic",
         },
 
         Endpoint: {
@@ -392,8 +391,8 @@ const vi: LocaleType = {
       Google: {
         ApiKey: {
           Title: "Google API Key",
-          SubTitle: "Lấy khóa API từ Google AI",
-          Placeholder: "Nhập khóa API Google AI Studio của bạn",
+          SubTitle: "Lấy API Key từ Google AI",
+          Placeholder: "Nhập API Key Google AI Studio của bạn",
         },
 
         Endpoint: {
@@ -414,7 +413,7 @@ const vi: LocaleType = {
         ApiKey: {
           Title: "Baidu API Key",
           SubTitle: "Sử dụng khóa Baidu API tùy chỉnh",
-          Placeholder: "Khóa API Baidu",
+          Placeholder: "API Key Baidu",
         },
         SecretKey: {
           Title: "Secret Key",
@@ -430,7 +429,7 @@ const vi: LocaleType = {
         ApiKey: {
           Title: "ByteDance API Key",
           SubTitle: "Sử dụng khóa ByteDance API tùy chỉnh",
-          Placeholder: "Khóa API ByteDance",
+          Placeholder: "API Key ByteDance",
         },
         Endpoint: {
           Title: "Địa chỉ giao diện",
@@ -441,7 +440,7 @@ const vi: LocaleType = {
         ApiKey: {
           Title: "Alibaba API Key",
           SubTitle: "Sử dụng khóa Alibaba Cloud API tùy chỉnh",
-          Placeholder: "Khóa API Alibaba Cloud",
+          Placeholder: "API Key Alibaba Cloud",
         },
         Endpoint: {
           Title: "Địa chỉ giao diện",

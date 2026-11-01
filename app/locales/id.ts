@@ -1,4 +1,3 @@
-import { SubmitKey } from "../store/config";
 import type { LocaleType } from "./index";
 import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
@@ -88,7 +87,7 @@ const id: LocaleType = {
     Typing: "Sedang Mengetik…",
     Input: (submitKey: string) => {
       var inputHints = `${submitKey} kirim`;
-      if (submitKey === String(SubmitKey.Enter)) {
+      if (submitKey === "Enter") {
         inputHints += "，Shift + Enter untuk baris baru";
       }
       return inputHints + "，/ untuk melengkapi, : untuk memicu perintah";
@@ -394,8 +393,8 @@ const id: LocaleType = {
       Google: {
         ApiKey: {
           Title: "Google API Key",
-          SubTitle: "Dapatkan kunci API Anda dari Google AI",
-          Placeholder: "Masukkan kunci API Studio Google AI Anda",
+          SubTitle: "Dapatkan API Key Anda dari Google AI",
+          Placeholder: "Masukkan API Key Studio Google AI Anda",
         },
 
         Endpoint: {

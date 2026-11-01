@@ -1,5 +1,4 @@
 import { getClientConfig } from "../config/client";
-import { SubmitKey } from "../store/config";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 
 const isApp = !!getClientConfig()?.isApp;
@@ -86,7 +85,7 @@ const cn = {
     Typing: "正在输入…",
     Input: (submitKey: string) => {
       var inputHints = `${submitKey} 发送`;
-      if (submitKey === String(SubmitKey.Enter)) {
+      if (submitKey === "Enter") {
         inputHints += "，Shift + Enter 换行";
       }
       return inputHints + "，/ 触发补全，: 触发命令";
@@ -409,8 +408,8 @@ const cn = {
       Google: {
         ApiKey: {
           Title: "Google API Key",
-          SubTitle: "从 Google AI 获取您的 API 密钥",
-          Placeholder: "Google AI API KEY",
+          SubTitle: "从 Google AI 获取您的 API Key",
+          Placeholder: "Google AI API Key",
         },
 
         Endpoint: {
@@ -550,8 +549,8 @@ const cn = {
       Iflytek: {
         ApiKey: {
           Title: "Iflytek API Key",
-          SubTitle: "从讯飞星火控制台获取的 APIKey",
-          Placeholder: "APIKey",
+          SubTitle: "从讯飞星火控制台获取的 API Key",
+          Placeholder: "API Key",
         },
         ApiSecret: {
           Title: "ApiSecret",

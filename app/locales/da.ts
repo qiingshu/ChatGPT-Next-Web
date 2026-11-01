@@ -1,7 +1,6 @@
 import { getClientConfig } from "../config/client";
-import { SubmitKey } from "../store/config";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
-import { LocaleType } from "./index";
+import type { LocaleType } from "./index";
 
 const isApp = !!getClientConfig()?.isApp;
 const da: LocaleType = {
@@ -86,7 +85,7 @@ const da: LocaleType = {
     Typing: "Skriver…",
     Input: (submitKey: string) => {
       let inputHints = `${submitKey} for at sende`;
-      if (submitKey === String(SubmitKey.Enter)) {
+      if (submitKey === "Enter") {
         inputHints += ", Shift + Enter for ny linje";
       }
       return (
@@ -588,7 +587,7 @@ const da: LocaleType = {
       ApiKey: {
         Title: "API Key",
         SubTitle: "Din nøgle",
-        Placeholder: "API-nøgle",
+        Placeholder: "API Key",
       },
       Azure: {
         Endpoint: {

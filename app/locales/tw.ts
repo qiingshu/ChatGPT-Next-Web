@@ -1,6 +1,5 @@
 import type { LocaleType as SharedLocaleType } from "./cn";
 import { getClientConfig } from "../config/client";
-import { SubmitKey } from "../store/config";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 const isApp = !!getClientConfig()?.isApp;
 
@@ -89,7 +88,7 @@ const tw: SharedLocaleType = {
     Typing: "正在輸入…",
     Input: (submitKey: string) => {
       var inputHints = `輸入訊息後，按下 ${submitKey} 鍵即可傳送`;
-      if (submitKey === String(SubmitKey.Enter)) {
+      if (submitKey === "Enter") {
         inputHints += "，Shift + Enter 鍵換行";
       }
       return inputHints;
@@ -369,7 +368,7 @@ const tw: SharedLocaleType = {
       Anthropic: {
         ApiKey: {
           Title: "Anthropic API Key",
-          SubTitle: "從 Anthropic AI 取得您的 API 金鑰",
+          SubTitle: "從 Anthropic AI 取得您的 API Key",
           Placeholder: "Anthropic API Key",
         },
 
@@ -386,8 +385,8 @@ const tw: SharedLocaleType = {
       Google: {
         ApiKey: {
           Title: "Google API Key",
-          SubTitle: "從 Google AI 取得您的 API 金鑰",
-          Placeholder: "輸入您的 Google AI Studio API 金鑰",
+          SubTitle: "從 Google AI 取得您的 API Key",
+          Placeholder: "輸入您的 Google AI Studio API Key",
         },
 
         Endpoint: {

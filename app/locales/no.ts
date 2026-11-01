@@ -1,4 +1,3 @@
-import { SubmitKey } from "../store/config";
 import type { LocaleType } from "./index";
 import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
@@ -90,7 +89,7 @@ const no: LocaleType = {
     Typing: "Skriver…",
     Input: (submitKey: string) => {
       var inputHints = `${submitKey} send`;
-      if (submitKey === String(SubmitKey.Enter)) {
+      if (submitKey === "Enter") {
         inputHints += "，Shift + Enter for linjeskift";
       }
       return (
@@ -351,7 +350,7 @@ const no: LocaleType = {
           Title: "OpenAI API Key",
           SubTitle:
             "Bruk egendefinert OpenAI-nøkkel for å omgå passordtilgangsbegrensninger",
-          Placeholder: "OpenAI API-nøkkel",
+          Placeholder: "OpenAI API Key",
         },
 
         Endpoint: {
@@ -364,7 +363,7 @@ const no: LocaleType = {
           Title: "Azure API Key",
           SubTitle:
             "Bruk egendefinert Azure-nøkkel for å omgå passordtilgangsbegrensninger",
-          Placeholder: "Azure API-nøkkel",
+          Placeholder: "Azure API Key",
         },
 
         Endpoint: {
@@ -382,7 +381,7 @@ const no: LocaleType = {
           Title: "Anthropic API Key",
           SubTitle:
             "Bruk egendefinert Anthropic-nøkkel for å omgå passordtilgangsbegrensninger",
-          Placeholder: "Anthropic API-nøkkel",
+          Placeholder: "Anthropic API Key",
         },
 
         Endpoint: {
@@ -398,8 +397,8 @@ const no: LocaleType = {
       Google: {
         ApiKey: {
           Title: "Google API Key",
-          SubTitle: "Hent din API-nøkkel fra Google AI",
-          Placeholder: "Skriv inn din Google AI Studio API-nøkkel",
+          SubTitle: "Hent din API Key fra Google AI",
+          Placeholder: "Skriv inn din Google AI Studio API Key",
         },
 
         Endpoint: {
@@ -419,8 +418,8 @@ const no: LocaleType = {
       Baidu: {
         ApiKey: {
           Title: "Baidu API Key",
-          SubTitle: "Bruk egendefinert Baidu API-nøkkel",
-          Placeholder: "Baidu API-nøkkel",
+          SubTitle: "Bruk egendefinert Baidu API Key",
+          Placeholder: "Baidu API Key",
         },
         SecretKey: {
           Title: "Hemmelig nøkkel",
@@ -436,8 +435,8 @@ const no: LocaleType = {
       ByteDance: {
         ApiKey: {
           Title: "ByteDance API Key",
-          SubTitle: "Bruk egendefinert ByteDance API-nøkkel",
-          Placeholder: "ByteDance API-nøkkel",
+          SubTitle: "Bruk egendefinert ByteDance API Key",
+          Placeholder: "ByteDance API Key",
         },
         Endpoint: {
           Title: "API-adresse",
@@ -447,8 +446,8 @@ const no: LocaleType = {
       Alibaba: {
         ApiKey: {
           Title: "Alibaba API Key",
-          SubTitle: "Bruk egendefinert Alibaba Cloud API-nøkkel",
-          Placeholder: "Alibaba Cloud API-nøkkel",
+          SubTitle: "Bruk egendefinert Alibaba Cloud API Key",
+          Placeholder: "Alibaba Cloud API Key",
         },
         Endpoint: {
           Title: "API-adresse",

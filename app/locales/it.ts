@@ -1,4 +1,3 @@
-import { SubmitKey } from "../store/config";
 import type { LocaleType } from "./index";
 import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
@@ -89,7 +88,7 @@ const it: LocaleType = {
     Typing: "Digitazione in corso…",
     Input: (submitKey: string) => {
       var inputHints = `${submitKey} per inviare`;
-      if (submitKey === String(SubmitKey.Enter)) {
+      if (submitKey === "Enter") {
         inputHints += "，Shift + Enter per andare a capo";
       }
       return (
@@ -371,7 +370,7 @@ const it: LocaleType = {
           Title: "Azure API Key",
           SubTitle:
             "Utilizza una chiave Azure personalizzata per bypassare le limitazioni di accesso",
-          Placeholder: "Chiave API Azure",
+          Placeholder: "API Key Azure",
         },
 
         Endpoint: {
@@ -405,8 +404,8 @@ const it: LocaleType = {
       Google: {
         ApiKey: {
           Title: "Google API Key",
-          SubTitle: "Ottieni la tua chiave API da Google AI",
-          Placeholder: "Inserisci la tua chiave API Google AI Studio",
+          SubTitle: "Ottieni la tua API Key da Google AI",
+          Placeholder: "Inserisci la tua API Key Google AI Studio",
         },
 
         Endpoint: {
@@ -426,7 +425,7 @@ const it: LocaleType = {
       Baidu: {
         ApiKey: {
           Title: "Baidu API Key",
-          SubTitle: "Utilizza una chiave API Baidu personalizzata",
+          SubTitle: "Utilizza una API Key Baidu personalizzata",
           Placeholder: "API Key Baidu",
         },
         SecretKey: {
@@ -443,7 +442,7 @@ const it: LocaleType = {
       ByteDance: {
         ApiKey: {
           Title: "ByteDance API Key",
-          SubTitle: "Utilizza una chiave API ByteDance personalizzata",
+          SubTitle: "Utilizza una API Key ByteDance personalizzata",
           Placeholder: "API Key ByteDance",
         },
         Endpoint: {
@@ -454,7 +453,7 @@ const it: LocaleType = {
       Alibaba: {
         ApiKey: {
           Title: "Alibaba API Key",
-          SubTitle: "Utilizza una chiave API Alibaba Cloud personalizzata",
+          SubTitle: "Utilizza una API Key Alibaba Cloud personalizzata",
           Placeholder: "API Key Alibaba Cloud",
         },
         Endpoint: {

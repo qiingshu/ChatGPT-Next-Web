@@ -1,4 +1,3 @@
-import { SubmitKey } from "../store/config";
 import type { LocaleType } from "./index";
 import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
@@ -88,7 +87,7 @@ const cs: LocaleType = {
     Typing: "Píše se…",
     Input: (submitKey: string) => {
       var inputHints = `${submitKey} odeslat`;
-      if (submitKey === String(SubmitKey.Enter)) {
+      if (submitKey === "Enter") {
         inputHints += "，Shift + Enter pro nový řádek";
       }
       return inputHints + "，/ pro doplnění, : pro příkaz";
@@ -392,8 +391,8 @@ const cs: LocaleType = {
       Google: {
         ApiKey: {
           Title: "Google API Key",
-          SubTitle: "Získejte svůj API klíč od Google AI",
-          Placeholder: "Zadejte svůj Google AI Studio API klíč",
+          SubTitle: "Získejte svůj API Key od Google AI",
+          Placeholder: "Zadejte svůj Google AI Studio API Key",
         },
 
         Endpoint: {

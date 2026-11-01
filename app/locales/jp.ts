@@ -1,4 +1,3 @@
-import { SubmitKey } from "../store/config";
 import type { LocaleType } from "./index";
 import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
@@ -88,7 +87,7 @@ const jp: LocaleType = {
     Typing: "入力中…",
     Input: (submitKey: string) => {
       var inputHints = `${submitKey}で送信`;
-      if (submitKey === String(SubmitKey.Enter)) {
+      if (submitKey === "Enter") {
         inputHints += "、Shift + Enterで改行";
       }
       return inputHints + "、/で補完をトリガー、:でコマンドをトリガー";
@@ -343,7 +342,7 @@ const jp: LocaleType = {
         ApiKey: {
           Title: "OpenAI API Key",
           SubTitle: "カスタムOpenAIキーを使用してパスワードアクセス制限を回避",
-          Placeholder: "OpenAI APIキー",
+          Placeholder: "OpenAI API Key",
         },
 
         Endpoint: {
@@ -356,7 +355,7 @@ const jp: LocaleType = {
         ApiKey: {
           Title: "Azure API Key",
           SubTitle: "カスタムAzureキーを使用してパスワードアクセス制限を回避",
-          Placeholder: "Azure APIキー",
+          Placeholder: "Azure API Key",
         },
 
         Endpoint: {
@@ -374,7 +373,7 @@ const jp: LocaleType = {
           Title: "Anthropic API Key",
           SubTitle:
             "カスタムAnthropicキーを使用してパスワードアクセス制限を回避",
-          Placeholder: "Anthropic APIキー",
+          Placeholder: "Anthropic API Key",
         },
 
         Endpoint: {
@@ -390,8 +389,8 @@ const jp: LocaleType = {
       Google: {
         ApiKey: {
           Title: "Google API Key",
-          SubTitle: "Google AIからAPIキーを取得",
-          Placeholder: "Google AI Studio APIキーを入力",
+          SubTitle: "Google AIからAPI Keyを取得",
+          Placeholder: "Google AI Studio API Keyを入力",
         },
 
         Endpoint: {
@@ -411,8 +410,8 @@ const jp: LocaleType = {
       Baidu: {
         ApiKey: {
           Title: "Baidu API Key",
-          SubTitle: "カスタムBaidu APIキーを使用",
-          Placeholder: "Baidu APIキー",
+          SubTitle: "カスタムBaidu API Keyを使用",
+          Placeholder: "Baidu API Key",
         },
         SecretKey: {
           Title: "シークレットキー",
@@ -427,8 +426,8 @@ const jp: LocaleType = {
       ByteDance: {
         ApiKey: {
           Title: "ByteDance API Key",
-          SubTitle: "カスタムByteDance APIキーを使用",
-          Placeholder: "ByteDance APIキー",
+          SubTitle: "カスタムByteDance API Keyを使用",
+          Placeholder: "ByteDance API Key",
         },
         Endpoint: {
           Title: "エンドポイント",
@@ -438,8 +437,8 @@ const jp: LocaleType = {
       Alibaba: {
         ApiKey: {
           Title: "Alibaba API Key",
-          SubTitle: "カスタムAlibaba Cloud APIキーを使用",
-          Placeholder: "Alibaba Cloud APIキー",
+          SubTitle: "カスタムAlibaba Cloud API Keyを使用",
+          Placeholder: "Alibaba Cloud API Key",
         },
         Endpoint: {
           Title: "エンドポイント",

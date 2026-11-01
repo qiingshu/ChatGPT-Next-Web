@@ -1,4 +1,3 @@
-import { SubmitKey } from "../store/config";
 import type { LocaleType } from "./index";
 import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
@@ -90,7 +89,7 @@ const es: LocaleType = {
     Typing: "Escribiendo…",
     Input: (submitKey: string) => {
       var inputHints = `${submitKey} para enviar`;
-      if (submitKey === String(SubmitKey.Enter)) {
+      if (submitKey === "Enter") {
         inputHints += "，Shift + Enter para nueva línea";
       }
       return (
@@ -356,8 +355,8 @@ const es: LocaleType = {
         ApiKey: {
           Title: "OpenAI API Key",
           SubTitle:
-            "Usa una clave API de OpenAI personalizada para omitir la restricción de acceso por contraseña",
-          Placeholder: "Clave API de OpenAI",
+            "Usa una API Key de OpenAI personalizada para omitir la restricción de acceso por contraseña",
+          Placeholder: "API Key de OpenAI",
         },
 
         Endpoint: {
@@ -371,7 +370,7 @@ const es: LocaleType = {
           Title: "Azure API Key",
           SubTitle:
             "Usa una clave de Azure personalizada para omitir la restricción de acceso por contraseña",
-          Placeholder: "Clave API de Azure",
+          Placeholder: "API Key de Azure",
         },
 
         Endpoint: {
@@ -389,7 +388,7 @@ const es: LocaleType = {
           Title: "Anthropic API Key",
           SubTitle:
             "Usa una clave de Anthropic personalizada para omitir la restricción de acceso por contraseña",
-          Placeholder: "Clave API de Anthropic",
+          Placeholder: "API Key de Anthropic",
         },
 
         Endpoint: {
@@ -405,8 +404,8 @@ const es: LocaleType = {
       Google: {
         ApiKey: {
           Title: "Google API Key",
-          SubTitle: "Obtén tu clave API de Google AI",
-          Placeholder: "Introduce tu clave API de Google AI Studio",
+          SubTitle: "Obtén tu API Key de Google AI",
+          Placeholder: "Introduce tu API Key de Google AI Studio",
         },
 
         Endpoint: {
@@ -426,8 +425,8 @@ const es: LocaleType = {
       Baidu: {
         ApiKey: {
           Title: "Baidu API Key",
-          SubTitle: "Usa una clave API de Baidu personalizada",
-          Placeholder: "Clave API de Baidu",
+          SubTitle: "Usa una API Key de Baidu personalizada",
+          Placeholder: "API Key de Baidu",
         },
         SecretKey: {
           Title: "Clave secreta",
@@ -443,8 +442,8 @@ const es: LocaleType = {
       ByteDance: {
         ApiKey: {
           Title: "ByteDance API Key",
-          SubTitle: "Usa una clave API de ByteDance personalizada",
-          Placeholder: "Clave API de ByteDance",
+          SubTitle: "Usa una API Key de ByteDance personalizada",
+          Placeholder: "API Key de ByteDance",
         },
         Endpoint: {
           Title: "Dirección del endpoint",
@@ -454,8 +453,8 @@ const es: LocaleType = {
       Alibaba: {
         ApiKey: {
           Title: "Alibaba API Key",
-          SubTitle: "Usa una clave API de Alibaba Cloud personalizada",
-          Placeholder: "Clave API de Alibaba Cloud",
+          SubTitle: "Usa una API Key de Alibaba Cloud personalizada",
+          Placeholder: "API Key de Alibaba Cloud",
         },
         Endpoint: {
           Title: "Dirección del endpoint",
