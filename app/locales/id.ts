@@ -1,11 +1,10 @@
-import { SubmitKey } from "../store/config";
-import type { PartialLocaleType } from "./index";
+import type { LocaleType } from "./index";
 import { getClientConfig } from "../config/client";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 const isApp = !!getClientConfig()?.isApp;
 
-const id: PartialLocaleType = {
-  WIP: "Coming Soon...",
+const id: LocaleType = {
+  WIP: "Segera hadir…",
   Error: {
     Unauthorized: isApp
       ? `😆 Percakapan mengalami beberapa masalah, tidak perlu khawatir:
@@ -52,9 +51,13 @@ const id: PartialLocaleType = {
       PinToastContent: "1 percakapan telah disematkan ke prompt default",
       PinToastAction: "Lihat",
       Delete: "Hapus",
-      Edit: "Edit",
+      Edit: "Sunting",
       RefreshTitle: "Segarkan Judul",
       RefreshToast: "Permintaan penyegaran judul telah dikirim",
+    
+      "FullScreen": "Layar penuh",
+      "Speech": "Bacakan",
+      "StopSpeech": "Berhenti",
     },
     Commands: {
       new: "Obrolan Baru",
@@ -63,6 +66,8 @@ const id: PartialLocaleType = {
       prev: "Obrolan Sebelumnya",
       clear: "Hapus Konteks",
       del: "Hapus Obrolan",
+    
+      "fork": "Salin percakapan",
     },
     InputActions: {
       Stop: "Hentikan Respons",
@@ -82,7 +87,7 @@ const id: PartialLocaleType = {
     Typing: "Sedang Mengetik…",
     Input: (submitKey: string) => {
       var inputHints = `${submitKey} kirim`;
-      if (submitKey === String(SubmitKey.Enter)) {
+      if (submitKey === "Enter") {
         inputHints += "，Shift + Enter untuk baris baru";
       }
       return inputHints + "，/ untuk melengkapi, : untuk memicu perintah";
@@ -93,6 +98,18 @@ const id: PartialLocaleType = {
       SaveAs: "Simpan sebagai Masker",
     },
     IsContext: "Prompt Default",
+  
+    "StartSpeak": "Mulai berbicara",
+    "StopSpeak": "Berhenti",
+    "ShortcutKey": {
+      "Title": "Pintasan papan ketik",
+      "newChat": "Buka percakapan baru",
+      "focusInput": "Fokus ke kolom masukan",
+      "copyLastMessage": "Salin balasan terakhir",
+      "copyLastCode": "Salin blok kode terakhir",
+      "showShortcutKey": "Tampilkan pintasan",
+      "clearContext": "Hapus Obrolan",
+    },
   },
   Export: {
     Title: "Bagikan Riwayat Obrolan",
@@ -116,6 +133,11 @@ const id: PartialLocaleType = {
     Image: {
       Toast: "Sedang Membuat Screenshot",
       Modal: "Tekan lama atau klik kanan untuk menyimpan gambar",
+    },
+  
+    "Artifacts": {
+      "Title": "Bagikan Artifacts",
+      "Error": "Bagikan Artifacts — Kesalahan",
     },
   },
   Select: {
@@ -158,7 +180,7 @@ const id: PartialLocaleType = {
       },
     },
     Lang: {
-      Name: "Language", // PERHATIAN: jika Anda ingin menambahkan terjemahan baru, harap jangan terjemahkan nilai ini, biarkan sebagai `Language`
+      Name: "Bahasa", // PERHATIAN: jika Anda ingin menambahkan terjemahan baru, harap jangan terjemahkan nilai ini, biarkan sebagai `Language`
       All: "Semua Bahasa",
     },
     Avatar: "Avatar",
@@ -189,6 +211,9 @@ const id: PartialLocaleType = {
       IsChecking: "Sedang memeriksa pembaruan...",
       FoundUpdate: (x: string) => `Versi Baru Ditemukan: ${x}`,
       GoToUpdate: "Pergi ke Pembaruan",
+    
+      "Success": "Pembaruan berhasil",
+      "Failed": "Pembaruan gagal",
     },
     SendKey: "Kunci Kirim",
     Theme: "Tema",
@@ -264,14 +289,14 @@ const id: PartialLocaleType = {
       List: "Daftar Prompt Kustom",
       ListCount: (builtin: number, custom: number) =>
         `Bawaan ${builtin} item, pengguna ${custom} item`,
-      Edit: "Edit",
+      Edit: "Sunting",
       Modal: {
         Title: "Daftar Prompt",
         Add: "Baru",
         Search: "Cari Prompt",
       },
       EditModal: {
-        Title: "Edit Prompt",
+        Title: "Sunting prompt",
       },
     },
     HistoryCount: {
@@ -318,7 +343,7 @@ const id: PartialLocaleType = {
       },
       OpenAI: {
         ApiKey: {
-          Title: "API Key",
+          Title: "OpenAI API Key",
           SubTitle:
             "Gunakan OpenAI Key kustom untuk menghindari batasan akses kata sandi",
           Placeholder: "OpenAI API Key",
@@ -331,7 +356,7 @@ const id: PartialLocaleType = {
       },
       Azure: {
         ApiKey: {
-          Title: "Kunci Antarmuka",
+          Title: "Azure API Key",
           SubTitle:
             "Gunakan Azure Key kustom untuk menghindari batasan akses kata sandi",
           Placeholder: "Azure API Key",
@@ -349,7 +374,7 @@ const id: PartialLocaleType = {
       },
       Anthropic: {
         ApiKey: {
-          Title: "Kunci Antarmuka",
+          Title: "Anthropic API Key",
           SubTitle:
             "Gunakan Anthropic Key kustom untuk menghindari batasan akses kata sandi",
           Placeholder: "Anthropic API Key",
@@ -367,9 +392,9 @@ const id: PartialLocaleType = {
       },
       Google: {
         ApiKey: {
-          Title: "Kunci API",
-          SubTitle: "Dapatkan kunci API Anda dari Google AI",
-          Placeholder: "Masukkan kunci API Studio Google AI Anda",
+          Title: "Google API Key",
+          SubTitle: "Dapatkan API Key Anda dari Google AI",
+          Placeholder: "Masukkan API Key Studio Google AI Anda",
         },
 
         Endpoint: {
@@ -388,7 +413,7 @@ const id: PartialLocaleType = {
       },
       Baidu: {
         ApiKey: {
-          Title: "API Key",
+          Title: "Baidu API Key",
           SubTitle: "Gunakan Baidu API Key kustom",
           Placeholder: "Baidu API Key",
         },
@@ -404,7 +429,7 @@ const id: PartialLocaleType = {
       },
       ByteDance: {
         ApiKey: {
-          Title: "Kunci Antarmuka",
+          Title: "ByteDance API Key",
           SubTitle: "Gunakan ByteDance API Key kustom",
           Placeholder: "ByteDance API Key",
         },
@@ -415,9 +440,9 @@ const id: PartialLocaleType = {
       },
       Alibaba: {
         ApiKey: {
-          Title: "Kunci Antarmuka",
+          Title: "Alibaba API Key",
           SubTitle: "Gunakan Alibaba Cloud API Key kustom",
-          Placeholder: "Alibaba Cloud API Key",
+          Placeholder: "Alibaba API Key",
         },
         Endpoint: {
           Title: "Alamat Antarmuka",
@@ -428,6 +453,105 @@ const id: PartialLocaleType = {
         Title: "Nama Model Kustom",
         SubTitle: "Tambahkan opsi model kustom, pisahkan dengan koma",
       },
+    
+      "Tencent": {
+        "ApiKey": {
+          "Title": "Tencent API Key",
+          "SubTitle": "Gunakan API Key kustom",
+          "Placeholder": "Tencent API Key",
+        },
+        "SecretKey": {
+          "Title": "Tencent Secret Key",
+          "SubTitle": "Gunakan kredensial kustom — Secret Key",
+          "Placeholder": "Tencent Secret Key",
+        },
+        "Endpoint": {
+          "Title": "Alamat antarmuka",
+          "SubTitle": "Atur nilai ini di .env",
+        },
+      },
+      "Moonshot": {
+        "ApiKey": {
+          "Title": "Moonshot API Key",
+          "SubTitle": "Gunakan API Key kustom",
+          "Placeholder": "Moonshot API Key",
+        },
+        "Endpoint": {
+          "Title": "Alamat antarmuka",
+          "SubTitle": "Contoh: ",
+        },
+      },
+      "DeepSeek": {
+        "ApiKey": {
+          "Title": "DeepSeek API Key",
+          "SubTitle": "Gunakan API Key kustom",
+          "Placeholder": "DeepSeek API Key",
+        },
+        "Endpoint": {
+          "Title": "Alamat antarmuka",
+          "SubTitle": "Contoh: ",
+        },
+      },
+      "XAI": {
+        "ApiKey": {
+          "Title": "XAI API Key",
+          "SubTitle": "Gunakan API Key kustom",
+          "Placeholder": "XAI API Key",
+        },
+        "Endpoint": {
+          "Title": "Alamat antarmuka",
+          "SubTitle": "Contoh: ",
+        },
+      },
+      "ChatGLM": {
+        "ApiKey": {
+          "Title": "ChatGLM API Key",
+          "SubTitle": "Gunakan API Key kustom",
+          "Placeholder": "ChatGLM API Key",
+        },
+        "Endpoint": {
+          "Title": "Alamat antarmuka",
+          "SubTitle": "Contoh: ",
+        },
+      },
+      "SiliconFlow": {
+        "ApiKey": {
+          "Title": "SiliconFlow API Key",
+          "SubTitle": "Gunakan API Key kustom",
+          "Placeholder": "SiliconFlow API Key",
+        },
+        "Endpoint": {
+          "Title": "Alamat antarmuka",
+          "SubTitle": "Contoh: ",
+        },
+      },
+      "Stability": {
+        "ApiKey": {
+          "Title": "Stability API Key",
+          "SubTitle": "Gunakan API Key kustom",
+          "Placeholder": "Stability API Key",
+        },
+        "Endpoint": {
+          "Title": "Alamat antarmuka",
+          "SubTitle": "Contoh: ",
+        },
+      },
+      "Iflytek": {
+        "ApiKey": {
+          "Title": "Iflytek API Key",
+          "SubTitle": "Gunakan API Key kustom",
+          "Placeholder": "Iflytek API Key",
+        },
+        "ApiSecret": {
+          "Title": "Iflytek API Secret",
+          "SubTitle": "Gunakan kredensial kustom — API Secret",
+          "Placeholder": "Iflytek API Secret",
+        },
+        "Endpoint": {
+          "Title": "Alamat antarmuka",
+          "SubTitle": "Contoh: ",
+        },
+      },
     },
 
     Model: "Model",
@@ -436,7 +560,7 @@ const id: PartialLocaleType = {
       SubTitle: "Model yang digunakan untuk mengompres riwayat",
     },
     Temperature: {
-      Title: "Randomness (temperature)",
+      Title: "Keacakan (temperature)",
       SubTitle: "Semakin tinggi nilainya, semakin acak responsnya",
     },
     TopP: {
@@ -457,6 +581,96 @@ const id: PartialLocaleType = {
       Title: "Hukuman Frekuensi (frequency_penalty)",
       SubTitle:
         "Semakin tinggi nilainya, semakin besar kemungkinan mengurangi kata-kata yang berulang",
+    },
+  
+    "ShowPassword": "Tampilkan kata sandi",
+    "LocalizationInfo": {
+      "Edition": "NextChat edisi kustom",
+      "Timeout": "Koneksi melewati 30 detik. Periksa jaringan dan alamat API.",
+      "Success": "Koneksi berhasil",
+      "NoResponse": "Penyedia tidak mengembalikan respons yang valid. Periksa model dan antarmuka.",
+      "Upstream": "Versi dasar proyek asal",
+      "Details": "Informasi versi terperinci",
+      "Security": "ID pemeliharaan keamanan",
+      "Commit": "Commit build",
+      "Official": "Versi resmi rujukan",
+      "Unavailable": "Belum tersedia",
+      "Note": "Mencakup perbaikan terpilih, bukan seluruh rilis resmi v2.16.1. Informasi versi resmi hanya untuk rujukan.",
+    },
+    "ProviderSetup": {
+      "ModelIdPlaceholder": "ID model@penyedia",
+      "Provider": "Penyedia",
+      "ProviderHelp": "Pilih penyedia dan masukkan API Key untuk memakai model bawaan",
+      "ProviderKeyPlaceholder": "Masukkan API Key penyedia ini",
+      "CurrentModel": "Model percakapan saat ini",
+      "DefaultModel": "Model bawaan",
+      "ModelHelp": "Atur antarmuka dan model kustom di pengaturan lanjutan",
+      "TestModel": "Uji model percakapan saat ini",
+      "TestHelp": "Mengirim permintaan singkat yang mungkin dikenai biaya API; tidak menyimpan riwayat",
+      "TestConnection": "Uji koneksi",
+      "Testing": "Menguji…",
+      "Advanced": "Pengaturan lanjutan",
+      "OfficialURL": "Alamat resmi",
+      "DefaultRoute": "Secara bawaan memakai rute situs ini",
+    },
+    "TTS": {
+      "Enable": {
+        "Title": "Aktifkan TTS",
+        "SubTitle": "Aktifkan teks ke ucapan",
+      },
+      "Autoplay": {
+        "Title": "Aktifkan putar otomatis",
+        "SubTitle": "Buat dan putar ucapan otomatis; aktifkan TTS terlebih dahulu",
+      },
+      "Model": "Model",
+      "Engine": "Mesin TTS",
+      "Voice": {
+        "Title": "Suara",
+        "SubTitle": "Suara untuk audio yang dihasilkan",
+      },
+      "Speed": {
+        "Title": "Kecepatan",
+        "SubTitle": "Kecepatan audio yang dihasilkan",
+      },
+    },
+    "Realtime": {
+      "Enable": {
+        "Title": "Percakapan waktu nyata",
+        "SubTitle": "Aktifkan percakapan waktu nyata",
+      },
+      "Provider": {
+        "Title": "Penyedia model",
+        "SubTitle": "Ganti penyedia",
+      },
+      "Model": {
+        "Title": "Model",
+        "SubTitle": "Pilih model",
+      },
+      "ApiKey": {
+        "Title": "API Key",
+        "SubTitle": "API Key",
+        "Placeholder": "API Key",
+      },
+      "Azure": {
+        "Endpoint": {
+          "Title": "Alamat antarmuka",
+          "SubTitle": "Alamat antarmuka",
+        },
+        "Deployment": {
+          "Title": "Nama penerapan",
+          "SubTitle": "Nama penerapan",
+        },
+      },
+      "Temperature": {
+        "Title": "Keacakan (temperature)",
+        "SubTitle": "Semakin tinggi nilainya, semakin acak responsnya",
+      },
+    },
+    "SafetyLabels": {
+      "BLOCK_NONE": "Tidak ada",
+      "BLOCK_ONLY_HIGH": "Hanya tinggi",
+      "BLOCK_MEDIUM_AND_ABOVE": "Sedang ke atas",
+      "BLOCK_LOW_AND_ABOVE": "Rendah ke atas",
     },
   },
   Store: {
@@ -489,7 +703,53 @@ const id: PartialLocaleType = {
     Revert: "Kembalikan Konteks",
   },
   Plugin: {
-    Name: "Plugin",
+    Name: "Pengaya",
+  
+    "Accessibility": {
+      "Create": "Buat Baru: Pengaya",
+      "Edit": "Edit: Pengaya",
+      "Save": "Simpan: Pengaya",
+      "SchemaUrl": "Pengaya Schema URL",
+      "LoadSchema": "Muat dari URL: Pengaya Schema",
+      "Schema": "Pengaya Schema",
+    },
+    "Page": {
+      "Title": "Pengaya",
+      "SubTitle": (count: number) => "Pengaya: " + count,
+      "Search": "Cari Pesan — Pengaya",
+      "Create": "Buat Baru",
+      "Find": "Temukan pengaya di GitHub: ",
+    },
+    "Item": {
+      "Info": (count: number) => "Metode: " + count,
+      "View": "Lihat",
+      "Edit": "Sunting",
+      "Delete": "Hapus",
+      "DeleteConfirm": "Konfirmasi penghapusan?",
+    },
+    "Auth": {
+      "None": "Tanpa autentikasi",
+      "Basic": "Basic",
+      "Bearer": "Bearer",
+      "Custom": "Kustom",
+      "CustomHeader": "Nama parameter",
+      "Token": "Token",
+      "Proxy": "Gunakan proksi",
+      "ProxyDescription": "Gunakan proksi untuk menghindari batasan CORS",
+      "Location": "Lokasi",
+      "LocationHeader": "Header",
+      "LocationQuery": "Query",
+      "LocationBody": "Body",
+    },
+    "EditModal": {
+      "Title": (readonly: boolean) => "Edit: Pengaya" + (readonly ? " (Hanya baca)" : ""),
+      "Download": "Unduh",
+      "Auth": "Jenis autentikasi",
+      "Content": "OpenAPI Schema",
+      "Load": "Muat dari URL",
+      "Method": "Metode",
+      "Error": "OpenAPI Schema tidak valid",
+    },
   },
   FineTuned: {
     Sysmessage: "Anda adalah seorang asisten",
@@ -521,7 +781,7 @@ const id: PartialLocaleType = {
       Info: (count: number) => `Berisi ${count} obrolan preset`,
       Chat: "Obrolan",
       View: "Lihat",
-      Edit: "Edit",
+      Edit: "Sunting",
       Delete: "Hapus",
       DeleteConfirm: "Konfirmasi penghapusan?",
     },
@@ -551,6 +811,15 @@ const id: PartialLocaleType = {
         SubTitle: "Hasilkan tautan langsung ke masker ini",
         Action: "Salin Tautan",
       },
+    
+      "Artifacts": {
+        "Title": "Aktifkan Artifacts",
+        "SubTitle": "Tampilkan halaman HTML dengan Artifacts",
+      },
+      "CodeFold": {
+        "Title": "Aktifkan pelipatan kode",
+        "SubTitle": "Lipat blok kode panjang secara otomatis",
+      },
     },
   },
   NewChat: {
@@ -575,11 +844,33 @@ const id: PartialLocaleType = {
     Cancel: "Batal",
     Close: "Tutup",
     Create: "Buat Baru",
-    Edit: "Edit",
+    Edit: "Sunting",
     Export: "Ekspor",
     Import: "Impor",
     Sync: "Sinkronkan",
     Config: "Konfigurasi",
+  
+    "Save": "Simpan",
+    "Loading": "Memuat…",
+    "Seed": "Benih acak",
+    "User": "Pengguna",
+    "Assistant": "Asisten",
+    "System": "Sistem",
+    "Text": "Teks",
+    "Image": "Gambar",
+    "Standard": "Standar",
+    "Vivid": "Cerah",
+    "Natural": "Alami",
+    "ErrorTitle": "Terjadi kesalahan",
+    "ReportError": "Laporkan kesalahan ini",
+    "ClearData": "Hapus semua data",
+    "AssistantTagline": "Buat asisten AI Anda sendiri.",
+    "EmptyPrompt": "Prompt baru",
+    "EmptyPromptContent": "Masukkan isi prompt",
+    "AllFiles": "Semua berkas",
+  
+    "Refresh": "Muat ulang",
+    "HidePassword": "Sembunyikan kata sandi",
   },
   Exporter: {
     Description: {
@@ -589,6 +880,114 @@ const id: PartialLocaleType = {
     Messages: "Pesan",
     Topic: "Topik",
     Time: "Waktu",
+  },
+
+  "Discovery": {
+    "Name": "Jelajahi",
+  },
+  "Mcp": {
+    "Name": "MCP",
+    "UI": {
+      "Market": "Pasar MCP",
+      "PresetLoadFailed": "Gagal memuat server bawaan",
+      "InitFailed": "Gagal memuat keadaan awal",
+      "ConfigSaved": "Konfigurasi server disimpan",
+      "ConfigSaveFailed": "Gagal menyimpan konfigurasi",
+      "ToolsFailed": "Gagal memuat alat",
+      "Stopped": "Dihentikan",
+      "StopFailed": "Gagal menghentikan server",
+      "StartFailed": "Gagal memulai server; periksa log",
+      "RestartingClients": "Memulai ulang semua klien",
+      "RestartFailed": "Gagal memulai ulang klien",
+      "Initializing": "Menginisialisasi",
+      "NoServers": "Tidak ada server tersedia",
+      "OpenRepo": "Buka repositori",
+      "Start": "Mulai",
+      "Tools": "Alat",
+      "Add": "Tambah",
+      "RestartAll": "Mulai ulang semua",
+      "Search": "Cari server MCP",
+      "ConfigureServer": "Konfigurasi server",
+      "ServerDetails": "Detail server",
+      "NoTools": "Tidak ada alat tersedia",
+      "LoadingPresets": "Memuat daftar server bawaan…",
+      "ConfiguredServers": "Server terkonfigurasi",
+      "UpdatingConfig": "Memperbarui konfigurasi…",
+      "CreatingClient": "Membuat klien MCP…",
+      "Stopping": "Menghentikan server…",
+      "Starting": "Memulai server…",
+      "RestartingServers": "Memulai ulang semua server…",
+      "ExecutionFailed": "Eksekusi MCP gagal",
+    },
+  },
+  "SdPanel": {
+    "Prompt": "Prompt gambar",
+    "NegativePrompt": "Prompt negatif",
+    "PleaseInput": (name: string) => name + " — Masukkan nilai",
+    "AspectRatio": "Rasio aspek",
+    "ImageStyle": "Gaya gambar",
+    "OutFormat": "Format keluaran",
+    "AIModel": "Model",
+    "ModelVersion": "Versi model",
+    "Submit": "Buat",
+    "ParamIsRequired": (name: string) => name + ": Wajib diisi",
+    "Styles": {
+      "D3Model": "Model 3D",
+      "AnalogFilm": "Film analog",
+      "Anime": "Animasi Jepang",
+      "Cinematic": "Sinematik",
+      "ComicBook": "Komik",
+      "DigitalArt": "Seni digital",
+      "Enhance": "Ditingkatkan",
+      "FantasyArt": "Seni fantasi",
+      "Isometric": "Isometrik",
+      "LineArt": "Gambar garis",
+      "LowPoly": "Poligon rendah",
+      "ModelingCompound": "Tanah liat",
+      "NeonPunk": "Punk neon",
+      "Origami": "Lipat kertas",
+      "Photographic": "Fotografis",
+      "PixelArt": "Seni piksel",
+      "TileTexture": "Tekstur ubin",
+    },
+  },
+  "Sd": {
+    "SubTitle": (count: number) => "Gambar: " + count,
+    "Actions": {
+      "Params": "Lihat parameter",
+      "Copy": "Salin: Prompt gambar",
+      "Delete": "Hapus",
+      "Retry": "Coba lagi",
+      "ReturnHome": "Kembali ke beranda",
+      "History": "Riwayat",
+    },
+    "EmptyRecord": "Belum ada gambar",
+    "Status": {
+      "Name": "Status",
+      "Success": "Berhasil",
+      "Error": "Kesalahan",
+      "Wait": "Menunggu",
+      "Running": "Berjalan",
+    },
+    "Danger": {
+      "Delete": "Konfirmasi penghapusan?",
+    },
+    "GenerateParams": "Parameter pembuatan",
+    "Detail": "Detail",
+  },
+  "ApiError": {
+    "Timeout": "Waktu permintaan habis. Coba lagi atau periksa alamat di pengaturan lanjutan.",
+    "Quota": "Kuota penyedia tidak cukup. Periksa saldo, pembayaran dan batas penggunaan.",
+    "AccessCode": "Kode akses situs tidak valid. Periksa kode Anda.",
+    "InvalidKey": "API Key tidak valid atau kedaluwarsa. Periksa Key penyedia yang dipilih.",
+    "Permission": "Akses ditolak. Periksa izin model dan batasan wilayah penyedia.",
+    "Model": "Model atau antarmuka tidak ditemukan. Periksa ID model dan alamat di pengaturan lanjutan.",
+    "RateLimit": "Terlalu banyak permintaan atau batas tercapai. Coba nanti dan periksa kuota.",
+    "Parameters": "Parameter permintaan tidak kompatibel. Periksa ID model dan parameter di pengaturan lanjutan.",
+    "Unavailable": "Penyedia sementara tidak tersedia. Coba lagi nanti.",
+    "Empty": "Tidak ada konten valid. Periksa status model dan coba lagi.",
+    "Network": "Koneksi jaringan gagal. Periksa jaringan, alamat dan pengaturan CORS pihak ketiga.",
+    "Generic": "Permintaan gagal. Periksa API Key, model dan pengaturan antarmuka penyedia.",
   },
 };
 

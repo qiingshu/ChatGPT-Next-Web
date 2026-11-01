@@ -154,7 +154,7 @@ export function PreCode(props: { children: any }) {
             style={{ position: "absolute", right: 20, top: 10 }}
             getCode={() => htmlCode}
           />
-          <IconButton
+          <IconButton aria={Locale.UI.Refresh}
             style={{ position: "absolute", right: 120, top: 10 }}
             bordered
             icon={<ReloadButtonIcon />}

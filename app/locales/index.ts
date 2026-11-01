@@ -19,14 +19,14 @@ import ar from "./ar";
 import bn from "./bn";
 import sk from "./sk";
 import { merge } from "../utils/merge";
-import { safeLocalStorage } from "@/app/utils";
+import { safeLocalStorage } from "../utils/safe-storage";
 
 import type { LocaleType } from "./cn";
 export type { LocaleType, PartialLocaleType } from "./cn";
 
 const localStorage = safeLocalStorage();
 
-const ALL_LANGS = {
+export const ALL_LANGS = {
   cn,
   en,
   tw,
@@ -61,7 +61,7 @@ export const ALL_LANG_OPTIONS: Record<Lang, string> = {
   da: "Dansk",
   jp: "日本語",
   ko: "한국어",
-  id: "Indonesia",
+  id: "Bahasa Indonesia",
   fr: "Français",
   es: "Español",
   it: "Italiano",
@@ -70,7 +70,7 @@ export const ALL_LANG_OPTIONS: Record<Lang, string> = {
   vi: "Tiếng Việt",
   ru: "Русский",
   cs: "Čeština",
-  no: "Nynorsk",
+  no: "Norsk",
   ar: "العربية",
   bn: "বাংলা",
   sk: "Slovensky",
@@ -79,11 +79,10 @@ export const ALL_LANG_OPTIONS: Record<Lang, string> = {
 const LANG_KEY = "lang";
 const DEFAULT_LANG = "en";
 
-const fallbackLang = en;
-const targetLang = ALL_LANGS[getLang()] as LocaleType;
-
-// if target lang missing some fields, it will use fallback lang string
-merge(fallbackLang, targetLang);
+const fallbackLang = {} as LocaleType;
+// Never mutate the shared English dictionary when selecting another language.
+merge(fallbackLang, en);
+merge(fallbackLang, ALL_LANGS[getLang()]);
 
 export default fallbackLang as LocaleType;
 
@@ -98,15 +97,14 @@ function setItem(key: string, value: string) {
 function getLanguage() {
   try {
     const locale = new Intl.Locale(navigator.language).maximize();
-    const region = locale?.region?.toLowerCase();
-    // 1. check region code in ALL_LANGS
-    if (AllLangs.includes(region as Lang)) {
-      return region as Lang;
+    const language = locale.language.toLowerCase();
+    if (language === "zh") {
+      return locale.script === "Hant" || ["TW", "HK", "MO"].includes(locale.region ?? "")
+        ? "tw" : "cn";
     }
-    // 2. check language code in ALL_LANGS
-    if (AllLangs.includes(locale.language as Lang)) {
-      return locale.language as Lang;
-    }
+    const aliases: Record<string, Lang> = { ja: "jp", nb: "no", nn: "no" };
+    if (aliases[language]) return aliases[language];
+    if (AllLangs.includes(language as Lang)) return language as Lang;
     return DEFAULT_LANG;
   } catch {
     return DEFAULT_LANG;
@@ -132,6 +130,7 @@ export function getISOLang() {
   const isoLangString: Record<string, string> = {
     cn: "zh-Hans",
     tw: "zh-Hant",
+    jp: "ja",
   };
 
   const lang = getLang();

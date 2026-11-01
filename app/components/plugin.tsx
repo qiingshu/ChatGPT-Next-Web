@@ -128,11 +128,11 @@ export function PluginPage() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <IconButton icon={<GithubIcon />} bordered />
+                <IconButton aria={Locale.Mcp.UI.OpenRepo} icon={<GithubIcon />} bordered />
               </a>
             </div>
             <div className="window-action-button">
-              <IconButton
+              <IconButton aria={Locale.UI.Close}
                 icon={<CloseIcon />}
                 bordered
                 onClick={() => navigate(-1)}
@@ -156,7 +156,7 @@ export function PluginPage() {
               icon={<AddIcon />}
               text={Locale.Plugin.Page.Create}
               bordered
-              aria="新建插件"
+              aria={Locale.Plugin.Accessibility.Create}
               onClick={() => {
                 const createdPlugin = pluginStore.create();
                 setEditingPluginId(createdPlugin.id);
@@ -181,7 +181,7 @@ export function PluginPage() {
                   rel="noopener noreferrer"
                   style={{ marginLeft: 16 }}
                 >
-                  <IconButton icon={<GithubIcon />} bordered />
+                  <IconButton aria={Locale.Mcp.UI.OpenRepo} icon={<GithubIcon />} bordered />
                 </a>
               </div>
             )}
@@ -204,7 +204,7 @@ export function PluginPage() {
                   <IconButton
                     icon={<EditIcon />}
                     text={Locale.Plugin.Item.Edit}
-                    aria={"编辑插件 " + m.title}
+                    aria={Locale.Plugin.Accessibility.Edit + " " + m.title}
                     onClick={() => setEditingPluginId(m.id)}
                   />
                   {!m.builtin && (
@@ -238,7 +238,7 @@ export function PluginPage() {
                 text={Locale.UI.Confirm}
                 key="export"
                 bordered
-                aria="保存插件"
+                aria={Locale.Plugin.Accessibility.Save}
                 onClick={async () => {
                   if (await saveSchema(editingPlugin, schemaDraft)) closePluginModal();
                 }}
@@ -319,14 +319,14 @@ export function PluginPage() {
                 <div className={pluginStyles["plugin-schema"]}>
                   <input
                     type="text"
-                    aria-label="插件 Schema URL"
+                    aria-label={Locale.Plugin.Accessibility.SchemaUrl}
                     style={{ minWidth: 0 }}
                     onInput={(e) => setLoadUrl(e.currentTarget.value)}
                   ></input>
                   <IconButton
                     icon={<ReloadIcon />}
                     text={Locale.Plugin.EditModal.Load}
-                    aria="加载插件 Schema"
+                    aria={Locale.Plugin.Accessibility.LoadSchema}
                     bordered
                     onClick={() => loadFromUrl(loadUrl)}
                   />
@@ -342,7 +342,7 @@ export function PluginPage() {
                     dir="auto"
                   >
                     <textarea
-                      aria-label="插件 Schema"
+                      aria-label={Locale.Plugin.Accessibility.Schema}
                       className={pluginStyles["schema-editor"]}
                       value={schemaDraft}
                       rows={14}

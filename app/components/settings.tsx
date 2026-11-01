@@ -170,8 +170,8 @@ function UserPromptModal(props: { onClose?: () => void }) {
               const promptId = promptStore.add({
                 id: nanoid(),
                 createdAt: Date.now(),
-                title: "Empty Prompt",
-                content: "Empty Prompt Content",
+                title: Locale.UI.EmptyPrompt,
+                content: Locale.UI.EmptyPromptContent,
               });
               setEditingPromptId(promptId);
             }}
@@ -202,26 +202,26 @@ function UserPromptModal(props: { onClose?: () => void }) {
 
                 <div className={styles["user-prompt-buttons"]}>
                   {v.isUser && (
-                    <IconButton
+                    <IconButton aria={Locale.Chat.Actions.Delete}
                       icon={<ClearIcon />}
                       className={styles["user-prompt-button"]}
                       onClick={() => promptStore.remove(v.id!)}
                     />
                   )}
                   {v.isUser ? (
-                    <IconButton
+                    <IconButton aria={Locale.UI.Edit}
                       icon={<EditIcon />}
                       className={styles["user-prompt-button"]}
                       onClick={() => setEditingPromptId(v.id)}
                     />
                   ) : (
-                    <IconButton
+                    <IconButton aria={Locale.Chat.Actions.PinToastAction}
                       icon={<EyeIcon />}
                       className={styles["user-prompt-button"]}
                       onClick={() => setEditingPromptId(v.id)}
                     />
                   )}
-                  <IconButton
+                  <IconButton aria={Locale.Chat.Actions.Copy}
                     icon={<CopyIcon />}
                     className={styles["user-prompt-button"]}
                     onClick={() => copyToClipboard(v.content)}
@@ -609,7 +609,7 @@ export function Settings() {
     };
     // Start before calling the adapter so preprocessing cannot leave the UI loading.
     run.timer = setTimeout(() => {
-      finish("连接测试超时（30 秒），请检查网络及接口地址。");
+      finish(Locale.Settings.LocalizationInfo.Timeout);
       run.controller?.abort();
     }, 30000);
     try {
@@ -622,7 +622,7 @@ export function Settings() {
         },
         onFinish: (message, response) => finish(
           response.ok && message.trim()
-            ? `连接成功：${modelConfig.model}`
+            ? `${Locale.Settings.LocalizationInfo.Success}: ${modelConfig.model}`
             : formatApiError(message || "empty response", response.status),
         ),
         onError: (error) => finish(formatApiError(error)),
@@ -630,7 +630,7 @@ export function Settings() {
     } catch (error) {
       finish(formatApiError(error));
     } finally {
-      if (testRun.current === run) finish("服务商未返回有效响应，请检查模型和接口设置。");
+      if (testRun.current === run) finish(Locale.Settings.LocalizationInfo.NoResponse);
     }
   };
 
@@ -1619,24 +1619,24 @@ export function Settings() {
           </ListItem>
 
           <ListItem
-            title="NextChat 定制版"
+            title={Locale.Settings.LocalizationInfo.Edition}
             className={styles["version-card"]}
             subTitle={
               <div className={styles["version-info"]} data-testid="build-version">
                 <div className={styles["custom-version"]}>2026.10.31</div>
                 <div className={styles["upstream-version"]}>
-                  上游基础：{clientConfig?.upstreamBaseVersion ?? currentVersion}
+                  {Locale.Settings.LocalizationInfo.Upstream}: {clientConfig?.upstreamBaseVersion ?? currentVersion}
                 </div>
                 <details className={styles["version-details"]}>
-                  <summary>详细版本信息</summary>
+                  <summary>{Locale.Settings.LocalizationInfo.Details}</summary>
                   <div className={styles["version-metadata"]}>
-                    <div>安全维护标识：{clientConfig?.customVersion ?? "unknown"}</div>
+                    <div>{Locale.Settings.LocalizationInfo.Security}: {clientConfig?.customVersion ?? "unknown"}</div>
                     <div>
-                      构建提交：
+                      {Locale.Settings.LocalizationInfo.Commit}: 
                       <code className={styles["build-commit"]}>{clientConfig?.commitHash ?? "unknown"}</code>
                     </div>
-                    <div>官方参考版本：{checkingUpdate ? Locale.Settings.Update.IsChecking : remoteId || "暂未获取"}</div>
-                    <div>含选择性移植，非完整官方 v2.16.1。官方版本信息仅供参考。</div>
+                    <div>{Locale.Settings.LocalizationInfo.Official}: {checkingUpdate ? Locale.Settings.Update.IsChecking : remoteId || Locale.Settings.LocalizationInfo.Unavailable}</div>
+                    <div>{Locale.Settings.LocalizationInfo.Note}</div>
                   </div>
                 </details>
               </div>
@@ -1675,7 +1675,7 @@ export function Settings() {
             >
               {Object.values(Theme).map((v) => (
                 <option value={v} key={v}>
-                  {v}
+                  {Locale.Chat.InputActions.Theme[v]}
                 </option>
               ))}
             </Select>
@@ -1880,9 +1880,9 @@ export function Settings() {
             {accessCodeComponent}
             {!accessStore.hideUserApiKey && (
               <>
-                <ListItem title="服务商" subTitle="选择服务商并填写对应 API Key，即可使用默认模型" vertical>
+                <ListItem title={Locale.Settings.ProviderSetup.Provider} subTitle={Locale.Settings.ProviderSetup.ProviderHelp} vertical>
                   <Select
-                    aria-label="服务商"
+                    aria-label={Locale.Settings.ProviderSetup.Provider}
                     value={accessStore.provider}
                     disabled={testingModel}
                     onChange={(e) => selectProvider(e.currentTarget.value as ServiceProvider)}
@@ -1902,7 +1902,7 @@ export function Settings() {
                         aria-label={`${preset.label} API Key`}
                         value={accessStore[preset.keyField]}
                         type="text"
-                        placeholder="填写该服务商的 API Key"
+                        placeholder={Locale.Settings.ProviderSetup.ProviderKeyPlaceholder}
                         onChange={(e) => {
                           const value = e.currentTarget.value;
                           setConnectionResult("");
@@ -1914,16 +1914,16 @@ export function Settings() {
                       />
                     </ListItem>
                     <ListItem
-                      title={`当前聊天模型：${useChatStore.getState().currentSession().mask.modelConfig.model}`}
-                      subTitle={`默认模型：${preset.model}；接口和自定义模型可在高级设置中调整`}
+                      title={`${Locale.Settings.ProviderSetup.CurrentModel}: ${useChatStore.getState().currentSession().mask.modelConfig.model}`}
+                      subTitle={`${Locale.Settings.ProviderSetup.DefaultModel}: ${preset.model}; ${Locale.Settings.ProviderSetup.ModelHelp}`}
                     />
                   </>
                 )}
-                <ListItem title="测试当前聊天模型" subTitle="发送一条简短请求，可能产生 API 费用；不写入聊天记录" vertical>
+                <ListItem title={Locale.Settings.ProviderSetup.TestModel} subTitle={Locale.Settings.ProviderSetup.TestHelp} vertical>
                   <IconButton
-                    aria="测试连接"
+                    aria={Locale.Settings.ProviderSetup.TestConnection}
                     icon={<ConnectionIcon />}
-                    text={testingModel ? "测试中…" : "测试连接"}
+                    text={testingModel ? Locale.Settings.ProviderSetup.Testing : Locale.Settings.ProviderSetup.TestConnection}
                     disabled={testingModel}
                     onClick={testCurrentModel}
                   />
@@ -1935,13 +1935,13 @@ export function Settings() {
             )}
           </List>
           <details className={styles["advanced-settings"]}>
-            <summary>高级设置</summary>
+            <summary>{Locale.Settings.ProviderSetup.Advanced}</summary>
             <List>
               {!accessStore.hideUserApiKey && (
                 <>
                   {useCustomConfigComponent}
                   {preset ? (
-                    <ListItem title={`${preset.label} API URL`} subTitle={`官方地址：${preset.officialUrl}；默认通过本站路由访问`} vertical>
+                    <ListItem title={`${preset.label} API URL`} subTitle={`${Locale.Settings.ProviderSetup.OfficialURL}: ${preset.officialUrl}; ${Locale.Settings.ProviderSetup.DefaultRoute}`} vertical>
                       <input
                         aria-label={`${preset.label} API URL`}
                         type="text"
@@ -1992,7 +1992,7 @@ export function Settings() {
                   <ListItem title={Locale.Settings.Access.Google.GoogleSafetySettings.Title}>
                     <Select aria-label={Locale.Settings.Access.Google.GoogleSafetySettings.Title} value={accessStore.googleSafetySettings}
                       onChange={(e) => accessStore.update((access) => (access.googleSafetySettings = e.currentTarget.value as GoogleSafetySettingsThreshold))}>
-                      {Object.entries(GoogleSafetySettingsThreshold).map(([k, v]) => <option key={k} value={v}>{k}</option>)}
+                      {Object.entries(GoogleSafetySettingsThreshold).map(([k, v]) => <option key={k} value={v}>{Locale.Settings.SafetyLabels[v]}</option>)}
                     </Select>
                   </ListItem>
                 </>
@@ -2008,7 +2008,7 @@ export function Settings() {
                   aria-label={Locale.Settings.Access.CustomModel.Title}
                   type="text"
                   value={config.customModels}
-                  placeholder="模型ID@服务商"
+                  placeholder={Locale.Settings.ProviderSetup.ModelIdPlaceholder}
                   onChange={(e) => config.update((state) => (state.customModels = e.currentTarget.value))}
                 />
               </ListItem>

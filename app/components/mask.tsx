@@ -284,7 +284,7 @@ function ContextPromptItem(props: {
           >
             {ROLES.map((r) => (
               <option key={r} value={r}>
-                {r}
+                {({ user: Locale.UI.User, assistant: Locale.UI.Assistant, system: Locale.UI.System } as Record<string, string>)[r] ?? r}
               </option>
             ))}
           </Select>
@@ -310,7 +310,7 @@ function ContextPromptItem(props: {
         }
       />
       {!focusingInput && (
-        <IconButton
+        <IconButton aria={Locale.Chat.Actions.Delete}
           icon={<DeleteIcon />}
           className={chatStyle["context-delete-button"]}
           onClick={() => props.remove()}
@@ -528,7 +528,7 @@ export function MaskPage() {
               />
             </div>
             <div className="window-action-button">
-              <IconButton
+              <IconButton aria={Locale.UI.Close}
                 icon={<CloseIcon />}
                 bordered
                 onClick={() => navigate(-1)}

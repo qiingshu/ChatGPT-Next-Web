@@ -40,7 +40,7 @@ export function IconButton(props: {
       tabIndex={props.tabIndex}
       autoFocus={props.autoFocus}
       style={props.style}
-      aria-label={props.aria}
+      aria-label={props.aria || props.text || props.title}
     >
       {props.icon && (
         <div

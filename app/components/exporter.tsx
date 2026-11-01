@@ -222,7 +222,7 @@ export function MessageExporter() {
             >
               {formats.map((f) => (
                 <option key={f} value={f}>
-                  {f}
+                  {f === "text" ? Locale.UI.Text : f === "image" ? Locale.UI.Image : "JSON"}
                 </option>
               ))}
             </Select>
@@ -460,11 +460,11 @@ export function ImagePreviewer(props: {
             defaultPath: `${props.topic}.png`,
             filters: [
               {
-                name: "PNG Files",
+                name: "PNG",
                 extensions: ["png"],
               },
               {
-                name: "All Files",
+                name: Locale.UI.AllFiles,
                 extensions: ["*"],
               },
             ],
@@ -517,7 +517,7 @@ export function ImagePreviewer(props: {
           <div className={clsx(styles["logo"], "no-dark")}>
             <NextImage
               src={ChatGptIcon.src}
-              alt="logo"
+              alt="NextChat"
               width={50}
               height={50}
             />
@@ -583,7 +583,7 @@ export function ImagePreviewer(props: {
                   <img
                     key={i}
                     src={getMessageImages(m)[0]}
-                    alt="message"
+                    alt={Locale.UI.Image}
                     className={styles["message-image"]}
                   />
                 )}
@@ -600,7 +600,7 @@ export function ImagePreviewer(props: {
                       <img
                         key={i}
                         src={src}
-                        alt="message"
+                        alt={Locale.UI.Image}
                         className={styles["message-image-multi"]}
                       />
                     ))}

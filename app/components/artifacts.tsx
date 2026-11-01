@@ -230,9 +230,9 @@ export function Artifacts() {
     <div className={styles["artifacts"]}>
       <div className={styles["artifacts-header"]}>
         <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
-          <IconButton bordered icon={<GithubIcon />} shadow />
+          <IconButton aria={Locale.Mcp.UI.OpenRepo} bordered icon={<GithubIcon />} shadow />
         </a>
-        <IconButton
+        <IconButton aria={Locale.UI.Refresh}
           bordered
           style={{ marginLeft: 20 }}
           icon={<ReloadButtonIcon />}

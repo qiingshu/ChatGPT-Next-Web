@@ -1,10 +1,9 @@
 import { getClientConfig } from "../config/client";
-import { SubmitKey } from "../store/config";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
-import { PartialLocaleType } from "./index";
+import type { LocaleType } from "./index";
 
 const isApp = !!getClientConfig()?.isApp;
-const da: PartialLocaleType = {
+const da: LocaleType = {
   WIP: "Der kommer snart mere...",
   Error: {
     Unauthorized: isApp
@@ -26,6 +25,8 @@ const da: PartialLocaleType = {
     Confirm: "OK",
     Later: "Senere",
     SaasTips: "Hvis det er for svært, kan du starte nu",
+  
+    "TopTips": "Introduktionstilbud på NextChat AI",
   },
   ChatItem: {
     ChatItemCount: (count: number) => `${count} beskeder`,
@@ -84,7 +85,7 @@ const da: PartialLocaleType = {
     Typing: "Skriver…",
     Input: (submitKey: string) => {
       let inputHints = `${submitKey} for at sende`;
-      if (submitKey === String(SubmitKey.Enter)) {
+      if (submitKey === "Enter") {
         inputHints += ", Shift + Enter for ny linje";
       }
       return (
@@ -177,7 +178,7 @@ const da: PartialLocaleType = {
       },
     },
     Lang: {
-      Name: "Language",
+      Name: "Sprog",
       All: "Alle sprog",
     },
     Avatar: "Avatar",
@@ -319,23 +320,23 @@ const da: PartialLocaleType = {
       },
       OpenAI: {
         ApiKey: {
-          Title: "OpenAI API-nøgle",
+          Title: "OpenAI API Key",
           SubTitle: "Brug din egen nøgle",
-          Placeholder: "sk-xxx",
+          Placeholder: "OpenAI API Key",
         },
         Endpoint: {
-          Title: "OpenAI Endpoint",
+          Title: "Grænsefladeadresse",
           SubTitle: "Skal starte med http(s):// eller /api/openai som standard",
         },
       },
       Azure: {
         ApiKey: {
-          Title: "Azure Api Key",
+          Title: "Azure API Key",
           SubTitle: "Hent din nøgle fra Azure-portalen",
-          Placeholder: "Azure Api Key",
+          Placeholder: "Azure API Key",
         },
         Endpoint: {
-          Title: "Azure Endpoint",
+          Title: "Grænsefladeadresse",
           SubTitle: "F.eks.: ",
         },
         ApiVerion: {
@@ -345,7 +346,7 @@ const da: PartialLocaleType = {
       },
       Anthropic: {
         ApiKey: {
-          Title: "Anthropic API-nøgle",
+          Title: "Anthropic API Key",
           SubTitle: "Brug din egen Anthropic-nøgle",
           Placeholder: "Anthropic API Key",
         },
@@ -360,7 +361,7 @@ const da: PartialLocaleType = {
       },
       Baidu: {
         ApiKey: {
-          Title: "Baidu-nøgle",
+          Title: "Baidu API Key",
           SubTitle: "Din egen Baidu-nøgle",
           Placeholder: "Baidu API Key",
         },
@@ -376,7 +377,7 @@ const da: PartialLocaleType = {
       },
       Tencent: {
         ApiKey: {
-          Title: "Tencent-nøgle",
+          Title: "Tencent API Key",
           SubTitle: "Din egen nøgle fra Tencent",
           Placeholder: "Tencent API Key",
         },
@@ -392,7 +393,7 @@ const da: PartialLocaleType = {
       },
       ByteDance: {
         ApiKey: {
-          Title: "ByteDance-nøgle",
+          Title: "ByteDance API Key",
           SubTitle: "Din egen nøgle til ByteDance",
           Placeholder: "ByteDance API Key",
         },
@@ -403,9 +404,9 @@ const da: PartialLocaleType = {
       },
       Alibaba: {
         ApiKey: {
-          Title: "Alibaba-nøgle",
+          Title: "Alibaba API Key",
           SubTitle: "Din egen Alibaba Cloud-nøgle",
-          Placeholder: "Alibaba Cloud API Key",
+          Placeholder: "Alibaba API Key",
         },
         Endpoint: {
           Title: "Adresse",
@@ -414,7 +415,7 @@ const da: PartialLocaleType = {
       },
       Moonshot: {
         ApiKey: {
-          Title: "Moonshot-nøgle",
+          Title: "Moonshot API Key",
           SubTitle: "Din egen Moonshot-nøgle",
           Placeholder: "Moonshot API Key",
         },
@@ -425,7 +426,7 @@ const da: PartialLocaleType = {
       },
       DeepSeek: {
         ApiKey: {
-          Title: "DeepSeek-nøgle",
+          Title: "DeepSeek API Key",
           SubTitle: "Din egen DeepSeek-nøgle",
           Placeholder: "DeepSeek API Key",
         },
@@ -436,7 +437,7 @@ const da: PartialLocaleType = {
       },
       XAI: {
         ApiKey: {
-          Title: "XAI-nøgle",
+          Title: "XAI API Key",
           SubTitle: "Din egen XAI-nøgle",
           Placeholder: "XAI API Key",
         },
@@ -447,7 +448,7 @@ const da: PartialLocaleType = {
       },
       ChatGLM: {
         ApiKey: {
-          Title: "ChatGLM-nøgle",
+          Title: "ChatGLM API Key",
           SubTitle: "Din egen ChatGLM-nøgle",
           Placeholder: "ChatGLM API Key",
         },
@@ -458,7 +459,7 @@ const da: PartialLocaleType = {
       },
       SiliconFlow: {
         ApiKey: {
-          Title: "SiliconFlow-nøgle",
+          Title: "SiliconFlow API Key",
           SubTitle: "Din egen SiliconFlow-nøgle",
           Placeholder: "SiliconFlow API Key",
         },
@@ -469,7 +470,7 @@ const da: PartialLocaleType = {
       },
       Stability: {
         ApiKey: {
-          Title: "Stability-nøgle",
+          Title: "Stability API Key",
           SubTitle: "Din egen Stability-nøgle",
           Placeholder: "Stability API Key",
         },
@@ -500,9 +501,9 @@ const da: PartialLocaleType = {
       },
       Google: {
         ApiKey: {
-          Title: "Google-nøgle",
+          Title: "Google API Key",
           SubTitle: "Få din nøgle hos Google AI",
-          Placeholder: "Google AI API Key",
+          Placeholder: "Google API Key",
         },
         Endpoint: {
           Title: "Adresse",
@@ -516,6 +517,13 @@ const da: PartialLocaleType = {
           Title: "Google sikkerhedsindstillinger",
           SubTitle: "Vælg et niveau for indholdskontrol",
         },
+      },
+    
+      "SaasStart": {
+        "Title": "Brug NextChat AI",
+        "Label": "Mest økonomiske mulighed",
+        "SubTitle": "Vedligeholdt af NextChat; kræver ingen opsætning",
+        "ChatNow": "Start nu",
       },
     },
     Model: "Model",
@@ -577,9 +585,9 @@ const da: PartialLocaleType = {
         SubTitle: "Vælg en model",
       },
       ApiKey: {
-        Title: "API-nøgle",
+        Title: "API Key",
         SubTitle: "Din nøgle",
-        Placeholder: "API-nøgle",
+        Placeholder: "API Key",
       },
       Azure: {
         Endpoint: {
@@ -595,6 +603,42 @@ const da: PartialLocaleType = {
         Title: "Temperatur",
         SubTitle: "Højere tal = mere varierede svar",
       },
+    },
+  
+    "LocalizationInfo": {
+      "Edition": "NextChat – tilpasset udgave",
+      "Timeout": "Forbindelsen fik timeout efter 30 sekunder. Kontrollér netværk og API-adresse.",
+      "Success": "Forbindelsen virker",
+      "NoResponse": "Udbyderen returnerede ikke et gyldigt svar. Kontrollér model og grænseflade.",
+      "Upstream": "Oprindelig basisversion",
+      "Details": "Detaljerede versionsoplysninger",
+      "Security": "Id for sikkerhedsvedligeholdelse",
+      "Commit": "Build-commit",
+      "Official": "Officiel referenceversion",
+      "Unavailable": "Ikke tilgængelig",
+      "Note": "Indeholder udvalgte rettelser, ikke hele den officielle v2.16.1. Officielle versionsoplysninger er kun til reference.",
+    },
+    "ProviderSetup": {
+      "ModelIdPlaceholder": "Model-id@udbyder",
+      "Provider": "Udbyder",
+      "ProviderHelp": "Vælg en udbyder, og indtast dens API Key for at bruge standardmodellen",
+      "ProviderKeyPlaceholder": "Indtast denne udbyders API Key",
+      "CurrentModel": "Aktuel samtalemodel",
+      "DefaultModel": "Standardmodel",
+      "ModelHelp": "Tilpas grænseflade og egne modeller i avancerede indstillinger",
+      "TestModel": "Test den aktuelle model",
+      "TestHelp": "Sender en kort anmodning, der kan koste API-gebyrer; gemmer ikke samtalehistorik",
+      "TestConnection": "Test forbindelse",
+      "Testing": "Tester…",
+      "Advanced": "Avancerede indstillinger",
+      "OfficialURL": "Officiel adresse",
+      "DefaultRoute": "Bruger som standard dette websteds rute",
+    },
+    "SafetyLabels": {
+      "BLOCK_NONE": "Ingen",
+      "BLOCK_ONLY_HIGH": "Kun høj",
+      "BLOCK_MEDIUM_AND_ABOVE": "Middel og derover",
+      "BLOCK_LOW_AND_ABOVE": "Lav og derover",
     },
   },
   Store: {
@@ -630,6 +674,39 @@ const da: PartialLocaleType = {
   },
   Mcp: {
     Name: "MCP",
+  
+    "UI": {
+      "Market": "MCP-marked",
+      "PresetLoadFailed": "Kunne ikke indlæse forudindstillede servere",
+      "InitFailed": "Kunne ikke indlæse starttilstanden",
+      "ConfigSaved": "Serverkonfiguration gemt",
+      "ConfigSaveFailed": "Kunne ikke gemme konfiguration",
+      "ToolsFailed": "Kunne ikke indlæse værktøjer",
+      "Stopped": "Stoppet",
+      "StopFailed": "Kunne ikke stoppe serveren",
+      "StartFailed": "Kunne ikke starte serveren; se logfiler",
+      "RestartingClients": "Genstarter alle klienter",
+      "RestartFailed": "Kunne ikke genstarte klienter",
+      "Initializing": "Initialiserer",
+      "NoServers": "Ingen tilgængelige servere",
+      "OpenRepo": "Åbn kodelager",
+      "Start": "Start",
+      "Tools": "Værktøjer",
+      "Add": "Tilføj",
+      "RestartAll": "Genstart alle",
+      "Search": "Søg efter MCP-servere",
+      "ConfigureServer": "Konfigurér server",
+      "ServerDetails": "Serveroplysninger",
+      "NoTools": "Ingen tilgængelige værktøjer",
+      "LoadingPresets": "Indlæser forudindstillede servere…",
+      "ConfiguredServers": "Konfigurerede servere",
+      "UpdatingConfig": "Opdaterer konfiguration…",
+      "CreatingClient": "Opretter MCP-klient…",
+      "Stopping": "Stopper server…",
+      "Starting": "Starter server…",
+      "RestartingServers": "Genstarter alle servere…",
+      "ExecutionFailed": "MCP-kørsel mislykkedes",
+    },
   },
   FineTuned: {
     Sysmessage: "Du er en hjælper, der skal...",
@@ -649,10 +726,10 @@ const da: PartialLocaleType = {
     },
   },
   Plugin: {
-    Name: "Plugin",
+    Name: "Udvidelse",
     Page: {
-      Title: "Plugins",
-      SubTitle: (count: number) => `${count} plugins`,
+      Title: "Udvidelser",
+      SubTitle: (count: number) => "Udvidelser: " + count,
       Search: "Søg plugin",
       Create: "Opret nyt",
       Find: "Du kan finde flere plugins på GitHub: ",
@@ -681,12 +758,21 @@ const da: PartialLocaleType = {
     EditModal: {
       Title: (readonly: boolean) =>
         `Rediger Plugin ${readonly ? "(skrivebeskyttet)" : ""}`,
-      Download: "Download",
+      Download: "Hent",
       Auth: "Godkendelsestype",
       Content: "OpenAPI Schema",
       Load: "Hent fra URL",
       Method: "Metode",
       Error: "Fejl i OpenAPI Schema",
+    },
+  
+    "Accessibility": {
+      "Create": "Opret: Udvidelse",
+      "Edit": "Rediger: Udvidelse",
+      "Save": "Gem: Udvidelse",
+      "SchemaUrl": "Udvidelse Schema URL",
+      "LoadSchema": "Indlæs fra URL: Udvidelse Schema",
+      "Schema": "Udvidelse Schema",
     },
   },
   Mask: {
@@ -758,6 +844,28 @@ const da: PartialLocaleType = {
     Import: "Importér",
     Sync: "Synk",
     Config: "Konfigurer",
+  
+    "Save": "Gem",
+    "Loading": "Indlæser…",
+    "Seed": "Tilfældighedsfrø",
+    "User": "Bruger",
+    "Assistant": "Assistent",
+    "System": "System",
+    "Text": "Tekst",
+    "Image": "Billede",
+    "Standard": "Standard",
+    "Vivid": "Livlig",
+    "Natural": "Naturlig",
+    "ErrorTitle": "Der opstod en fejl",
+    "ReportError": "Rapportér fejlen",
+    "ClearData": "Ryd alle data",
+    "AssistantTagline": "Byg din egen AI-assistent.",
+    "EmptyPrompt": "Ny prompt",
+    "EmptyPromptContent": "Indtast promptens indhold",
+    "AllFiles": "Alle filer",
+  
+    "Refresh": "Genindlæs",
+    "HidePassword": "Skjul adgangskode",
   },
   Exporter: {
     Description: {
@@ -773,7 +881,7 @@ const da: PartialLocaleType = {
     Settings: "Så ud til, at der var indstillinger i linket. Vil du bruge dem?",
   },
   SdPanel: {
-    Prompt: "Prompt",
+    Prompt: "Billedbeskrivelse",
     NegativePrompt: "Negativ prompt",
     PleaseInput: (name: string) => `Indtast: ${name}`,
     AspectRatio: "Billedformat",
@@ -784,23 +892,23 @@ const da: PartialLocaleType = {
     Submit: "Send",
     ParamIsRequired: (name: string) => `${name} er krævet`,
     Styles: {
-      D3Model: "3d-model",
-      AnalogFilm: "analog-film",
-      Anime: "anime",
+      D3Model: "3D-model",
+      AnalogFilm: "Analogfilm",
+      Anime: "Japansk animation",
       Cinematic: "cinematisk",
       ComicBook: "tegneserie",
-      DigitalArt: "digital-art",
-      Enhance: "enhance",
-      FantasyArt: "fantasy-art",
-      Isometric: "isometric",
-      LineArt: "line-art",
-      LowPoly: "low-poly",
-      ModelingCompound: "modeling-compound",
-      NeonPunk: "neon-punk",
-      Origami: "origami",
+      DigitalArt: "Digital kunst",
+      Enhance: "Forbedret",
+      FantasyArt: "Fantasikunst",
+      Isometric: "Isometrisk",
+      LineArt: "Stregtegning",
+      LowPoly: "Få polygoner",
+      ModelingCompound: "Modellervoks",
+      NeonPunk: "Neonpunk",
+      Origami: "Papirfoldning",
       Photographic: "fotografisk",
-      PixelArt: "pixel-art",
-      TileTexture: "tile-texture",
+      PixelArt: "Pixelkunst",
+      TileTexture: "Flisetekstur",
     },
   },
   Sd: {
@@ -826,6 +934,21 @@ const da: PartialLocaleType = {
     },
     GenerateParams: "Genereringsvalg",
     Detail: "Detaljer",
+  },
+
+  "ApiError": {
+    "Timeout": "Anmodningen fik timeout. Prøv igen, eller kontrollér adressen i avancerede indstillinger.",
+    "Quota": "Udbyderens kvote er utilstrækkelig. Kontrollér saldo, betaling og forbrugsgrænser.",
+    "AccessCode": "Ugyldig adgangskode til webstedet. Kontrollér din adgangskode.",
+    "InvalidKey": "Ugyldig eller udløbet API Key. Kontrollér den valgte udbyders Key.",
+    "Permission": "Adgang nægtet. Kontrollér modelrettigheder og regionale begrænsninger.",
+    "Model": "Model eller grænseflade ikke tilgængelig. Kontrollér model-id og adresse i avancerede indstillinger.",
+    "RateLimit": "For mange anmodninger eller grænse nået. Prøv senere, og kontrollér kvoten.",
+    "Parameters": "Uforenelige parametre. Kontrollér model-id og parametre i avancerede indstillinger.",
+    "Unavailable": "Udbyderen er midlertidigt utilgængelig. Prøv senere.",
+    "Empty": "Intet gyldigt indhold returneret. Kontrollér modellen, og prøv igen.",
+    "Network": "Netværksforbindelsen mislykkedes. Kontrollér netværk, adresse og tredjepartens CORS-indstillinger.",
+    "Generic": "Anmodningen mislykkedes. Kontrollér udbyderens API Key, model og adresse.",
   },
 };
 

@@ -1,3 +1,4 @@
+import Locale from "../locales";
 import { IconButton } from "./button";
 import { ErrorBoundary } from "./error";
 import styles from "./mcp-market.module.scss";
@@ -102,13 +103,13 @@ export function McpMarketPage() {
         setLoadingPresets(true);
         const response = await fetch("https://nextchat.club/mcp/list");
         if (!response.ok) {
-          throw new Error("Failed to load preset servers");
+          throw new Error(Locale.Mcp.UI.PresetLoadFailed);
         }
         const data = await response.json();
         setPresetServers(data?.data ?? []);
       } catch (error) {
         console.error("Failed to load preset servers:", error);
-        showToast("Failed to load preset servers");
+        showToast(Locale.Mcp.UI.PresetLoadFailed);
       } finally {
         setLoadingPresets(false);
       }
@@ -130,7 +131,7 @@ export function McpMarketPage() {
         setClientStatuses(statuses);
       } catch (error) {
         console.error("Failed to load initial state:", error);
-        showToast("Failed to load initial state");
+        showToast(Locale.Mcp.UI.InitFailed);
       } finally {
         setIsLoading(false);
       }
@@ -225,10 +226,10 @@ export function McpMarketPage() {
         accessCode,
       );
       setConfig(newConfig);
-      showToast("Server configuration updated successfully");
+      showToast(Locale.Mcp.UI.ConfigSaved);
     } catch (error) {
       showToast(
-        error instanceof Error ? error.message : "Failed to save configuration",
+        Locale.Mcp.UI.ConfigSaveFailed,
       );
     } finally {
       updateLoadingState(savingServerId, null);
@@ -242,10 +243,10 @@ export function McpMarketPage() {
       if (result) {
         setTools(result);
       } else {
-        throw new Error("Failed to load tools");
+        throw new Error(Locale.Mcp.UI.ToolsFailed);
       }
     } catch (error) {
-      showToast("Failed to load tools");
+      showToast(Locale.Mcp.UI.ToolsFailed);
       console.error(error);
       setTools(null);
     }
@@ -299,9 +300,9 @@ export function McpMarketPage() {
       updateLoadingState(id, "Stopping server...");
       const newConfig = await pauseMcpServer(id, accessCode);
       setConfig(newConfig);
-      showToast("Server stopped successfully");
+      showToast(Locale.Mcp.UI.Stopped);
     } catch (error) {
-      showToast("Failed to stop server");
+      showToast(Locale.Mcp.UI.StopFailed);
       console.error(error);
     } finally {
       updateLoadingState(id, null);
@@ -315,9 +316,7 @@ export function McpMarketPage() {
       await resumeMcpServer(id, accessCode);
     } catch (error) {
       showToast(
-        error instanceof Error
-          ? error.message
-          : "Failed to start server, please check logs",
+        Locale.Mcp.UI.StartFailed,
       );
       console.error(error);
     } finally {
@@ -331,9 +330,9 @@ export function McpMarketPage() {
       updateLoadingState("all", "Restarting all servers...");
       const newConfig = await restartAllClients(accessCode);
       setConfig(newConfig);
-      showToast("Restarting all clients");
+      showToast(Locale.Mcp.UI.RestartingClients);
     } catch (error) {
-      showToast("Failed to restart clients");
+      showToast(Locale.Mcp.UI.RestartFailed);
       console.error(error);
     } finally {
       updateLoadingState("all", null);
@@ -351,7 +350,7 @@ export function McpMarketPage() {
           const currentValue = userConfig[key as keyof typeof userConfig] || [];
           const itemLabel = (prop as any).itemLabel || key;
           const addButtonText =
-            (prop as any).addButtonText || `Add ${itemLabel}`;
+            (prop as any).addButtonText || `${Locale.Mcp.UI.Add}: ${itemLabel}`;
 
           return (
             <ListItem
@@ -374,7 +373,7 @@ export function McpMarketPage() {
                           setUserConfig({ ...userConfig, [key]: newValue });
                         }}
                       />
-                      <IconButton
+                      <IconButton aria={Locale.Chat.Actions.Delete}
                         icon={<DeleteIcon />}
                         className={styles["delete-button"]}
                         onClick={() => {
@@ -407,7 +406,7 @@ export function McpMarketPage() {
                 aria-label={key}
                 type="text"
                 value={currentValue}
-                placeholder={`Enter ${key}`}
+                placeholder={`${key} — ${Locale.SdPanel.PleaseInput("")}`}
                 onChange={(e) => {
                   setUserConfig({ ...userConfig, [key]: e.target.value });
                 }}
@@ -432,24 +431,35 @@ export function McpMarketPage() {
       // 添加初始化状态
       initializing: (
         <span className={clsx(styles["server-status"], styles["initializing"])}>
-          Initializing
+          {Locale.Mcp.UI.Initializing}
         </span>
       ),
       paused: (
         <span className={clsx(styles["server-status"], styles["stopped"])}>
-          Stopped
+          {Locale.Mcp.UI.Stopped}
         </span>
       ),
-      active: <span className={styles["server-status"]}>Running</span>,
+      active: <span className={styles["server-status"]}>{Locale.Sd.Status.Running}</span>,
       error: (
         <span className={clsx(styles["server-status"], styles["error"])}>
-          Error
+          {Locale.Sd.Status.Error}
           <span className={styles["error-message"]}>: {status.errorMsg}</span>
         </span>
       ),
     };
 
     return statusMap[status.status];
+  };
+
+  const operationLabel = (message: string) => {
+    const labels: Record<string, string> = {
+      "Updating configuration...": Locale.Mcp.UI.UpdatingConfig,
+      "Creating MCP client...": Locale.Mcp.UI.CreatingClient,
+      "Stopping server...": Locale.Mcp.UI.Stopping,
+      "Starting server...": Locale.Mcp.UI.Starting,
+      "Restarting all servers...": Locale.Mcp.UI.RestartingServers,
+    };
+    return labels[message] ?? message;
   };
 
   // Get the type of operation status
@@ -466,7 +476,7 @@ export function McpMarketPage() {
       return (
         <div className={styles["loading-container"]}>
           <div className={styles["loading-text"]}>
-            Loading preset server list...
+            {Locale.Mcp.UI.LoadingPresets}
           </div>
         </div>
       );
@@ -475,7 +485,7 @@ export function McpMarketPage() {
     if (!Array.isArray(presetServers) || presetServers.length === 0) {
       return (
         <div className={styles["empty-container"]}>
-          <div className={styles["empty-text"]}>No servers available</div>
+          <div className={styles["empty-text"]}>{Locale.Mcp.UI.NoServers}</div>
         </div>
       );
     }
@@ -553,7 +563,7 @@ export function McpMarketPage() {
                       loadingStates[server.id],
                     )}
                   >
-                    {loadingStates[server.id]}
+                    {operationLabel(loadingStates[server.id])}
                   </span>
                 )}
                 {!loadingStates[server.id] && getServerStatusDisplay(server.id)}
@@ -563,7 +573,7 @@ export function McpMarketPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles["repo-link"]}
-                    title="Open repository"
+                    title={Locale.Mcp.UI.OpenRepo}
                   >
                     <GithubIcon />
                   </a>
@@ -589,7 +599,7 @@ export function McpMarketPage() {
                   {server.configurable && (
                     <IconButton
                       icon={<EditIcon />}
-                      text="Configure"
+                      text={Locale.UI.Config}
                       onClick={() => setEditingServerId(server.id)}
                       disabled={isLoading}
                     />
@@ -598,13 +608,13 @@ export function McpMarketPage() {
                     <>
                       <IconButton
                         icon={<PlayIcon />}
-                        text="Start"
+                        text={Locale.Mcp.UI.Start}
                         onClick={() => restartServer(server.id)}
                         disabled={isLoading}
                       />
                       {/* <IconButton
                         icon={<DeleteIcon />}
-                        text="Remove"
+                        text={Locale.Chat.Actions.Delete}
                         onClick={() => removeServer(server.id)}
                         disabled={isLoading}
                       /> */}
@@ -613,7 +623,7 @@ export function McpMarketPage() {
                     <>
                       <IconButton
                         icon={<EyeIcon />}
-                        text="Tools"
+                        text={Locale.Mcp.UI.Tools}
                         onClick={async () => {
                           setViewingServerId(server.id);
                           await loadTools(server.id);
@@ -625,7 +635,7 @@ export function McpMarketPage() {
                       />
                       <IconButton
                         icon={<StopIcon />}
-                        text="Stop"
+                        text={Locale.Chat.Actions.Stop}
                         onClick={() => pauseServer(server.id)}
                         disabled={isLoading}
                       />
@@ -635,7 +645,7 @@ export function McpMarketPage() {
               ) : (
                 <IconButton
                   icon={<AddIcon />}
-                  text="Add"
+                  text={Locale.Mcp.UI.Add}
                   onClick={() => addServer(server)}
                   disabled={isLoading}
                 />
@@ -652,15 +662,15 @@ export function McpMarketPage() {
         <div className="window-header">
           <div className="window-header-title">
             <div className="window-header-main-title">
-              MCP Market
+              {Locale.Mcp.UI.Market}
               {loadingStates["all"] && (
                 <span className={styles["loading-indicator"]}>
-                  {loadingStates["all"]}
+                  {operationLabel(loadingStates["all"])}
                 </span>
               )}
             </div>
             <div className="window-header-sub-title">
-              {Object.keys(config?.mcpServers ?? {}).length} servers configured
+              {Locale.Mcp.UI.ConfiguredServers}: {Object.keys(config?.mcpServers ?? {}).length}
             </div>
           </div>
 
@@ -670,12 +680,12 @@ export function McpMarketPage() {
                 icon={<RestartIcon />}
                 bordered
                 onClick={handleRestartAll}
-                text="Restart All"
+                text={Locale.Mcp.UI.RestartAll}
                 disabled={isLoading}
               />
             </div>
             <div className="window-action-button">
-              <IconButton
+              <IconButton aria={Locale.UI.Close}
                 icon={<CloseIcon />}
                 bordered
                 onClick={() => navigate(-1)}
@@ -690,7 +700,7 @@ export function McpMarketPage() {
             <input
               type="text"
               className={styles["search-bar"]}
-              placeholder={"Search MCP Server"}
+              placeholder={Locale.Mcp.UI.Search}
               autoFocus
               onInput={(e) => setSearchText(e.currentTarget.value)}
             />
@@ -703,19 +713,19 @@ export function McpMarketPage() {
         {editingServerId && (
           <div className="modal-mask">
             <Modal
-              title={`Configure Server - ${editingServerId}`}
+              title={`${Locale.Mcp.UI.ConfigureServer} — ${editingServerId}`}
               onClose={() => !isLoading && setEditingServerId(undefined)}
               actions={[
                 <IconButton
                   key="cancel"
-                  text="Cancel"
+                  text={Locale.UI.Cancel}
                   onClick={() => setEditingServerId(undefined)}
                   bordered
                   disabled={isLoading}
                 />,
                 <IconButton
                   key="confirm"
-                  text="Save"
+                  text={Locale.UI.Save}
                   type="primary"
                   onClick={saveServerConfig}
                   bordered
@@ -731,12 +741,12 @@ export function McpMarketPage() {
         {viewingServerId && (
           <div className="modal-mask">
             <Modal
-              title={`Server Details - ${viewingServerId}`}
+              title={`${Locale.Mcp.UI.ServerDetails} — ${viewingServerId}`}
               onClose={() => setViewingServerId(undefined)}
               actions={[
                 <IconButton
                   key="close"
-                  text="Close"
+                  text={Locale.UI.Close}
                   onClick={() => setViewingServerId(undefined)}
                   bordered
                 />,
@@ -744,7 +754,7 @@ export function McpMarketPage() {
             >
               <div className={styles["tools-list"]}>
                 {isLoading ? (
-                  <div>Loading...</div>
+                  <div>{Locale.UI.Loading}</div>
                 ) : tools?.tools ? (
                   tools.tools.map(
                     (tool: ListToolsResponse["tools"], index: number) => (
@@ -757,7 +767,7 @@ export function McpMarketPage() {
                     ),
                   )
                 ) : (
-                  <div>No tools available</div>
+                  <div>{Locale.Mcp.UI.NoTools}</div>
                 )}
               </div>
             </Modal>

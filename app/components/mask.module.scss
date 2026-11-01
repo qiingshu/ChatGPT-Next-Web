@@ -106,3 +106,32 @@
     }
   }
 }
+
+/* Translated action labels must not squeeze the mobile page title to zero. */
+@media screen and (max-width: 600px) {
+  .mask-page {
+    :global(.window-header) {
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    :global(.window-header-title) {
+      flex: 1 0 100%;
+      max-width: 100%;
+    }
+
+    :global(.window-header-main-title) {
+      max-width: 100%;
+    }
+
+    :global(.window-actions) {
+      flex-wrap: wrap;
+      gap: 8px;
+      max-width: 100%;
+    }
+
+    :global(.window-action-button) {
+      margin-left: 0;
+    }
+  }
+}

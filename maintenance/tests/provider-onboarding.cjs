@@ -2,12 +2,14 @@
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const { spawn } = require("node:child_process");
-const { chromium, webkit } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
+const { chromium, webkit, devices } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
 if (process.env.GITHUB_ACTIONS !== "true" || process.env.RUNNER_ENVIRONMENT !== "github-hosted") {
   throw new Error("This acceptance suite must run on a GitHub hosted runner.");
 }
-const base = "http://127.0.0.1:3100";
-const out = "maintenance/acceptance-results";
+const external = !!process.env.NEXTCHAT_BASE_URL;
+const base = process.env.NEXTCHAT_BASE_URL || "http://127.0.0.1:3100";
+if (external && base !== "https://chat.imqing.cc") throw new Error("Unexpected production verification target");
+const out = process.env.NEXTCHAT_EVIDENCE_DIR || "maintenance/acceptance-results";
 fs.mkdirSync(out, { recursive: true });
 const presets = [
   { provider: "DeepSeek", label: "DeepSeek", path: "deepseek", model: "deepseek-flash", field: "deepseek", header: "authorization" },
@@ -38,6 +40,7 @@ async function snapshot(page) {
 async function run(engine) {
   const browser = await ({ chromium, webkit }[engine]).launch();
   const context = await browser.newContext({
+    ...(engine === "webkit" ? devices["iPhone 13"] : {}),
     viewport: { width: 390, height: 844 }, locale: "en-US", isMobile: true,
     hasTouch: true, serviceWorkers: "block", acceptDownloads: true,
   });
@@ -124,9 +127,9 @@ async function run(engine) {
   page.on("pageerror", (error) => pageErrors.push(error.message));
   try {
     await page.goto(base + "/#/settings", { waitUntil: "domcontentloaded" });
-    const provider = page.getByLabel("服务商", { exact: true });
+    const provider = page.getByLabel("Provider", { exact: true });
     await provider.waitFor({ timeout: 60000 });
-    const details = page.locator("details").filter({ has: page.locator("summary").filter({ hasText: "高级设置" }) });
+    const details = page.locator("details").filter({ has: page.locator("summary").filter({ hasText: "Advanced Settings" }) });
     assert.equal(await details.getAttribute("open"), null, "advanced settings must be collapsed initially");
     const initial = await snapshot(page);
     assert.equal(initial["app-config"].modelConfig.model, "gpt-5.4-mini", "fresh install has a usable OpenAI default");
@@ -137,8 +140,8 @@ async function run(engine) {
       await key.fill("fixture-" + preset.field);
       const result = page.getByRole("status");
       const before = (await snapshot(page))["chat-next-web-store"].sessions[0].messages.length;
-      await page.getByRole("button", { name: "测试连接", exact: true }).click();
-      await result.filter({ hasText: "连接成功：" + preset.model }).waitFor({ timeout: 10000 });
+      await page.getByRole("button", { name: "Test connection", exact: true }).click();
+      await result.filter({ hasText: "Connection successful: " + preset.model }).waitFor({ timeout: 10000 });
       if (failure) throw failure;
       await delay(100);
       const saved = await snapshot(page);
@@ -174,7 +177,7 @@ async function run(engine) {
     await page.goto(base + "/#/chat");
     await page.locator("textarea").first().fill("Error fixture");
     await page.locator("textarea").first().press("Enter");
-    await page.getByText("服务商额度不足", { exact: false }).last().waitFor({ timeout: 10000 });
+    await page.getByText("Provider quota is insufficient", { exact: false }).last().waitFor({ timeout: 10000 });
     const afterError = await snapshot(page);
     assert.equal(afterError["chat-next-web-store"].sessions[0].messages.at(-1).streaming, false);
     mode = "success";
@@ -183,11 +186,11 @@ async function run(engine) {
     active = presets[0];
     await provider.selectOption(active.provider);
     assert.equal(await page.getByLabel("DeepSeek API Key", { exact: true }).first().inputValue(), "fixture-deepseek");
-    for (const [next, expected] of [["invalid", "API Key 无效"], ["quota", "额度不足"], ["model", "模型不可用"], ["timeout", "连接测试超时"]]) {
+    for (const [next, expected] of [["invalid", "Invalid or expired API Key"], ["quota", "Provider quota is insufficient"], ["model", "Model unavailable"], ["timeout", "Connection timed out"]]) {
       mode = next;
-      await page.getByRole("button", { name: "测试连接", exact: true }).click();
+      await page.getByRole("button", { name: "Test connection", exact: true }).click();
       await page.getByRole("status").filter({ hasText: expected }).waitFor({ timeout: next === "timeout" ? 35000 : 10000 });
-      assert.equal(await page.getByRole("button", { name: "测试连接", exact: true }).isEnabled(), true);
+      assert.equal(await page.getByRole("button", { name: "Test connection", exact: true }).isEnabled(), true);
     }
     mode = "success";
     // Existing user fixture: saved custom URL, model, history, Mask and prompt.
@@ -224,8 +227,8 @@ async function run(engine) {
     await provider.selectOption("Google"); await provider.selectOption("DeepSeek");
     assert.equal((await snapshot(page))["access-control"].deepseekUrl, "https://fixture.invalid/v1/custom", "switching must not reset custom URL");
     assert.equal((await snapshot(page))["app-config"].customModels, "legacy-custom@DeepSeek");
-    await page.getByRole("button", { name: "测试连接", exact: true }).click();
-    await page.getByRole("status").filter({ hasText: "连接成功：" + active.model }).waitFor({ timeout: 10000 });
+    await page.getByRole("button", { name: "Test connection", exact: true }).click();
+    await page.getByRole("status").filter({ hasText: "Connection successful: " + active.model }).waitFor({ timeout: 10000 });
     if (failure) throw failure;
     // Real export/import controls; the backup contains synthetic fixtures only and is never uploaded.
     const downloadPromise = page.waitForEvent("download");
@@ -249,17 +252,18 @@ async function run(engine) {
     await keyInput.scrollIntoViewIfNeeded();
     const keyBox = await keyInput.boundingBox();
     assert.ok(keyBox.width >= 200 && keyBox.x + keyBox.width <= 391, "mobile key field must fit the viewport");
-    const buttonBox = await page.getByRole("button", { name: "测试连接", exact: true }).boundingBox();
+    const buttonBox = await page.getByRole("button", { name: "Test connection", exact: true }).boundingBox();
     assert.ok(buttonBox.height >= 40, "mobile connection button must have a usable touch target");
     await page.screenshot({ path: out + "/" + engine + "-settings.png", mask: [page.locator("input")], animations: "disabled" });
     const security = await require("./security-browser.cjs")(page, context, base);
+    await require("./localization-browser.cjs")(page, context, base, engine, (next) => { mode = next; });
     assert.deepEqual(pageErrors, []);
     if (failure) throw failure;
     const summary = {
-      engine, security, viewport: "390x844", providers: presets.map((p) => p.label), syntheticResponsesOnly: true,
+      engine, security, verificationTarget: external ? "production UI with isolated browser fixtures" : "GitHub local build", viewport: "390x844", providers: presets.map((p) => p.label), syntheticResponsesOnly: true,
       realApiVerified: false, physicalIPhoneVerified: false, calls, streamCalls,
       providerSwitch: true, separateKeys: true, defaultModels: true, advancedCollapsed: true,
-      contextContinuity: true, imeEnter: true, sseErrorTerminates: true, customUrlConnection: true, connectionErrors: ["invalid key", "quota", "model", "30s timeout"],
+      localizationLanguages: 20, contextContinuity: true, imeEnter: true, sseErrorTerminates: true, customUrlConnection: true, connectionErrors: ["invalid key", "quota", "model", "30s timeout"],
       legacyConfigPreserved: true, masksPromptsAndHistory: true, exportImport: true, horizontalOverflow: false,
       serviceWorkerCacheVerified: false, pageErrors: [],
     };
@@ -275,22 +279,68 @@ async function run(engine) {
   }
 }
 (async () => {
-  const server = spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "--hostname", "127.0.0.1", "--port", "3100"], {
+  const server = external ? null : spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "--hostname", "127.0.0.1", "--port", "3100"], {
     env: { ...process.env, NEXT_TELEMETRY_DISABLED: "1", CODE: "nextchat-security-fixture-code", ENABLE_MCP: "false" }, stdio: ["ignore", "ignore", "ignore"],
   });
   try {
     let ready = false;
-    for (let i = 0; i < 120; i++) {
-      try { ready = (await fetch(base)).ok; } catch {}
+    for (let i = 0; i < 180; i++) {
+      try {
+        const response = await fetch(base);
+        ready = response.ok;
+        if (external && ready) {
+          const html = await response.text();
+          ready = html.includes(process.env.GITHUB_SHA);
+        }
+      } catch {}
       if (ready) break;
       await delay(1000);
     }
     assert.ok(ready, "GitHub hosted test server did not start");
     let networkError;
-    try { await require("./security-network.cjs")(base, out); } catch (error) { networkError = error; }
-    for (const engine of ["chromium", "webkit"]) await run(engine);
-    if (networkError) throw networkError;
-  } finally { server.kill("SIGTERM"); }
+    try { if (!external) await require("./security-network.cjs")(base, out); } catch (error) { networkError = error; }
+    const browserErrors = [];
+    for (const engine of ["chromium", "webkit"]) {
+      try { await run(engine); } catch (error) { browserErrors.push(error); }
+    }
+    if (networkError) browserErrors.push(networkError);
+    if (browserErrors.length) throw new AggregateError(browserErrors, browserErrors.map(error => error.message).join("\\n"));
+    const report = [
+      "# NextChat 全站多语言验收报告",
+      "",
+      "提交：" + process.env.GITHUB_SHA,
+      "分支：" + process.env.GITHUB_REF_NAME,
+      "Actions：https://github.com/qiingshu/ChatGPT-Next-Web/actions/runs/" + process.env.GITHUB_RUN_ID,
+      "PR：https://github.com/qiingshu/ChatGPT-Next-Web/pull/2",
+      external ? "验证目标：https://chat.imqing.cc（构建 SHA 已匹配）" : "验证目标：GitHub 临时 runner 的生产构建；Vercel Preview 另由交付消息给出。",
+      "",
+      "## 变更",
+      "- 补齐全部 20 种语言字段，完整类型约束、重复字段和硬编码检查。",
+      "- 本地化版本信息、服务商配置、错误提示、MCP、插件、角色和绘图选项、无障碍标签。",
+      "- 保留内部枚举、模型 ID、五家接口、请求参数、存储结构及已有聊天/提示词。",
+      "- 修复语言代码识别和共享英文词典被覆盖的问题。",
+      "- 将安全存储帮助函数原样移至轻量模块，避免语言和状态模块循环加载；存储键名与读写方法不变。",
+      "",
+      "## 本次通过的验证",
+      "- 前置类型检查、单元测试和生产构建已完成；具体结果见上方 Actions 各步骤。",
+      "- Chromium 与 WebKit/iPhone 13 参数下，20 种语言的设置、主题、错误、版本、Masks、角色、插件和聊天检查通过。",
+      "- 五家模型的配置、独立 Key、自定义 URL、两轮合成流式响应、错误处理与导入导出回归通过。",
+      "- XSS 回归通过；私网目标、重定向和真实公网 HTTPS 仅在 GitHub 临时本地服务验证。",
+      "",
+      "## 未验证范围",
+      "- 未使用真实模型 API 凭据；真实账户、额度和实时服务可用性未验证。",
+      "- WebKit 使用 iPhone 13 参数，未在实体 iPhone 测试。",
+      "- 用户已有聊天、Masks、提示词内容以及模型/第三方 MCP 返回内容不自动翻译。",
+      "",
+      "## 回滚",
+      "- 发布前正式提交：f8f73a5e408735c0a48774dd3d1e5576de48bcfd。",
+      "- 发布前正式部署：dpl_E9dC6KkQRAy7s1o1MLecGTpdYE3j。",
+      "- 必要时恢复该正式部署的流量；代码使用合并提交的 revert，不重置历史，不清理用户存储。",
+      "",
+      "测试仅运行在 GitHub hosted runner；报告和截图仅包含合成夹具，输入框已遮罩。"
+    ].join("\n");
+    fs.writeFileSync(out + "/LOCALIZATION-REPORT.md", report + "\n");
+  } finally { server?.kill("SIGTERM"); }
 })().catch((error) => {
   // Assertions use only synthetic fixtures. Do not serialize request bodies, headers or backups.
   console.error(error);

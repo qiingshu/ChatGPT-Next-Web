@@ -14,7 +14,7 @@ import dynamic from "next/dynamic";
 import { Path, SlotID } from "../constant";
 import { ErrorBoundary } from "./error";
 
-import { getISOLang, getLang } from "../locales";
+import Locale, { getISOLang, getLang } from "../locales";
 
 import {
   HashRouter as Router,
@@ -121,6 +121,7 @@ function useHtmlLang() {
     if (lang !== htmlLang) {
       document.documentElement.lang = lang;
     }
+    document.querySelector('meta[name="description"]')?.setAttribute("content", Locale.UI.AssistantTagline);
   }, []);
 }
 

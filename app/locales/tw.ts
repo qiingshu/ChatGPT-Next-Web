@@ -1,9 +1,9 @@
+import type { LocaleType as SharedLocaleType } from "./cn";
 import { getClientConfig } from "../config/client";
-import { SubmitKey } from "../store/config";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 const isApp = !!getClientConfig()?.isApp;
 
-const tw = {
+const tw: SharedLocaleType = {
   WIP: "此功能仍在開發中……",
   Error: {
     Unauthorized: isApp
@@ -55,6 +55,10 @@ const tw = {
       Edit: "編輯",
       RefreshTitle: "重新整理標題",
       RefreshToast: "已傳送重新整理標題請求",
+    
+      "FullScreen": "全螢幕",
+      "Speech": "朗讀",
+      "StopSpeech": "停止",
     },
     Commands: {
       new: "新建聊天",
@@ -63,6 +67,8 @@ const tw = {
       prev: "上一個聊天",
       clear: "清除上下文",
       del: "刪除聊天",
+    
+      "fork": "複製聊天",
     },
     InputActions: {
       Stop: "停止回應",
@@ -82,7 +88,7 @@ const tw = {
     Typing: "正在輸入…",
     Input: (submitKey: string) => {
       var inputHints = `輸入訊息後，按下 ${submitKey} 鍵即可傳送`;
-      if (submitKey === String(SubmitKey.Enter)) {
+      if (submitKey === "Enter") {
         inputHints += "，Shift + Enter 鍵換行";
       }
       return inputHints;
@@ -102,6 +108,9 @@ const tw = {
       showShortcutKey: "顯示快捷方式",
       clearContext: "清除上下文",
     },
+  
+    "StartSpeak": "開始說話",
+    "StopSpeak": "停止",
   },
   Export: {
     Title: "將聊天記錄匯出為 Markdown",
@@ -125,6 +134,11 @@ const tw = {
     Image: {
       Toast: "正在產生截圖",
       Modal: "長按或按右鍵儲存圖片",
+    },
+  
+    "Artifacts": {
+      "Title": "分享 Artifacts",
+      "Error": "分享 Artifacts — 失敗",
     },
   },
   Select: {
@@ -166,7 +180,7 @@ const tw = {
       },
     },
     Lang: {
-      Name: "Language", // ATTENTION: if you wanna add a new translation, please do not translate this value, leave it as `Language`
+      Name: "語言", // ATTENTION: if you wanna add a new translation, please do not translate this value, leave it as `Language`
       All: "所有語言",
     },
     Avatar: "大頭貼",
@@ -195,6 +209,9 @@ const tw = {
       IsChecking: "正在檢查更新...",
       FoundUpdate: (x: string) => `發現新版本：${x}`,
       GoToUpdate: "前往更新",
+    
+      "Success": "更新成功",
+      "Failed": "更新失敗",
     },
     SendKey: "傳送鍵",
     Theme: "主題",
@@ -321,7 +338,7 @@ const tw = {
       },
       OpenAI: {
         ApiKey: {
-          Title: "API Key",
+          Title: "OpenAI API Key",
           SubTitle: "使用自訂 OpenAI Key 繞過密碼存取限制",
           Placeholder: "OpenAI API Key",
         },
@@ -333,7 +350,7 @@ const tw = {
       },
       Azure: {
         ApiKey: {
-          Title: "API 金鑰",
+          Title: "Azure API Key",
           SubTitle: "使用自訂 Azure Key 繞過密碼存取限制",
           Placeholder: "Azure API Key",
         },
@@ -350,8 +367,8 @@ const tw = {
       },
       Anthropic: {
         ApiKey: {
-          Title: "API 金鑰",
-          SubTitle: "從 Anthropic AI 取得您的 API 金鑰",
+          Title: "Anthropic API Key",
+          SubTitle: "從 Anthropic AI 取得您的 API Key",
           Placeholder: "Anthropic API Key",
         },
 
@@ -367,9 +384,9 @@ const tw = {
       },
       Google: {
         ApiKey: {
-          Title: "API 金鑰",
-          SubTitle: "從 Google AI 取得您的 API 金鑰",
-          Placeholder: "輸入您的 Google AI Studio API 金鑰",
+          Title: "Google API Key",
+          SubTitle: "從 Google AI 取得您的 API Key",
+          Placeholder: "輸入您的 Google AI Studio API Key",
         },
 
         Endpoint: {
@@ -381,10 +398,152 @@ const tw = {
           Title: "API 版本（僅適用於 gemini-pro）",
           SubTitle: "選擇一個特定的 API 版本",
         },
+      
+        "GoogleSafetySettings": {
+          "Title": "Google 安全過濾設定",
+          "SubTitle": "選擇安全過濾級別",
+        },
       },
       CustomModel: {
         Title: "自訂模型名稱",
         SubTitle: "增加自訂模型可選擇項目，使用英文逗號隔開",
+      },
+    
+      "Baidu": {
+        "ApiKey": {
+          "Title": "Baidu API Key",
+          "SubTitle": "使用自訂 API Key",
+          "Placeholder": "Baidu API Key",
+        },
+        "SecretKey": {
+          "Title": "Baidu Secret Key",
+          "SubTitle": "使用自訂憑證 — Secret Key",
+          "Placeholder": "Baidu Secret Key",
+        },
+        "Endpoint": {
+          "Title": "介面位址",
+          "SubTitle": "請在 .env 中設定此項",
+        },
+      },
+      "Tencent": {
+        "ApiKey": {
+          "Title": "Tencent API Key",
+          "SubTitle": "使用自訂 API Key",
+          "Placeholder": "Tencent API Key",
+        },
+        "SecretKey": {
+          "Title": "Tencent Secret Key",
+          "SubTitle": "使用自訂憑證 — Secret Key",
+          "Placeholder": "Tencent Secret Key",
+        },
+        "Endpoint": {
+          "Title": "介面位址",
+          "SubTitle": "請在 .env 中設定此項",
+        },
+      },
+      "ByteDance": {
+        "ApiKey": {
+          "Title": "ByteDance API Key",
+          "SubTitle": "使用自訂 API Key",
+          "Placeholder": "ByteDance API Key",
+        },
+        "Endpoint": {
+          "Title": "介面位址",
+          "SubTitle": "範例: ",
+        },
+      },
+      "Alibaba": {
+        "ApiKey": {
+          "Title": "Alibaba API Key",
+          "SubTitle": "使用自訂 API Key",
+          "Placeholder": "Alibaba API Key",
+        },
+        "Endpoint": {
+          "Title": "介面位址",
+          "SubTitle": "範例: ",
+        },
+      },
+      "Moonshot": {
+        "ApiKey": {
+          "Title": "Moonshot API Key",
+          "SubTitle": "使用自訂 API Key",
+          "Placeholder": "Moonshot API Key",
+        },
+        "Endpoint": {
+          "Title": "介面位址",
+          "SubTitle": "範例: ",
+        },
+      },
+      "DeepSeek": {
+        "ApiKey": {
+          "Title": "DeepSeek API Key",
+          "SubTitle": "使用自訂 API Key",
+          "Placeholder": "DeepSeek API Key",
+        },
+        "Endpoint": {
+          "Title": "介面位址",
+          "SubTitle": "範例: ",
+        },
+      },
+      "XAI": {
+        "ApiKey": {
+          "Title": "XAI API Key",
+          "SubTitle": "使用自訂 API Key",
+          "Placeholder": "XAI API Key",
+        },
+        "Endpoint": {
+          "Title": "介面位址",
+          "SubTitle": "範例: ",
+        },
+      },
+      "ChatGLM": {
+        "ApiKey": {
+          "Title": "ChatGLM API Key",
+          "SubTitle": "使用自訂 API Key",
+          "Placeholder": "ChatGLM API Key",
+        },
+        "Endpoint": {
+          "Title": "介面位址",
+          "SubTitle": "範例: ",
+        },
+      },
+      "SiliconFlow": {
+        "ApiKey": {
+          "Title": "SiliconFlow API Key",
+          "SubTitle": "使用自訂 API Key",
+          "Placeholder": "SiliconFlow API Key",
+        },
+        "Endpoint": {
+          "Title": "介面位址",
+          "SubTitle": "範例: ",
+        },
+      },
+      "Stability": {
+        "ApiKey": {
+          "Title": "Stability API Key",
+          "SubTitle": "使用自訂 API Key",
+          "Placeholder": "Stability API Key",
+        },
+        "Endpoint": {
+          "Title": "介面位址",
+          "SubTitle": "範例: ",
+        },
+      },
+      "Iflytek": {
+        "ApiKey": {
+          "Title": "Iflytek API Key",
+          "SubTitle": "使用自訂 API Key",
+          "Placeholder": "Iflytek API Key",
+        },
+        "ApiSecret": {
+          "Title": "Iflytek API Secret",
+          "SubTitle": "使用自訂憑證 — API Secret",
+          "Placeholder": "Iflytek API Secret",
+        },
+        "Endpoint": {
+          "Title": "介面位址",
+          "SubTitle": "範例: ",
+        },
       },
     },
 
@@ -412,6 +571,96 @@ const tw = {
     FrequencyPenalty: {
       Title: "頻率懲罰度 (frequency_penalty)",
       SubTitle: "值越大，越有可能降低重複字詞",
+    },
+  
+    "ShowPassword": "顯示密碼",
+    "LocalizationInfo": {
+      "Edition": "NextChat 自訂版",
+      "Timeout": "連線測試逾時（30 秒），請檢查網路及介面位址。",
+      "Success": "連線成功",
+      "NoResponse": "服務商未回傳有效回應，請檢查模型及介面設定。",
+      "Upstream": "上游基礎",
+      "Details": "詳細版本資訊",
+      "Security": "安全維護識別碼",
+      "Commit": "建置提交",
+      "Official": "官方參考版本",
+      "Unavailable": "尚未取得",
+      "Note": "包含選擇性移植，並非完整官方 v2.16.1。官方版本資訊僅供參考。",
+    },
+    "ProviderSetup": {
+      "ModelIdPlaceholder": "模型 ID@服務商",
+      "Provider": "服務商",
+      "ProviderHelp": "選擇服務商並輸入其 API Key，即可使用預設模型",
+      "ProviderKeyPlaceholder": "輸入此服務商的 API Key",
+      "CurrentModel": "目前聊天模型",
+      "DefaultModel": "預設模型",
+      "ModelHelp": "介面及自訂模型可在進階設定中調整",
+      "TestModel": "測試目前聊天模型",
+      "TestHelp": "傳送簡短請求，可能產生 API 費用；不寫入聊天記錄",
+      "TestConnection": "測試連線",
+      "Testing": "測試中…",
+      "Advanced": "進階設定",
+      "OfficialURL": "官方位址",
+      "DefaultRoute": "預設透過本站路由存取",
+    },
+    "TTS": {
+      "Enable": {
+        "Title": "啟用文字轉語音",
+        "SubTitle": "啟用文字生成語音服務",
+      },
+      "Autoplay": {
+        "Title": "啟用自動朗讀",
+        "SubTitle": "自動生成語音並播放，需先啟用文字轉語音",
+      },
+      "Model": "模型 (model)",
+      "Engine": "轉換引擎",
+      "Voice": {
+        "Title": "聲音",
+        "SubTitle": "生成語音時使用的聲音",
+      },
+      "Speed": {
+        "Title": "速度",
+        "SubTitle": "生成語音的速度",
+      },
+    },
+    "Realtime": {
+      "Enable": {
+        "Title": "即時聊天",
+        "SubTitle": "啟用即時聊天功能",
+      },
+      "Provider": {
+        "Title": "模型服務商",
+        "SubTitle": "切換不同服務商",
+      },
+      "Model": {
+        "Title": "模型 (model)",
+        "SubTitle": "選擇一個模型",
+      },
+      "ApiKey": {
+        "Title": "API Key",
+        "SubTitle": "API Key",
+        "Placeholder": "API Key",
+      },
+      "Azure": {
+        "Endpoint": {
+          "Title": "介面位址",
+          "SubTitle": "介面位址",
+        },
+        "Deployment": {
+          "Title": "部署名稱",
+          "SubTitle": "部署名稱",
+        },
+      },
+      "Temperature": {
+        "Title": "隨機性 (temperature)",
+        "SubTitle": "值越大，回應越隨機",
+      },
+    },
+    "SafetyLabels": {
+      "BLOCK_NONE": "不攔截",
+      "BLOCK_ONLY_HIGH": "僅攔截高風險",
+      "BLOCK_MEDIUM_AND_ABOVE": "攔截中等及以上風險",
+      "BLOCK_LOW_AND_ABOVE": "攔截低風險及以上",
     },
   },
   Store: {
@@ -442,7 +691,53 @@ const tw = {
     Clear: "上下文已清除",
     Revert: "恢復上下文",
   },
-  Plugin: { Name: "外掛" },
+  Plugin: { Name: "外掛程式" ,
+    "Accessibility": {
+      "Create": "新增: 外掛程式",
+      "Edit": "編輯: 外掛程式",
+      "Save": "儲存: 外掛程式",
+      "SchemaUrl": "外掛程式 Schema URL",
+      "LoadSchema": "從 URL 載入: 外掛程式 Schema",
+      "Schema": "外掛程式 Schema",
+    },
+    "Page": {
+      "Title": "外掛程式",
+      "SubTitle": (count: number) => "外掛程式: " + count,
+      "Search": "查詢訊息 — 外掛程式",
+      "Create": "新增",
+      "Find": "在 GitHub 上尋找外掛程式: ",
+    },
+    "Item": {
+      "Info": (count: number) => "方法: " + count,
+      "View": "檢視",
+      "Edit": "編輯",
+      "Delete": "刪除",
+      "DeleteConfirm": "確認刪除？",
+    },
+    "Auth": {
+      "None": "無須授權",
+      "Basic": "Basic",
+      "Bearer": "Bearer",
+      "Custom": "自訂",
+      "CustomHeader": "參數名稱",
+      "Token": "Token",
+      "Proxy": "使用代理",
+      "ProxyDescription": "使用代理避免 CORS 限制",
+      "Location": "位置",
+      "LocationHeader": "Header",
+      "LocationQuery": "Query",
+      "LocationBody": "Body",
+    },
+    "EditModal": {
+      "Title": (readonly: boolean) => "編輯: 外掛程式" + (readonly ? " (唯讀)" : ""),
+      "Download": "下載",
+      "Auth": "授權方式",
+      "Content": "OpenAPI Schema",
+      "Load": "從 URL 載入",
+      "Method": "方法",
+      "Error": "OpenAPI Schema 格式錯誤",
+    },
+  },
   FineTuned: { Sysmessage: "你是一個助手" },
   Mask: {
     Name: "角色範本",
@@ -482,6 +777,15 @@ const tw = {
         Title: "分享此角色範本",
         SubTitle: "產生此角色範本的直達連結",
         Action: "複製連結",
+      },
+    
+      "Artifacts": {
+        "Title": "啟用 Artifacts",
+        "SubTitle": "透過 Artifacts 顯示 HTML 頁面",
+      },
+      "CodeFold": {
+        "Title": "啟用程式碼摺疊",
+        "SubTitle": "自動摺疊過長的程式碼區塊",
       },
     },
   },
@@ -523,6 +827,28 @@ const tw = {
     Import: "匯入",
     Sync: "同步",
     Config: "設定",
+  
+    "Save": "儲存",
+    "Loading": "載入中…",
+    "Seed": "隨機種子",
+    "User": "使用者",
+    "Assistant": "助理",
+    "System": "系統",
+    "Text": "文字",
+    "Image": "圖片",
+    "Standard": "標準",
+    "Vivid": "鮮豔",
+    "Natural": "自然",
+    "ErrorTitle": "發生錯誤",
+    "ReportError": "回報此錯誤",
+    "ClearData": "清除所有資料",
+    "AssistantTagline": "打造你自己的 AI 助理。",
+    "EmptyPrompt": "新提示詞",
+    "EmptyPromptContent": "請輸入提示詞內容",
+    "AllFiles": "所有檔案",
+  
+    "Refresh": "重新載入",
+    "HidePassword": "隱藏密碼",
   },
   Exporter: {
     Description: {
@@ -532,6 +858,114 @@ const tw = {
     Messages: "訊息",
     Topic: "主題",
     Time: "時間",
+  },
+
+  "Discovery": {
+    "Name": "探索",
+  },
+  "Mcp": {
+    "Name": "MCP",
+    "UI": {
+      "Market": "MCP 市集",
+      "PresetLoadFailed": "載入預設伺服器失敗",
+      "InitFailed": "載入初始狀態失敗",
+      "ConfigSaved": "伺服器設定已儲存",
+      "ConfigSaveFailed": "儲存設定失敗",
+      "ToolsFailed": "載入工具失敗",
+      "Stopped": "已停止",
+      "StopFailed": "停止伺服器失敗",
+      "StartFailed": "啟動伺服器失敗，請檢查日誌",
+      "RestartingClients": "正在重新啟動所有客戶端",
+      "RestartFailed": "重新啟動客戶端失敗",
+      "Initializing": "初始化中",
+      "NoServers": "尚無可用伺服器",
+      "OpenRepo": "開啟程式碼儲存庫",
+      "Start": "啟動",
+      "Tools": "工具",
+      "Add": "新增",
+      "RestartAll": "全部重新啟動",
+      "Search": "搜尋 MCP 伺服器",
+      "ConfigureServer": "設定伺服器",
+      "ServerDetails": "伺服器詳情",
+      "NoTools": "尚無可用工具",
+      "LoadingPresets": "正在載入預設伺服器清單…",
+      "ConfiguredServers": "已設定伺服器",
+      "UpdatingConfig": "正在更新設定…",
+      "CreatingClient": "正在建立 MCP 客戶端…",
+      "Stopping": "正在停止伺服器…",
+      "Starting": "正在啟動伺服器…",
+      "RestartingServers": "正在重新啟動所有伺服器…",
+      "ExecutionFailed": "MCP 執行失敗",
+    },
+  },
+  "SdPanel": {
+    "Prompt": "畫面提示詞",
+    "NegativePrompt": "負面提示詞",
+    "PleaseInput": (name: string) => name + " — 請輸入內容",
+    "AspectRatio": "長寬比",
+    "ImageStyle": "圖像風格",
+    "OutFormat": "輸出格式",
+    "AIModel": "模型 (model)",
+    "ModelVersion": "模型版本",
+    "Submit": "生成",
+    "ParamIsRequired": (name: string) => name + ": 必填",
+    "Styles": {
+      "D3Model": "3D 模型",
+      "AnalogFilm": "膠片",
+      "Anime": "動漫",
+      "Cinematic": "電影風格",
+      "ComicBook": "漫畫",
+      "DigitalArt": "數位藝術",
+      "Enhance": "增強",
+      "FantasyArt": "奇幻藝術",
+      "Isometric": "等距",
+      "LineArt": "線描",
+      "LowPoly": "低多邊形",
+      "ModelingCompound": "黏土模型",
+      "NeonPunk": "霓虹龐克",
+      "Origami": "摺紙",
+      "Photographic": "攝影",
+      "PixelArt": "像素藝術",
+      "TileTexture": "平鋪紋理",
+    },
+  },
+  "Sd": {
+    "SubTitle": (count: number) => "圖片: " + count,
+    "Actions": {
+      "Params": "查看參數",
+      "Copy": "複製: 畫面提示詞",
+      "Delete": "刪除",
+      "Retry": "重試",
+      "ReturnHome": "返回首頁",
+      "History": "歷史記錄",
+    },
+    "EmptyRecord": "尚無繪圖記錄",
+    "Status": {
+      "Name": "狀態",
+      "Success": "成功",
+      "Error": "失敗",
+      "Wait": "等待中",
+      "Running": "執行中",
+    },
+    "Danger": {
+      "Delete": "確認刪除？",
+    },
+    "GenerateParams": "生成參數",
+    "Detail": "詳情",
+  },
+  "ApiError": {
+    "Timeout": "請求逾時，請稍後重試，或在進階設定檢查介面位址。",
+    "Quota": "服務商額度不足，請檢查帳戶餘額、付費狀態或用量限制。",
+    "AccessCode": "存取碼無效，請檢查本站存取碼。",
+    "InvalidKey": "API Key 無效或已過期，請檢查目前服務商的 Key。",
+    "Permission": "存取遭拒，請檢查模型權限及服務商地區限制。",
+    "Model": "模型無法使用或介面不存在，請在進階設定檢查模型 ID 及介面位址。",
+    "RateLimit": "請求過於頻繁或已達用量上限，請稍後重試並檢查額度。",
+    "Parameters": "請求參數不相容，請檢查進階設定中的模型 ID 及參數。",
+    "Unavailable": "服務商暫時無法使用，請稍後重試。",
+    "Empty": "未回傳有效內容，請檢查模型狀態後重試。",
+    "Network": "網路連線失敗，請檢查網路、介面位址及第三方 CORS 設定。",
+    "Generic": "請求失敗，請檢查服務商的 API Key、模型及介面設定。",
   },
 };
 

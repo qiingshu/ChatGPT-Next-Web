@@ -251,7 +251,7 @@ export function SideBar(props: { className?: string }) {
     >
       <SideBarHeader
         title="NextChat"
-        subTitle="Build your own AI assistant."
+        subTitle={Locale.UI.AssistantTagline}
         logo={<ChatGptIcon />}
         shouldNarrow={shouldNarrow}
       >
@@ -318,7 +318,7 @@ export function SideBar(props: { className?: string }) {
         primaryAction={
           <>
             <div className={clsx(styles["sidebar-action"], styles.mobile)}>
-              <IconButton
+              <IconButton aria={Locale.Chat.Actions.Delete}
                 icon={<DeleteIcon />}
                 onClick={async () => {
                   if (await showConfirm(Locale.Home.DeleteChat)) {
