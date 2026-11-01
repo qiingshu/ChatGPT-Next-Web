@@ -2008,7 +2008,7 @@ export function Settings() {
                   aria-label={Locale.Settings.Access.CustomModel.Title}
                   type="text"
                   value={config.customModels}
-                  placeholder="模型ID@服务商"
+                  placeholder={Locale.Settings.ProviderSetup.ModelIdPlaceholder}
                   onChange={(e) => config.update((state) => (state.customModels = e.currentTarget.value))}
                 />
               </ListItem>
