@@ -48,11 +48,11 @@ for (const file of localeFiles) {
   if (JSON.stringify(actual) !== JSON.stringify(reference)) problems.push(file + ": incomplete or extra catalog fields");
 }
 
-const technical = /^(?:NextChat(?: Artifacts)?|ChatGPT|Stability AI|Stable Diffusion(?: 3)?|Stable Image (?:Ultra|Core)|SD3 (?:Medium|Large(?: Turbo)?)|Mistral API (?:Key|URL)|JSON|PNG|JPEG|WebP|Markdown|HTML|HD|OpenAPI Schema|MCP|OAuth|WebDAV|API Key|API URL|2023-08-01-preview)$/;
+const technical = /^(?:NextChat(?: Artifacts)?|ChatGPT|Stability AI|Stable Diffusion(?: 3)?|Stable Image (?:Ultra|Core)|SD3 (?:Medium|Large(?: Turbo)?)|Mistral API (?:Key|URL)|JSON|PNG|JPEG|WebP|Markdown|HTML|HD|OpenAPI Schema|MCP|OAuth|WebDAV|API Key|API URL|px|2023-08-01-preview)$/;
 function ordinary(text) {
   const value = text.replace(/\s+/g, " ").trim();
   return value && /[A-Za-z\u3400-\u9fff\u0400-\u04ff\u0600-\u06ff]/.test(value) &&
-    !technical.test(value) && !/^(?:https?:\/\/|\/api\/)/.test(value);
+    !technical.test(value) && !/^(?:https?:\/\/|github\\.com\/|\/api\/)/.test(value);
 }
 const attrs = new Set(["title", "text", "placeholder", "aria", "aria-label", "alt", "label", "subTitle"]);
 function string(node) {

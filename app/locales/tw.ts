@@ -1,9 +1,10 @@
+import type { LocaleType as SharedLocaleType } from "./cn";
 import { getClientConfig } from "../config/client";
 import { SubmitKey } from "../store/config";
 import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 const isApp = !!getClientConfig()?.isApp;
 
-const tw = {
+const tw: SharedLocaleType = {
   WIP: "此功能仍在開發中……",
   Error: {
     Unauthorized: isApp
@@ -976,7 +977,7 @@ type DeepPartial<T> = T extends object
   : T;
 
 export type LocaleType = typeof tw;
-export type LocaleType = DeepPartial<typeof tw>;
+export type PartialLocaleType = DeepPartial<typeof tw>;
 
 export default tw;
 // Translated by @chunkiuuu, feel free the submit new pr if there are typo/incorrect translations :D

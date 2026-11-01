@@ -462,7 +462,7 @@ export function showImageModal(
       <div style={{ display: "flex", justifyContent: "center", ...boxStyle }}>
         <img
           src={img}
-          alt="preview"
+          alt={Locale.Export.Image.Modal}
           style={
             style ?? {
               maxWidth: "100%",

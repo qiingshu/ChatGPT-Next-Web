@@ -517,7 +517,7 @@ export function ImagePreviewer(props: {
           <div className={clsx(styles["logo"], "no-dark")}>
             <NextImage
               src={ChatGptIcon.src}
-              alt="logo"
+              alt="NextChat"
               width={50}
               height={50}
             />
@@ -583,7 +583,7 @@ export function ImagePreviewer(props: {
                   <img
                     key={i}
                     src={getMessageImages(m)[0]}
-                    alt="message"
+                    alt={Locale.UI.Image}
                     className={styles["message-image"]}
                   />
                 )}
@@ -600,7 +600,7 @@ export function ImagePreviewer(props: {
                       <img
                         key={i}
                         src={src}
-                        alt="message"
+                        alt={Locale.UI.Image}
                         className={styles["message-image-multi"]}
                       />
                     ))}
